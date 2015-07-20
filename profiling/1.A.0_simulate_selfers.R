@@ -14,6 +14,8 @@ sim <- SimSelfer(size.array=10, het.error=0.7, hom.error=0.002, numloci=100, rec
 
 plotpa(sim, kids=10, cols=c("green", "blue"))
 
+save(file="cache/sim123456.RData", list="sim")
+
 
 
 
