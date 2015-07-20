@@ -15,15 +15,33 @@ SimSelfer(size.array=20, het.error=0.7, hom.error=0.002, numloci=1000, recombina
 plotpa(sim, kids=10, cols=c("red", "blue"), ...)
 ```
 
+### Evaluation 
+
+1. imputatation rate
+2. error rate (phasing and imputation)
+3. efficiency
+4. others
+
 ### List of software to test
 
-1. Beagle trios
-2. MACH
-3. FIMPUTE
-4. findhap.f90
-5. PHASEBOOK
-6. Alpha{Phase, Impute}
-7. LDMIP
 
+------------
+
+0. [ProgenyArray]()  
+1. [ENT]()   
+2. [reHC-*](http://rehcstar.algolab.eu/#usage)
+3. [mpimpute](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4012496/), [source code](https://github.com/behuang/mpMap)
+4. [LinkImpute](http://www.cultivatingdiversity.org/software/)
+5. [Haploscribe](http://www.sciencedirect.com/science/article/pii/S0002929711003181)
+
+------------
+
+- Beagle trios
+- MACH
+- FIMPUTE
+- findhap.f90
+- PHASEBOOK
+- Alpha{Phase, Impute}
+- LDMIP
 
 
