@@ -6,6 +6,7 @@ SimSelfer <- function(size.array=20, het.error=0.7, hom.error=0.002, numloci=100
     ### missing => simulated from a Beta(2,2) distribution
     ### recombination => 
     
+    misscode = 3
     # make mom
     sfs <- getsfs()
     p=sample(sfs,numloci) #get freqs for all loci
@@ -17,7 +18,7 @@ SimSelfer <- function(size.array=20, het.error=0.7, hom.error=0.002, numloci=100
     
     if(imiss > 0){
         idxmom <- missing.idx(numloci, imiss)
-        obs_mom <- replace(obs_mom, idxmom, 9)
+        obs_mom <- replace(obs_mom, idxmom, misscode)
     }
     simp <- data.frame(hap1=a1, hap2=a2, geno=a1+a2, obs=obs_mom)
     ## tot 142/1000
@@ -28,7 +29,8 @@ SimSelfer <- function(size.array=20, het.error=0.7, hom.error=0.002, numloci=100
     
     # make selfed progeny array
     progeny <- vector("list",size.array)
-    progeny <- lapply(1:size.array, function(a) kid(true_mom, true_mom, het.error, hom.error, rec=rec, imiss=imiss))
+    progeny <- lapply(1:size.array, function(a) 
+        kid(true_mom, true_mom, het.error, hom.error, rec=rec, imiss=imiss, misscode=misscode))
     #progeny <- replicate(size.array, kid(true_mom,true_mom, het.error, hom.error, recombination=TRUE))
     return(list(simp, progeny))
     
@@ -91,7 +93,7 @@ missing.idx <- function(nloci, imiss){
 ############################################################################
 # Make a kid
 #Returns list of true [[1]] and observed [[2]] kid
-kid=function(mom, dad, het.error, hom.error,rec=1.5, imiss=0.3){
+kid <- function(mom, dad, het.error, hom.error, rec=1.5, imiss=0.3, misscode=3){
     if(rec==0){
         k1=mom[[rbinom(1,1,.5)+1]]
         k2=dad[[rbinom(1,1,.5)+1]]
@@ -105,7 +107,7 @@ kid=function(mom, dad, het.error, hom.error,rec=1.5, imiss=0.3){
     obs_kid <- add_error(true_kid, hom.error, het.error)
     if(imiss > 0){
         idx <- missing.idx(length(true_kid), imiss)
-        obs_kid <- replace(obs_kid, idx, 9)
+        obs_kid <- replace(obs_kid, idx, misscode)
     }
     
     info <- list(k1[[2]], k2[[2]])

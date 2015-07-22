@@ -38,13 +38,13 @@ addsnps_rec <- function(genotab=simk, yl=11, infoi=infoi,  cols=c("red", "blue")
     
     hap1 <- infoi[[1]]
     for(j in 1:nrow(hap1)){
-        text(x=hap1$start[j]:(hap1$end[j]-1), y=yl, labels=genotab[hap1$start[j]:(hap1$end[j]-1), hap1$hap[j]], 
+        text(x=hap1$start[j]:(hap1$end[j]-1), y=yl, labels=genotab[hap1$start[j]:(hap1$end[j]-1), 1], 
              col= cols[hap1$hap[j]]) 
     }
     
     hap2 <- infoi[[2]]
     for(k in 1:nrow(hap2)){
-        text(x=hap2$start[k]:(hap2$end[k]-1), y=yl-1, labels=genotab[hap2$start[k]:(hap2$end[k]-1), hap2$hap[k]], 
+        text(x=hap2$start[k]:(hap2$end[k]-1), y=yl-1, labels=genotab[hap2$start[k]:(hap2$end[k]-1), 2], 
              col= cols[hap2$hap[k]]) 
     }
     
