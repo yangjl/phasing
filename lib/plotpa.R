@@ -16,11 +16,9 @@ plotpa <- function(sim, kids=10, cols=c("red", "blue"), ...){
         infoi <- kidi[[1]]
         genoi <- kidi[[2]]
         genoi$id <- 1:nrow(genoi)
-        if((infoi$momrec == 0) & (infoi$dadrec == 0)){
-            addsnps(genotab=simp, yl=4*(kids+1)-4*i,  cols=cols)
-        }else{
-            addsnps_rec(genotab=genoi, yl=4*(kids+1)-4*i, infoi=infoi,  cols=cols)
-        }
+        
+        addsnps_rec(genotab=genoi, yl=4*(kids+1)-4*i, infoi=infoi,  cols=cols)
+        
     }   
 }
 
@@ -36,20 +34,25 @@ addsnps <- function(genotab=simp, yl=11,  cols=c("red", "blue")){
     abline(h=yl-3, lwd=2, col="grey")
 }
 
-addsnps_rec <- function(genotab=simp, yl=11, infoi=infoi,  cols=c("red", "blue")){
+addsnps_rec <- function(genotab=simk, yl=11, infoi=infoi,  cols=c("red", "blue")){
     
-    text(x=genotab$id[1:infoi$momrec], y=yl, labels=genotab$hap1[1:infoi$momrec], col= cols[infoi$momh1])
-    text(x=genotab$id[(infoi$momrec+1):nrow(genotab)], y=yl, 
-         labels=genotab$hap1[(infoi$momrec+1):nrow(genotab)], col= cols[infoi$momh2])
-    
-    text(x=genotab$id[1:infoi$dadrec], y=yl-1, labels=genotab$hap2[1:infoi$dadrec], col= cols[infoi$dadh1]) 
-    text(x=genotab$id[(infoi$dadrec+1):nrow(genotab)], y=yl-1, 
-         labels=genotab$hap2[(infoi$dadrec+1):nrow(genotab)], col= cols[infoi$dadh2]) 
-    
-    text(x=genotab$id, y= yl-2, labels=genotab$obs, col="black") # This adds labels to positions (x,y)
-    sub <- subset(genotab, obs != (hap1+hap2))
-    if(nrow(sub) >0){
-        text(x=sub$id, y= yl-2, labels=sub$obs, col="red") # This adds labels to positions (x,y)
+    hap1 <- infoi[[1]]
+    for(j in 1:nrow(hap1)){
+        text(x=hap1$start[j]:(hap1$end[j]-1), y=yl, labels=genotab[hap1$start[j]:(hap1$end[j]-1), hap1$hap[j]], 
+             col= cols[hap1$hap[j]]) 
     }
+    
+    hap2 <- infoi[[2]]
+    for(k in 1:nrow(hap2)){
+        text(x=hap2$start[k]:(hap2$end[k]-1), y=yl-1, labels=genotab[hap2$start[k]:(hap2$end[k]-1), hap2$hap[k]], 
+             col= cols[hap2$hap[k]]) 
+    }
+    
+    text(x=genotab$id, y=yl-2, labels=genotab$obs, col= "black") 
+    sub <- subset(genotab, hap1+hap2 != obs)
+    if(nrow(sub) >0){
+        text(x=sub$id, y=yl-2, labels=sub$obs, col= "red") 
+    }
+    
     abline(h=yl-3, lwd=2, col="grey")
 }

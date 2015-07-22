@@ -3,7 +3,7 @@
 
 ### Simulation
 
-1. A function to simulate a parent-progeny population using GBS with differnt het/hom error rate
+1. A function to simulate a group of parent-progeny genotyped via GBS with different het/hom error rate
 
 ```
 SimSelfer(size.array=20, het.error=0.7, hom.error=0.002, numloci=1000, recombination=TRUE)
@@ -17,7 +17,7 @@ plotpa(sim, kids=10, cols=c("red", "blue"), ...)
 
 ### Evaluation 
 
-1. imputatation rate
+1. imputation rate
 2. error rate (phasing and imputation)
 3. efficiency
 4. others
@@ -28,7 +28,7 @@ plotpa(sim, kids=10, cols=c("red", "blue"), ...)
 ------------
 
 0. [ProgenyArray]()  
-1. [ENT]()   
+1. [ENT](): imputation rate .85  
 2. [reHC-*](http://rehcstar.algolab.eu/#usage)
 3. [mpimpute](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4012496/), [source code](https://github.com/behuang/mpMap)
 4. [LinkImpute](http://www.cultivatingdiversity.org/software/)
@@ -43,5 +43,6 @@ plotpa(sim, kids=10, cols=c("red", "blue"), ...)
 - PHASEBOOK
 - Alpha{Phase, Impute}
 - LDMIP
+- [SHAPEIT](https://mathgen.stats.ox.ac.uk/genetics_software/shapeit/shapeit.html#gcall) 
 
 

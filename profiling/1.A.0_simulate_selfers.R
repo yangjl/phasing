@@ -9,8 +9,8 @@ het.error=0.7 # het->hom error
 hom.error=0.002 # hom->other error
 numloci=1000 
 
-set.seed(123456)
-sim <- SimSelfer(size.array=10, het.error=0.7, hom.error=0.002, numloci=100, recombination=TRUE)
+set.seed(1234)
+sim <- SimSelfer(size.array=10, het.error=0.7, hom.error=0.002, numloci=100, rec=1.5, imiss=0.3)
 
 plotpa(sim, kids=10, cols=c("green", "blue"))
 

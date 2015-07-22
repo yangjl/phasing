@@ -1,8 +1,11 @@
 ### JRI: http://rpubs.com/rossibarra/self_impute
 
-SimSelfer <- function(size.array=20, het.error=0.7, hom.error=0.002, numloci=1000, recombination=TRUE){
+SimSelfer <- function(size.array=20, het.error=0.7, hom.error=0.002, numloci=1000, rec=1.5, imiss=0.3){
     
     ### Simulate and Test
+    ### missing => simulated from a Beta(2,2) distribution
+    ### recombination => 
+    
     # make mom
     sfs <- getsfs()
     p=sample(sfs,numloci) #get freqs for all loci
@@ -12,6 +15,10 @@ SimSelfer <- function(size.array=20, het.error=0.7, hom.error=0.002, numloci=100
     true_mom=list(a1,a2) #phased 
     obs_mom=add_error(a1+a2,hom.error,het.error) #convert to diploid genotype
     
+    if(imiss > 0){
+        idxmom <- missing.idx(numloci, imiss)
+        obs_mom <- replace(obs_mom, idxmom, 9)
+    }
     simp <- data.frame(hap1=a1, hap2=a2, geno=a1+a2, obs=obs_mom)
     ## tot 142/1000
     ## nrow(subset(simp, (hap1 != hap2)  & (hap1 + hap2 != geno)))/nrow(subset(simp, hap1 != hap2))
@@ -21,7 +28,7 @@ SimSelfer <- function(size.array=20, het.error=0.7, hom.error=0.002, numloci=100
     
     # make selfed progeny array
     progeny <- vector("list",size.array)
-    progeny <- lapply(1:size.array, function(a) kid(true_mom,true_mom, het.error, hom.error, recombination))
+    progeny <- lapply(1:size.array, function(a) kid(true_mom, true_mom, het.error, hom.error, rec=rec, imiss=imiss))
     #progeny <- replicate(size.array, kid(true_mom,true_mom, het.error, hom.error, recombination=TRUE))
     return(list(simp, progeny))
     
@@ -50,8 +57,64 @@ add_error<-function(diploid,hom.error,het.error){
     return(diploid)
 }
 
+
+
+# Copy mom to kids with recombination
+copy.mom = function(mom, co_mean){ 
+    co=rpois(1,co_mean) #crossovers
+    numloci=length(mom[[1]])
+    recp=c(1,sort(round(runif(co, min=2, max=numloci-1))), numloci+1) #position   
+    chrom=rbinom(1,1,.5)+1
+    kpiece=as.numeric()
+    hap <- c()
+    for(r in 1:(length(recp)-1)){
+        kpiece=c(kpiece,mom[[chrom]][recp[r]:(recp[r+1]-1)]) #copy 1->rec from mom
+        hap <- c(hap, chrom)
+        chrom=ifelse(chrom==1,2,1)  
+    }     
+    return(list(kpiece, data.frame(hap=hap, start=recp[-length(recp)], end=recp[-1]) ))
+}
+
+# add missing
+missing.idx <- function(nloci, imiss){
+    #hist(rbeta(10000, 2, 2))
+    if(imiss >= 1){
+        m <- rbeta(1, 2, 2)
+    }else{
+        m <- imiss
+    }
+    
+    ml <- sort(sample(1:nloci, size=round(m*nloci)))
+    return(ml)
+}
+
+############################################################################
+# Make a kid
+#Returns list of true [[1]] and observed [[2]] kid
+kid=function(mom, dad, het.error, hom.error,rec=1.5, imiss=0.3){
+    if(rec==0){
+        k1=mom[[rbinom(1,1,.5)+1]]
+        k2=dad[[rbinom(1,1,.5)+1]]
+    } else{
+        k1=copy.mom(mom,rec) # list
+        k2=copy.mom(dad,rec)
+    }
+    true_kid=k1[[1]] + k2[[1]]
+    #return(list(true_kid,obs_kid))
+    
+    obs_kid <- add_error(true_kid, hom.error, het.error)
+    if(imiss > 0){
+        idx <- missing.idx(length(true_kid), imiss)
+        obs_kid <- replace(obs_kid, idx, 9)
+    }
+    
+    info <- list(k1[[2]], k2[[2]])
+    simk <- data.frame(hap1=k1[[1]], hap2=k2[[1]], obs= obs_kid )
+    return(list(info, simk))
+}
+
 ### Make a kid #Returns list of true [[1]] and observed [[2]] kid
-kid <- function(mom,dad, het.error, hom.error, recombination){
+kid2 <- function(mom,dad, het.error, hom.error, recombination){
     
     h <- rbinom(4,1,.5)+1 #mon hap1; dad hap1; mom hap2; dad hap2
     if(recombination){
@@ -60,7 +123,7 @@ kid <- function(mom,dad, het.error, hom.error, recombination){
         k1= c(mom[[h[1]]][1:idx[1]], mom[[h[3]]][(idx[1]+1):len])
         k2= c(dad[[h[2]]][1:idx[2]], dad[[h[4]]][(idx[2]+1):len])
         true_kid <- k1+k2
-         
+        
     }else{
         idx <- c(0, 0)
         k1=mom[[h[1]]]
@@ -68,33 +131,8 @@ kid <- function(mom,dad, het.error, hom.error, recombination){
         true_kid=k1+k2
     }
     obs_kid <- add_error(true_kid,hom.error,het.error)
+    
     info <- data.frame(momh1=h[1], dadh1=h[2], momh2=h[3], dadh2=h[4], momrec=idx[1], dadrec=idx[2])
     simk <- data.frame(hap1=k1, hap2=k2, obs= obs_kid )
     return(list(info, simk))
 }
-
-
-
-
-
-### Return HW probs
-hw_probs<-function(x){ return(c(x^2,2*x*(1-x),(1-x)^2))}
-
-### infer mom's genotype
-# inferred_mom=1 -> 00, 2->01, 3->11
-infer_mom<-function(obs_mom,locus,progeny,p){
-    mom_probs=as.numeric()
-    for(inferred_mom in 1:3){
-        #P(G'|G)
-        pgg=gen_error_mat[inferred_mom,obs_mom[locus]+1] #+1 because obs_mom is 0,1, or 2
-        #P(G)
-        pg=hw_probs(p[locus])[inferred_mom]
-        #P(kids|G) sum of logs instead of product
-        pkg=sum(sapply(1:length(progeny), function(z) 
-            log(sum(probs[[inferred_mom]][,progeny[[z]][[2]][locus]+1]))))
-        mom_probs[inferred_mom]=pkg+log(pgg)+log(pg)
-    }
-    return(which(mom_probs==max(mom_probs))-1)
-}
-
-#infer_mom(obs_mom,a,progeny,p)
