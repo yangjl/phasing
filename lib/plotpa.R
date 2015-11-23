@@ -1,5 +1,5 @@
 plotpa <- function(sim, kids=10, cols=c("red", "blue"), ...){
-    
+    ### input from sim objects returned from SimSelfer
     simp <- sim[[1]]
     simp$id <- 1:nrow(simp)
     plot(x=c(1,nrow(simp)), y=c(1, 4*(kids+1)+2), type = "n", 

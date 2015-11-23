@@ -28,7 +28,9 @@ plotpa(sim, kids=10, cols=c("red", "blue"), ...)
 ------------
 
 0. [ProgenyArray]()  
-1. [ENT](): imputation rate .85  
+1. [ENT](http://dna.engr.uconn.edu/?page_id=25) 
+    - using mom + mom -> kid: imputation rate .85
+    - [paper]()
 2. [reHC-*](http://rehcstar.algolab.eu/#usage)
 3. [mpimpute](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4012496/), [source code](https://github.com/behuang/mpMap)
 4. [LinkImpute](http://www.cultivatingdiversity.org/software/)

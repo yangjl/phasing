@@ -3,8 +3,9 @@
 SimSelfer <- function(size.array=20, het.error=0.7, hom.error=0.002, numloci=1000, rec=1.5, imiss=0.3){
     
     ### Simulate and Test
-    ### missing => simulated from a Beta(2,2) distribution
-    ### recombination => 
+    ### imissing => individual missing rate, 
+    ### imiss > 1 will be sampled from a Beta(2,2) distribution (1- U-shaped)
+    ### rec: recombination rate 
     
     misscode = 3
     # make mom
@@ -59,8 +60,6 @@ add_error<-function(diploid,hom.error,het.error){
     return(diploid)
 }
 
-
-
 # Copy mom to kids with recombination
 copy.mom = function(mom, co_mean){ 
     co=rpois(1,co_mean) #crossovers
@@ -112,29 +111,5 @@ kid <- function(mom, dad, het.error, hom.error, rec=1.5, imiss=0.3, misscode=3){
     
     info <- list(k1[[2]], k2[[2]])
     simk <- data.frame(hap1=k1[[1]], hap2=k2[[1]], obs= obs_kid )
-    return(list(info, simk))
-}
-
-### Make a kid #Returns list of true [[1]] and observed [[2]] kid
-kid2 <- function(mom,dad, het.error, hom.error, recombination){
-    
-    h <- rbinom(4,1,.5)+1 #mon hap1; dad hap1; mom hap2; dad hap2
-    if(recombination){
-        len <- length(mom[[1]])
-        idx <- sample(1:len, 2) # mon rec; dad rec
-        k1= c(mom[[h[1]]][1:idx[1]], mom[[h[3]]][(idx[1]+1):len])
-        k2= c(dad[[h[2]]][1:idx[2]], dad[[h[4]]][(idx[2]+1):len])
-        true_kid <- k1+k2
-        
-    }else{
-        idx <- c(0, 0)
-        k1=mom[[h[1]]]
-        k2=dad[[h[2]]]
-        true_kid=k1+k2
-    }
-    obs_kid <- add_error(true_kid,hom.error,het.error)
-    
-    info <- data.frame(momh1=h[1], dadh1=h[2], momh2=h[3], dadh2=h[4], momrec=idx[1], dadrec=idx[2])
-    simk <- data.frame(hap1=k1, hap2=k2, obs= obs_kid )
     return(list(info, simk))
 }
