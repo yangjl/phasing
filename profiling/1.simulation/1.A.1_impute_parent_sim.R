@@ -4,7 +4,7 @@
 options(echo=TRUE) # if you want see commands in output file
 args <- commandArgs(trailingOnly = TRUE)
 
-SIZE <- args[1]
+SIZE <- as.numeric(as.character(args[1]))
 JOB <- args[2]
 print(SIZE)
 print(JOB)
