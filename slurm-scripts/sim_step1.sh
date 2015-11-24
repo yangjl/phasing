@@ -1,9 +1,9 @@
 #!/bin/bash -l
-#SBATCH -D /home/jolyang/Documents/Github/phasing_tests
-#SBATCH -J phase_test
-#SBATCH -o /home/jolyang/Documents/Github/phasing_tests/slurm/phase_out-%j.txt
-#SBATCH -e /home/jolyang/Documents/Github/phasing_tests/slurm/phase_error-%j.txt
-#SBATCH --array=1-150
+#SBATCH -D /home/jolyang/Documents/Github/phasing
+#SBATCH -J sim1
+#SBATCH -o /home/jolyang/Documents/Github/phasing/slurm-log/log-%j.txt
+#SBATCH -e /home/jolyang/Documents/Github/phasing/slurm-log/err-%j.txt
+#SBATCH --array=1-10
 
 #only argument is mean (of poisson) of number of crossovers
 sizearray=$1
