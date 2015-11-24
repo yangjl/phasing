@@ -6,6 +6,8 @@ args <- commandArgs(trailingOnly = TRUE)
 
 SIZE <- args[1]
 JOB <- args[2]
+print(SIZE)
+print(JOB)
 
 library(imputeR)
 GBS.array <- sim.array(size.array=SIZE, numloci=1000, hom.error = 0.02, het.error = 0.8,
