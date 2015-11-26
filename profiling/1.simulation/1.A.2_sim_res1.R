@@ -23,6 +23,7 @@ collect_sim <- function(){
 
 res <- collect_sim()
 write.table(res, "cache/sim_res_1000loci.csv", sep=",", row.names=FALSE, quote=FALSE)
+write.table(res, "cache/sim_res_10000loci.csv", sep=",", row.names=FALSE, quote=FALSE)
 
 
 ### plot
