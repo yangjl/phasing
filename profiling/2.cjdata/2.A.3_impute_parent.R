@@ -11,10 +11,18 @@ ob2 <- create_array(Geno4imputeR, ped, outdir="largedata/",
                     maf_cutoff=0.002, lmiss_cutoff=0.8, imiss_cutoff=0.8, size_cutoff=40)
 
 
+
+
 files <- list.files(path="largedata", pattern="RData", full.names=TRUE)
 
 o <- load(files[1])
-impute_parent(GBS.array=obj, hom.error = 0.02, het.error = 0.8, imiss = 0.5, p = NULL)
+tem <- impute_parent(GBS.array=obj, hom.error = 0.02, het.error = 0.8, imiss = 0.5)
+res <- parentgeno(tem, oddratio=0.69, returnall=TRUE)
+
+
+############
+probs <- error_mx(hom.error=0.02, het.error=0.8, imiss=0.5)
+
 
 
 
