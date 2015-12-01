@@ -11,10 +11,14 @@ print(JOBID)
 library(imputeR)
 
 files <- list.files(path="largedata/obs", pattern="RData", full.names=TRUE)
-o <- load(files[JOBID])
+f2 <- list.files(path="largedata/obs", pattern="csv", full.names=TRUE)
+f3 <- gsub("csv", "RData", f2)
+
+leftf <- files[!files %in% f3]
+o <- load(leftf[JOBID])
 
 tem <- impute_parent(GBS.array=obj, hom.error = 0.02, het.error = 0.8, imiss = 0.5)
 res <- parentgeno(tem, oddratio=0.69, returnall=TRUE)
 
-outfile <- gsub("RData", "csv", files[JOBID])
+outfile <- gsub("RData", "csv", leftf[JOBID])
 write.table(res, outfile, sep=",", row.names=FALSE, quote=FALSE)
