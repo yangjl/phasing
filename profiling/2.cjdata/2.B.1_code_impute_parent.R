@@ -1,5 +1,5 @@
 ### Jinliang Yang
-### use impute_parent in CJ data
+### run impute_parent using CJ's data
 
 ##get command line args
 options(echo=TRUE) # if you want see commands in output file

@@ -2,7 +2,7 @@
 title: "Imputation and Phasing Notes"
 author: "Jinliang Yang"
 date: "July 22, 2015"
-output: html_document
+output: pdf_document
 ---
 
 # Infer mom's genotype from Jeff
