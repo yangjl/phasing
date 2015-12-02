@@ -10,7 +10,7 @@ set_arrayjob(shid="largedata/scripts/step4_sim_pp.sh",
              arrayjobs="1-100",
              wd=NULL, jobid="imputeR-pp", email="yangjl0930@gmail.com")
 
-###>>> In this path: cd /home/jolyang/Documents/Github/phasing
+##>>> In this path: cd /home/jolyang/Documents/Github/phasing
 ###>>> [ note: --ntasks=INT, number of cup ]
 ###>>> [ note: --mem=16000, 16G memory ]
-###>>> RUN: sbatch -p serial slurm-scripts/step3_aj_ip.sh
+###>>> RUN: sbatch -p serial --mem 8000 largedata/scripts/step4_sim_pp.sh

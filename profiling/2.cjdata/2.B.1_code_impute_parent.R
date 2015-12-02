@@ -18,3 +18,6 @@ res <- parentgeno(tem, oddratio=0.69, returnall=TRUE)
 
 outfile <- gsub("RData", "csv", files[JOBID])
 write.table(res, outfile, sep=",", row.names=FALSE, quote=FALSE)
+
+
+
