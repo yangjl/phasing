@@ -45,6 +45,10 @@ counts[is.na(counts)] <- 0
 counts$tot <- counts$nselfer + counts$nox
 counts <- counts[order(counts$tot, decreasing=T), ]
 counts <- as.matrix(t(counts[,1:2]))
+
 barplot(counts, main="Family Size Distribution", xlab="families", col=c("darkblue","red"), 
         legend = c("selfing", "outcrossing"))
-abline(h=40)
+abline(h=10, lwd=4, lty=4, col="red")
+
+sum(subset(pinfo, tot<10)$tot)
+
