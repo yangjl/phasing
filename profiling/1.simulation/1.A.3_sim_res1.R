@@ -3,8 +3,8 @@
 # collect simulation results
 
 
-collect_sim <- function(){
-    files <- list.files(path="largedata/sim1/", pattern ="csv$", full.names=TRUE)
+collect_sim <- function(ptn="csv$"){
+    files <- list.files(path="largedata/sim1/", pattern =ptn, full.names=TRUE)
     out <- data.frame()
     for(i in 1:length(files)){
         res <- read.csv(files[i])
@@ -21,12 +21,25 @@ collect_sim <- function(){
     return(out)
 }
 
-res <- collect_sim()
-write.table(res, "cache/sim_res_1000loci.csv", sep=",", row.names=FALSE, quote=FALSE)
-write.table(res, "cache/sim_res_10000loci.csv", sep=",", row.names=FALSE, quote=FALSE)
+### rate 50% self and 50% outcrossed
+res5 <- collect_sim(ptn="srate0.5.csv$")
+write.table(res5, "cache/simip_10000loci_rate5.csv", sep=",", row.names=FALSE, quote=FALSE)
+
+### rate 0% self and 100% outcrossed
+res0 <- collect_sim(ptn="srate0.csv$")
+write.table(res0, "cache/simip_10000loci_rate0.csv", sep=",", row.names=FALSE, quote=FALSE)
+
+### rate 100% self and 0% outcrossed
+res1 <- collect_sim(ptn="srate1.csv$")
+write.table(res1, "cache/simip_10000loci_rate1.csv", sep=",", row.names=FALSE, quote=FALSE)
 
 
-### plot
+### plot ###############################################
+res5 <- read.csv("cache/simip_10000loci_rate5.csv")
+res0 <- read.csv("cache/simip_10000loci_rate0.csv")
+res1 <- read.csv("cache/simip_10000loci_rate1.csv")
+
+
 pdf("graphs/sim1_res.pdf", width=5, height=5)
 res <- read.csv("cache/sim_res_1000loci.csv")
 res <- res[order(res$size), ]
