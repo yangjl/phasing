@@ -10,9 +10,9 @@ SIZE <- as.numeric(as.character(args[1]))
 library(imputeR)
 
 # to make the random events repeatable
-set.seed(123457)
+set.seed(1234579)
 # simulate a GBS.array object
-GBS.array <- sim.array(size.array=SIZE, numloci=1000, hom.error = 0.02, het.error = 0.8,
+GBS.array <- sim.array(size.array=SIZE, numloci=10000, hom.error = 0.02, het.error = 0.8,
                        rec = 0.25, selfing = 0, imiss = 0.5, misscode = 3)
 # get perfect parent genotype
 GBS.array <- get_true_GBS(GBS.array)
@@ -24,7 +24,7 @@ phase <- phase_parent(GBS.array, win_length=10, join_length=10, self_cutoff = 10
 # compute error rate
 out <- phase_error_rate(GBS.array, phase)
 
-outfile <- paste0("largedata/sim2/size", SIZE, "_10kloci.csv")
+outfile <- paste0("largedata/sim2/size", SIZE, "_10kloci_oc.csv")
 write.table(out, outfile, sep=",", row.names=FALSE, quote=FALSE)
 
 

@@ -8,7 +8,7 @@ collect_sim2 <- function(path="largedata/sim2/", pattern="csv$"){
     outfile <- data.frame()
     for(i in 1:length(files)){
         res <- read.csv(files[i])
-        
+        res <- res[order(res$idx),]
         #error rates
         totru <- 0
         chunks <- unique(res$chunk)
