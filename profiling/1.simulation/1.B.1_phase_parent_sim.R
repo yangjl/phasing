@@ -13,13 +13,13 @@ library(imputeR)
 set.seed(123457)
 # simulate a GBS.array object
 GBS.array <- sim.array(size.array=SIZE, numloci=10000, hom.error = 0.02, het.error = 0.8,
-                       rec = 0.25, selfing = 0.5, imiss = 0.5, misscode = 3)
+                       rec = 0.25, selfing = 1, imiss = 0.5, misscode = 3)
 # get perfect parent genotype
 GBS.array <- get_true_GBS(GBS.array)
 # get probability matrices
-probs <- error_mx(hom.error=0.02, het.error=0.8, imiss=0.5)
+probs <- error_mx2(hom.error=0.02, het.error=0.8)
 # phasing   
-phase <- phase_parent(GBS.array, win_length=10, join_length=10, verbose=FALSE)
+phase <- phase_parent(GBS.array, win_length=10, join_length=10, self_cutoff = 100, verbose=TRUE)
 
 # compute error rate
 out <- phase_error_rate(GBS.array, phase)
