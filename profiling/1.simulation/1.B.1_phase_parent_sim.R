@@ -24,7 +24,7 @@ phase <- phase_parent(GBS.array, win_length=10, join_length=10, self_cutoff = 10
 # compute error rate
 out <- phase_error_rate(GBS.array, phase)
 
-outfile <- paste0("largedata/sim2/size", SIZE, "_10kloci_oc.csv")
+outfile <- paste0("largedata/sim2/size", SIZE, "_oc_10kloci.csv")
 write.table(out, outfile, sep=",", row.names=FALSE, quote=FALSE)
 
 

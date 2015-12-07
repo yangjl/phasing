@@ -5,7 +5,7 @@
 source("~/Documents/Github/zmSNPtools/Rcodes/set_arrayjob.R")
 
 # run array job of impute_parents
-set_arrayjob(shid="largedata/scripts/step4_sim_pp.sh",
+set_arrayjob(shid="largedata/scripts/step4_sim_pp_oc.sh",
              shcode='R --no-save "--args ${SLURM_ARRAY_TASK_ID}" < profiling/1.simulation/1.B.1_phase_parent_sim.R',
              arrayjobs="1-10",
              wd=NULL, jobid="pp-oc", email="yangjl0930@gmail.com")

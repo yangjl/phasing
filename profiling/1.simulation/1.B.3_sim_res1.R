@@ -24,20 +24,20 @@ collect_sim2 <- function(path="largedata/sim2/", pattern="csv$"){
         tem$rate <- tem$err/tem$het
         outfile <- rbind(outfile, tem)
     }
-    
+    outfile <- outfile[order(outfile$file),]
     return(outfile)
 }
 
 ### rate 50% self and 50% outcrossed
-res5 <- collect_sim(ptn="srate0.5.csv$")
+res5 <- collect_sim2(path="largedata/sim2/", pattern="csv$")
 write.table(res5, "cache/simip_10000loci_rate5.csv", sep=",", row.names=FALSE, quote=FALSE)
 
 ### rate 0% self and 100% outcrossed
-res0 <- collect_sim(ptn="srate0.csv$")
+res0 <- collect_sim2(path="largedata/sim2/", pattern="csv$")
 write.table(res0, "cache/simip_10000loci_rate0.csv", sep=",", row.names=FALSE, quote=FALSE)
 
 ### rate 100% self and 0% outcrossed
-res1 <- collect_sim(ptn="srate1.csv$")
+res1 <- collect_sim2(path="largedata/sim2/", pattern="csv$")
 write.table(res1, "cache/simip_10000loci_rate1.csv", sep=",", row.names=FALSE, quote=FALSE)
 
 
