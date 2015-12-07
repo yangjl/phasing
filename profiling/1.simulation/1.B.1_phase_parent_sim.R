@@ -12,8 +12,8 @@ library(imputeR)
 # to make the random events repeatable
 set.seed(123457)
 # simulate a GBS.array object
-GBS.array <- sim.array(size.array=SIZE, numloci=10000, hom.error = 0.02, het.error = 0.8,
-                       rec = 0.25, selfing = 1, imiss = 0.5, misscode = 3)
+GBS.array <- sim.array(size.array=SIZE, numloci=1000, hom.error = 0.02, het.error = 0.8,
+                       rec = 0.25, selfing = 0, imiss = 0.5, misscode = 3)
 # get perfect parent genotype
 GBS.array <- get_true_GBS(GBS.array)
 # get probability matrices
