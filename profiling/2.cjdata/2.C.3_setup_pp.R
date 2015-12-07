@@ -6,8 +6,8 @@ source("~/Documents/Github/zmSNPtools/Rcodes/set_arrayjob.R")
 
 # run array job of impute_parents
 set_arrayjob(shid="largedata/scripts/step4_pp.sh",
-             shcode='R --no-save "--args ${SLURM_ARRAY_TASK_ID} 10" < profiling/2.cjdata/2.C.1_run_phase_parent.R',
-             arrayjobs="1-50",
+             shcode='R --no-save "--args ${SLURM_ARRAY_TASK_ID}" < profiling/2.cjdata/2.C.2_run_phase_parent.R',
+             arrayjobs="1-270",
              wd=NULL, jobid="imputeR-pp", email="yangjl0930@gmail.com")
 
 ###>>> In this path: cd /home/jolyang/Documents/Github/phasing
