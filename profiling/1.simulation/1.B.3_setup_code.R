@@ -19,10 +19,24 @@ set_arrayjob(shid="largedata/scripts/step4_sim_pp.sh",
 source("~/Documents/Github/zmSNPtools/Rcodes/set_arrayjob.R")
 
 # run array job of impute_parents
-set_arrayjob(shid="largedata/scripts/step4_sim_pp_oc.sh",
+set_arrayjob(shid="largedata/scripts/step5_sim_pp_oc.sh",
              shcode='R --no-save "--args ${SLURM_ARRAY_TASK_ID}" < profiling/1.simulation/1.B.2_phase_parent_sim2.R',
              arrayjobs="11-100",
              wd=NULL, jobid="pp-oc", email="yangjl0930@gmail.com")
+
+##>>> In this path: cd /home/jolyang/Documents/Github/phasing
+###>>> [ note: --ntasks=INT, number of cup ]
+###>>> [ note: --mem=16000, 16G memory ]
+###>>> RUN: sbatch -p bigmeml largedata/scripts/step4_sim_pp_oc.sh
+
+#$SLURM_ARRAY_TASK_ID $SLURM_JOB_ID
+source("~/Documents/Github/zmSNPtools/Rcodes/set_arrayjob.R")
+
+# run array job of impute_parents
+set_arrayjob(shid="largedata/scripts/step6_pp_ocp.sh",
+             shcode='R --no-save "--args ${SLURM_ARRAY_TASK_ID}" < profiling/1.simulation/1.B.2_phase_parent_sim2.R',
+             arrayjobs="1-100",
+             wd=NULL, jobid="pp-ocp", email="yangjl0930@gmail.com")
 
 ##>>> In this path: cd /home/jolyang/Documents/Github/phasing
 ###>>> [ note: --ntasks=INT, number of cup ]
