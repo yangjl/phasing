@@ -1,0 +1,11 @@
+file,het,err,chunk,rate
+largedata/sim2//size10_oc_10kloci.csv,1926,707,17,0.367082035306334
+largedata/sim2//size1_oc_10kloci.csv,1926,1915,2,0.994288681204569
+largedata/sim2//size2_oc_10kloci.csv,1926,1700,7,0.882658359293873
+largedata/sim2//size3_oc_10kloci.csv,1926,1357,20,0.704569055036345
+largedata/sim2//size4_oc_10kloci.csv,1926,1091,33,0.566458982346833
+largedata/sim2//size5_oc_10kloci.csv,1926,979,28,0.508307372793354
+largedata/sim2//size6_oc_10kloci.csv,1926,798,25,0.414330218068536
+largedata/sim2//size7_oc_10kloci.csv,1926,780,29,0.404984423676012
+largedata/sim2//size8_oc_10kloci.csv,1926,780,12,0.404984423676012
+largedata/sim2//size9_oc_10kloci.csv,1926,712,24,0.369678089304258
