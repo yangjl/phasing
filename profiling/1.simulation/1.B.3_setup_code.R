@@ -31,8 +31,7 @@ set_arrayjob(shid="largedata/scripts/step5_sim_pp_oc.sh",
 
 #$SLURM_ARRAY_TASK_ID $SLURM_JOB_ID
 source("~/Documents/Github/zmSNPtools/Rcodes/set_arrayjob.R")
-
-# run array job of impute_parents
+# run array job of impute_parents: imputed with only phased outcrossed parents
 set_arrayjob(shid="largedata/scripts/step6_pp_ocp.sh",
              shcode='R --no-save "--args ${SLURM_ARRAY_TASK_ID}" < profiling/1.simulation/1.B.2_phase_parent_sim2.R',
              arrayjobs="1-100",
