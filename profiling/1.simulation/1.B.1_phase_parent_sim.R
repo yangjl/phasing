@@ -12,7 +12,7 @@ library(imputeR)
 # to make the random events repeatable
 set.seed(1234579)
 # simulate a GBS.array object
-GBS.array <- sim.array(size.array=SIZE, numloci=100, hom.error = 0.02, het.error = 0.8,
+GBS.array <- sim.array(size.array=SIZE, numloci=10000, hom.error = 0.02, het.error = 0.8,
                        rec = 0.25, selfing = 0.5, imiss = 0.5, misscode = 3)
 # get perfect parent genotype
 GBS.array <- get_true_GBS(GBS.array, phased.parents = TRUE)
