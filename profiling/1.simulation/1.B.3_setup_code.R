@@ -50,7 +50,7 @@ set_arrayjob(shid="largedata/scripts/step7_pp_oc_self.sh",
              arrayjobs="11-100",
              wd=NULL, jobid="pp-oc_self", email="yangjl0930@gmail.com")
 
-##>>> In this path: cd /home/jolyang/Documents/Github/phasing
+###>>> In this path: cd /home/jolyang/Documents/Github/phasing
 ###>>> [ note: --ntasks=INT, number of cup ]
 ###>>> [ note: --mem=16000, 16G memory ]
-###>>> RUN: sbatch -p bigmeml largedata/scripts/step4_sim_pp_oc.sh
+###>>> RUN: sbatch -p bigmemm largedata/scripts/step7_pp_oc_self.sh

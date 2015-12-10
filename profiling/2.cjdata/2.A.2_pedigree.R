@@ -4,6 +4,12 @@
 load(file="~/Documents/Github/imputeR/largedata/teo.RData")
 
 
+### checking parentage
+p1 <- read.table("data/parentage_info.txt", header=TRUE)
+p2 <- read.csv("data/Teosinte_2013_2014_Pedigree.csv")
+t <- merge(p1, p2, by.x="proid", by.y="Taxa")
+
+
 pedinfo <- function(pedfile="data/parentage_info.txt", outfile="data/parentage_sum.txt"){
     ped <- read.table(pedfile, header =TRUE)
 

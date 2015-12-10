@@ -9,3 +9,12 @@ ped <- read.table("data/parentage_info.txt", header =TRUE)
 
 ob2 <- create_array(Geno4imputeR, ped, outdir="largedata/obs/",
                     maf_cutoff=0.002, lmiss_cutoff=0.8, imiss_cutoff=0.8, size_cutoff=0)
+
+###>>> Input [ 598043 ] biallelic loci for [ 4875 ] plants
+###>>> Filtering loci with MAF < [ 0.002 ], Locus Missing Rate > [ 0.8 ] and Individual Missing Rate > [ 0.8 ]
+###>>> Remaining [ 340600 ] loci and [ 4842 ] plants
+###>>> Detected [ 67 ] parents with [ 4772/9544 ] kids/haps
+###>>> Set minimum family size as [ 0 ], [ 67 ] parents will be imputed.
+###>>> Calculating pop allele frq with selfed progeny ... done.
+###>>> Preparing GBS.array objects, it will take a while.
+###>>> Preparing for the [ 1th ] focal parent: total kids [ 320 ],
