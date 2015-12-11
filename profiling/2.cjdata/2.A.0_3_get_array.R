@@ -6,7 +6,6 @@ library(data.table, lib="~/bin/Rlib/")
 
 ped <- read.table("data/parentage_info.txt", header =TRUE)
 geno <- fread("largedata/lcache/teo_recoded.txt")
-geno <- as.data.frame(geno)
 
 snpinfo <- create_array(geno, ped, outdir="largedata/obs/")
 write.table(snpinfo, "largedata/lcache/snpinfo.csv", sep=",", row.names=FALSE, quote=FALSE)

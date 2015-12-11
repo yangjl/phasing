@@ -10,5 +10,4 @@ setUpslurm(slurmsh="largedata/scripts/step1_getarray.sh",
 ###>>> In this path: cd /home/jolyang/Documents/Github/phasing
 ###>>> [ note: --ntasks=INT, number of cup ]
 ###>>> [ note: --mem=16000, 16G memory ]
-###>>> RUN: sbatch -p serial --mem 8000 largedata/scripts/step2_aj_ip.sh
-###>>> RUN: sbatch -p bigmemh largedata/scripts/step2_aj_ip.sh
+###>>> RUN: sbatch -p bigmemh --mem 80000 --ntasks=10 largedata/scripts/step1_getarray.sh
