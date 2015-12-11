@@ -44,6 +44,7 @@ pedinfo(pedfile="data/parentage_info.txt", outfile="data/parentage_sum.txt")
 
 
 # plot #############
+pdf("graphs/parentage.pdf", width=6, height=4)
 pinfo <- read.table("data/parentage_sum.txt", header=TRUE)
 par(mfrow=c(1,1))
 counts <- pinfo[, c("nselfer", "nox")]
@@ -53,8 +54,10 @@ counts <- counts[order(counts$tot, decreasing=T), ]
 counts <- as.matrix(t(counts[,1:2]))
 
 barplot(counts, main="Family Size Distribution", xlab="families", col=c("darkblue","red"), 
-        legend = c("selfing", "outcrossing"))
-abline(h=10, lwd=4, lty=4, col="red")
+        legend = c("selfed", "outcrossed"))
+abline(h=20, lwd=4, lty=4, col="red")
+dev.off()
 
-sum(subset(pinfo, tot<10)$tot)
 
+sum(subset(pinfo, tot<20)$tot)
+nrow(subset(pinfo, tot<20))

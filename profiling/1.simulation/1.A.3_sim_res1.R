@@ -36,10 +36,32 @@ write.table(res1, "cache/simip_10000loci_rate1.csv", sep=",", row.names=FALSE, q
 
 ### plot ###############################################
 res5 <- read.csv("cache/simip_10000loci_rate5.csv")
+lo5 <- loess(res5$err1~res5$size)
 res0 <- read.csv("cache/simip_10000loci_rate0.csv")
+lo0 <- loess(res0$err1~res0$size)
 res1 <- read.csv("cache/simip_10000loci_rate1.csv")
+lo1 <- loess(res1$err1~res1$size)
+
+pdf("graphs/sim_ip.pdf", width=5, height=5)
+par(mfrow=c(1,1))
+plot(x=0, y=0, type="n",  main="Parental Imputing",
+     xlab="family size", ylab="Imputing Error Rate", xlim=c(7,100), ylim=c(0,1))
+lines(predict(lo1), col="red", lwd=3, lty=1)
+lines(predict(lo5), col="blue", lwd=3, lty=2)
+lines(predict(lo0), col="green", lwd=3, lty=4)
+abline(h=0.05, lty=2, lwd=2)
+#abline(v=10, lwd=2)
+abline(v=20, lwd=2)
+legend("topright", col=c("red", "blue", "green"), lty=c(1,2,4), lwd=3,
+       legend=c("self kids", "50% self + 50% oc", "outcross kids"))
+dev.off()
 
 
+
+
+
+
+#############
 pdf("graphs/sim1_impute_parent.pdf", width=15, height=5)
 par(mfrow=c(1,3))
 res5 <- res5[order(res5$size), ]

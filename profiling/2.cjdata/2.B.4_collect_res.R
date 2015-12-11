@@ -22,27 +22,23 @@ snpdf <- function(chri=1, verbose=TRUE, outfile="largedata/ip/chr1_ip50.csv"){
 }    
  
 ### 
-for(i in 1:10){
+for(i in 5:10){
     test <- snpdf(chri=i, verbose=TRUE, outfile= paste0("largedata/ip/chr", i, "_ip50.csv"))
 }
 
-############ checking the 2=0 issue:
-chr <- read.csv("largedata/obs/p10_PC_L56_ID1_1:250276233_chr4.csv")
-o <- load("largedata/obs/p10_PC_L56_ID1_1:250276233_chr4.RData")
-
-obj@pedigree <- subset(obj@pedigree, p1==p2)
-ped <- obj@pedigree
-obj@gbs_kids <- obj@gbs_kids[ped$kid]
-
-tem <- impute_parent(GBS.array=obj, hom.error = 0.02, het.error = 0.8)
-res <- parentgeno(tem, oddratio=0.69, returnall=TRUE)
-
-
-parent <- obj@gbs_parents[[1]]
-res <- data.frame(parent=parent, kid=obj@gbs_kids[[1]])
-for(i in 2:length(obj@gbs_kids)){
-    tem <- data.frame(parent=parent, kid=obj@gbs_kids[[i]])
-    res <- cbind(res, tem[,2])
+################## cat them into one file:
+imp <- data.frame()
+for(i in 1:10){
+    tem <- read.csv(paste0("largedata/ip/chr", i, "_ip50.csv"))
+    imp <- rbind(imp, tem)
 }
 
+snpinfo <- read.csv("largedata/ip/snpinfo.csv")
+row.names(imp) <- snpinfo$snpid
+nms <- names(imp)
+nms <- gsub("\\.", ":", nms)
+names(imp) <- gsub(".*_PC", "PC", nms)
+imp$snpid <- row.names(imp)
 
+imp <- imp[, c(69, 1:68)]
+write.table(imp, "largedata/ip/imputed_parents.csv", sep=",", row.names=FALSE, quote=FALSE)
