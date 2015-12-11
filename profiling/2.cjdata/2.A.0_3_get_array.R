@@ -2,18 +2,14 @@
 ### use impute_parent in CJ data
 
 library(imputeR)
-
-load(file="~/Documents/Github/imputeR/largedata/teo.RData")
-Geno4imputeR <- ob1
-
-
 library(data.table, lib="~/bin/Rlib/")
 
 ped <- read.table("data/parentage_info.txt", header =TRUE)
 geno <- fread("largedata/lcache/teo_recoded.txt")
 geno <- as.data.frame(geno)
 
-ob2 <- create_array(geno, ped, outdir="largedata/obs/")
+snpinfo <- create_array(geno, ped, outdir="largedata/obs/")
+write.table(snpinfo, "largedata/lcache/snpinfo.csv", sep=",", row.names=FALSE, quote=FALSE)
 
 ###>>> Input [ 598043 ] biallelic loci for [ 4875 ] plants
 ###>>> Filtering loci with MAF < [ 0.002 ], Locus Missing Rate > [ 0.8 ] and Individual Missing Rate > [ 0.8 ]
