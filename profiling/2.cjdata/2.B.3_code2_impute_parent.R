@@ -21,4 +21,4 @@ tem <- impute_parent(GBS.array=obj, hom.error = 0.02, het.error = 0.8)
 res <- parentgeno(tem, oddratio=0.69, returnall=TRUE)
 
 outfile <- gsub("RData", "csv", leftf[JOBID])
-write.table(res, outfile, sep=",", row.names=FALSE, quote=FALSE)
+write.table(res, outfile, sep=",", row.names=TRUE, quote=FALSE)
