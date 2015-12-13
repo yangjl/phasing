@@ -11,7 +11,7 @@ snpdf <- function(chri=1, verbose=TRUE, outfile="largedata/ip/chr1_ip50.csv"){
     for(j in 2:length(files)){
         tem <- read.csv(files[j])
         #if(verbose) print(table(tem[,5]))
-        out <- cbind(out, tem[, 5])
+        out <- cbind(out, tem[, 6])
         names(out)[ncol(out)] <- gsub(".*/|_chr.*", "", files[j])
     }
     out <- out[, -1:-4]
@@ -41,4 +41,4 @@ names(imp) <- gsub(".*_PC", "PC", nms)
 imp$snpid <- row.names(imp)
 
 imp <- imp[, c(69, 1:68)]
-write.table(imp, "largedata/ip/imputed_parents.csv", sep=",", row.names=FALSE, quote=FALSE)
+write.table(imp, "largedata/ip/imputed_parents_or.csv", sep=",", row.names=FALSE, quote=FALSE)

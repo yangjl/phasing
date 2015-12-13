@@ -25,7 +25,8 @@ GBS.array <- update_gbs_parents(GBS.array=obj, ipdat)
 # get probability matrices
 probs <- error_mx2(hom.error=0.02, het.error=0.8)
 # phasing   
-phase <- phase_parent(GBS.array, win_length=10, join_length=10, self_cutoff = 40, verbose=TRUE)
+phase <- phase_parent(GBS.array, win_length=10, join_length=10, 
+                      self_cutoff = 40, verbose=TRUE)
 
 # compute error rate
 outfile <- gsub("/obs/", "/pp/", myfile)

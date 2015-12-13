@@ -22,5 +22,5 @@ update_tb <- function(self_cutoff=0){
     return(subset(out, nselfer > self_cutoff))
 }
 
-res <- update_tb(self_cutoff=40)
+res <- update_tb(self_cutoff=40) #240
 write.table(res, "largedata/pp/parent_40kids.csv", sep=",", row.names=FALSE, quote=FALSE)

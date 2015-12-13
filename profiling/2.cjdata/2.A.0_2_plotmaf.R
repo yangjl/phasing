@@ -35,3 +35,4 @@ write.table(flt[, c(1:4,12:16)], "largedata/lcache/teo_flt_maf01m8.txt", quote=F
 
 
 
+
