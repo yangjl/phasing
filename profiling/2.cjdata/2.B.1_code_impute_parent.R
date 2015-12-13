@@ -13,7 +13,7 @@ library(imputeR)
 files <- list.files(path="largedata/obs", pattern="RData", full.names=TRUE)
 o <- load(files[JOBID])
 
-tem <- impute_parent(GBS.array=obj, hom.error = 0.02, het.error = 0.8)
+tem <- impute_parent(GBS.array=obj, major.error=0.004, het.error=0.3, minor.error=0.02)
 res <- parentgeno(tem, oddratio=0.69, returnall=TRUE)
 
 outfile <- gsub("RData", "csv", files[JOBID])
