@@ -17,7 +17,7 @@ f3 <- gsub("csv", "RData", f2)
 leftf <- files[!files %in% f3]
 o <- load(leftf[JOBID])
 
-tem <- impute_parent(GBS.array=obj, hom.error = 0.02, het.error = 0.8)
+tem <- impute_parent(GBS.array=obj, major.error=0.03, het.error=0.8, minor.error=0.2)
 res <- parentgeno(tem, oddratio=0.69, returnall=TRUE)
 
 outfile <- gsub("RData", "csv", leftf[JOBID])
