@@ -17,15 +17,15 @@ snpgdsCreateGeno("largedata/lcache/imp_parents.gds", genmat=mx,
 
 genofile <- snpgdsOpen("largedata/lcache/imp_parents.gds")
 
-ibd <- snpgdsIBDMoM(genofile, sample.id=sid, maf=0.05, missing.rate=0.05, num.thread=2)
+ibd <- snpgdsIBDMoM(genofile, sample.id=sid, maf=0.1, missing.rate=0.05, num.thread=2)
 ibd.coeff <- snpgdsIBDSelection(ibd)
 
 #snp.id <- sample(snpset.id, 1500)  # random 1500 SNPs
-ibs <- snpgdsIBS(genofile, num.thread=4)
+ibs <- snpgdsIBS(genofile, MAF =0.1, missing.rate=0.05, num.thread=4)
 ibs.hc <- snpgdsHCluster(ibs)
 rv <- snpgdsCutTree(ibs.hc)
 
-pdf("graphs/por_cluster_ibs.pdf", height=5, width=15)
+pdf("graphs/por_cluster_ibs3.pdf", height=5, width=15)
 plot(rv$dendrogram, leaflab="perpendicular", main="Cluster based on IBS")
 dev.off()
 # close the file

@@ -22,7 +22,7 @@ snpdf <- function(chri=1, verbose=TRUE, outfile="largedata/ip/chr1_ip50.csv"){
 }    
  
 ### 
-for(i in 5:10){
+for(i in 1:10){
     test <- snpdf(chri=i, verbose=TRUE, outfile= paste0("largedata/ip/chr", i, "_ip50.csv"))
 }
 
