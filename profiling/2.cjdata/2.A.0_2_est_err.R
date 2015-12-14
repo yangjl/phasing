@@ -21,3 +21,6 @@ mean(out$k0)
 
 mean(out$k2)
 
+mygeno <- mendelian_check(geno, ped, self_cutoff=30, depth_cutoff=10)
+
+
