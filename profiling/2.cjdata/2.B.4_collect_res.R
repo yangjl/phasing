@@ -2,7 +2,7 @@
 ### updated Dec 1st, 2015
 
 snpdf <- function(chri=1, verbose=TRUE, outfile="largedata/ip/chr1_ip50.csv"){
-    files <- list.files(path="largedata/obs", pattern= paste0("chr", chri, ".csv"), full.names=TRUE)
+    files <- list.files(path="largedata/obs2", pattern= paste0("chr", chri, ".csv"), full.names=TRUE)
     if(verbose) message(sprintf("###>>> collect chr [ %s ] for [ %s ] parents ", chri, length(files)))
     
     out <- read.csv(files[1])[,1:5]
@@ -23,16 +23,16 @@ snpdf <- function(chri=1, verbose=TRUE, outfile="largedata/ip/chr1_ip50.csv"){
  
 ### 
 for(i in 1:10){
-    test <- snpdf(chri=i, verbose=TRUE, outfile= paste0("largedata/ip/chr", i, "_ip35.csv"))
+    test <- snpdf(chri=i, verbose=TRUE, outfile= paste0("largedata/ip/chr", i, "_ip68.csv"))
 }
 
 ################## cat them into one file:
 imp <- data.frame()
 for(i in 1:10){
-    tem <- read.csv(paste0("largedata/ip/chr", i, "_ip35.csv"))
+    tem <- read.csv(paste0("largedata/ip/chr", i, "_ip68.csv"))
     imp <- rbind(imp, tem)
 }
-write.table(imp, "largedata/ip/imputed_parents_id35.csv", sep=",", row.names=TRUE, quote=FALSE)
+write.table(imp, "largedata/ip/imputed_parents_id68.csv", sep=",", row.names=TRUE, quote=FALSE)
 
 
 snpinfo <- read.csv("largedata/ip/snpinfo.csv")

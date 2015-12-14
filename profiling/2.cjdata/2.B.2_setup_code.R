@@ -29,8 +29,8 @@ set_arrayjob(shid="largedata/scripts/ip2.sh",
 # run array job of impute_parents
 set_arrayjob(shid="largedata/scripts/ip3.sh",
              shcode='R --no-save "--args ${SLURM_ARRAY_TASK_ID}" < profiling/2.cjdata/2.B.3_code2_impute_parent.R',
-             arrayjobs="1-96",
-             wd=NULL, jobid="ip96", email="yangjl0930@gmail.com")
+             arrayjobs="1-112",
+             wd=NULL, jobid="ip112", email="yangjl0930@gmail.com")
 
 ###>>> In this path: cd /home/jolyang/Documents/Github/phasing
 ###>>> [ note: --ntasks=INT, number of cup ]

@@ -15,6 +15,7 @@ f2 <- list.files(path="largedata/obs2", pattern="csv", full.names=TRUE)
 f3 <- gsub("csv", "RData", f2)
 
 leftf <- files[!files %in% f3]
+length(leftf)
 o <- load(leftf[JOBID])
 
 tem <- impute_parent(GBS.array=obj, major.error=0.03, het.error=0.8, minor.error=0.2)
