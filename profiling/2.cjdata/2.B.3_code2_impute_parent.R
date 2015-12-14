@@ -10,8 +10,8 @@ print(JOBID)
 ###########
 library(imputeR)
 
-files <- list.files(path="largedata/obs", pattern="RData", full.names=TRUE)
-f2 <- list.files(path="largedata/obs", pattern="csv", full.names=TRUE)
+files <- list.files(path="largedata/obs2", pattern="RData", full.names=TRUE)
+f2 <- list.files(path="largedata/obs2", pattern="csv", full.names=TRUE)
 f3 <- gsub("csv", "RData", f2)
 
 leftf <- files[!files %in% f3]
