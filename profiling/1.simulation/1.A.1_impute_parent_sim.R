@@ -36,14 +36,14 @@ for(k in 1:10){
 write.table(tem3, "cache/simip_out3.csv", sep=",", row.names=FALSE, quote=FALSE)
 
 ### complete oc (unknow parents)
-set.seed(1234)
+set.seed(12345)
 tem4 <- data.frame()
-for(k in 1:10){
-    out4 <- sim_ip(numloci=1000, selfrate=0, truep=0, outfile="cache/simip_out4.csv")
+for(k in 1:5){
+    out4 <- sim_ip(numloci=1000, selfrate=0, truep=0, outfile="cache/simip_out4_2.csv")
     out4$rand <- k
     tem4 <- rbind(tem4, out4)
 }
-write.table(tem4, "cache/simip_out4.csv", sep=",", row.names=FALSE, quote=FALSE)
+write.table(tem4, "cache/simip_out4_2.csv", sep=",", row.names=FALSE, quote=FALSE)
 
 ### complete oc (know parents)
 set.seed(1234)
