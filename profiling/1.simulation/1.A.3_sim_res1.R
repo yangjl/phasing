@@ -7,35 +7,27 @@
 res1 <- read.csv("cache/simip_out1.csv")
 res2 <- read.csv("cache/simip_out2.csv")
 res3 <- read.csv("cache/simip_out3.csv")
-res41 <- read.csv("cache/simip_out4.csv")
-res42 <- read.csv("cache/simip_out4_2.csv")
-res4 <- rbind(res41, res42)
 
-res5 <- read.csv("cache/simip_out5.csv")
 
 ### plot ###############################################
 lo1 <- loess(res1$error/1000~res1$size)
 lo2 <- loess(res2$error/1000~res2$size)
 lo3 <- loess(res3$error/1000~res3$size)
-lo4 <- loess(res4$error/1000~res4$size)
-lo5 <- loess(res5$error/1000~res5$size)
+
 
 
 pdf("graphs/sim_ip.pdf", width=5, height=5)
 par(mfrow=c(1,1))
 plot(x=0, y=0, type="n",  main="Parental Imputing",
-     xlab="family size", ylab="Imputing Error Rate", xlim=c(1, 100), ylim=c(0,0.3))
+     xlab="family size", ylab="Imputing Error Rate", xlim=c(1, 90), ylim=c(0,0.3))
 lines(predict(lo1), col="red", lwd=3, lty=1)
 lines(predict(lo2), col="blue", lwd=3, lty=2)
 lines(predict(lo3), col="green", lwd=3, lty=3)
-lines(predict(lo4), col="black", lwd=3, lty=4)
-lines(predict(lo5), col="yellow", lwd=3, lty=5)
 abline(h=0.05, lty=2, lwd=2)
 #abline(v=10, lwd=2)
 abline(v=20, lwd=2)
-legend("topright", col=c("red", "blue", "green", "black", "yellow"), lty=c(1,2,3,4,5), lwd=3,
-       legend=c("all self", "half self + half oc (unknown)", "half self + half oc (known)",
-                "all oc (unknown)", "all oc (known"))
+legend("topright", col=c("red", "blue", "green"), lty=c(1,2,3), lwd=3,
+       legend=c("all self", "half self + half oc", "all oc"))
 dev.off()
 
 
