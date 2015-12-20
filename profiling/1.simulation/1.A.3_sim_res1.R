@@ -19,14 +19,14 @@ lo3 <- loess(res3$error/1000~res3$size)
 pdf("graphs/sim_ip.pdf", width=5, height=5)
 par(mfrow=c(1,1))
 plot(x=0, y=0, type="n",  main="Parental Imputing",
-     xlab="family size", ylab="Imputing Error Rate", xlim=c(1, 90), ylim=c(0,0.3))
+     xlab="family size", ylab="Imputing Error Rate", xlim=c(1, 95), ylim=c(0,0.3))
 lines(predict(lo1), col="red", lwd=3, lty=1)
 lines(predict(lo2), col="blue", lwd=3, lty=2)
-lines(predict(lo3), col="green", lwd=3, lty=3)
-abline(h=0.05, lty=2, lwd=2)
+lines(predict(lo3), col="darkgreen", lwd=3, lty=3)
+abline(h=0.1, lwd=2, col="grey")
 #abline(v=10, lwd=2)
-abline(v=20, lwd=2)
-legend("topright", col=c("red", "blue", "green"), lty=c(1,2,3), lwd=3,
+abline(v=20, lwd=2, col="grey")
+legend("topright", col=c("red", "blue", "darkgreen"), lty=c(1,2,3), lwd=3,
        legend=c("all self", "half self + half oc", "all oc"))
 dev.off()
 
