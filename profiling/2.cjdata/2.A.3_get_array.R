@@ -23,3 +23,7 @@ ob2 <- create_array(geno, ped, outdir="largedata/obs/")
 ###>>> Calculating pop allele frq with selfed progeny ... done.
 ###>>> Preparing GBS.array objects, it will take a while.
 ###>>> Preparing for the [ 1th ] focal parent: total kids [ 320 ],
+
+ped <- read.table("data/parentage_info.txt", header =TRUE)
+pinfo <- pedinfo(ped)
+write.table(pinfo, "cache/pinfo.csv", sep=",", row.names=FALSE, quote=FALSE)

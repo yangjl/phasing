@@ -10,7 +10,7 @@ print(JOBID)
 ###########
 library(imputeR)
 
-files <- list.files(path="largedata/obs2", pattern="RData", full.names=TRUE)
+files <- list.files(path="largedata/obs", pattern="RData", full.names=TRUE)
 o <- load(files[JOBID])
 perr <- read.csv("cache/teo_parents_errmx.csv")
 kerr <- read.csv("cache/teo_kids_errmx.csv")
