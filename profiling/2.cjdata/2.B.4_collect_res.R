@@ -1,8 +1,8 @@
 ### Jinliang Yang
 ### updated Dec 1st, 2015
 
-snpdf <- function(chri=1, verbose=TRUE, outfile="largedata/ip/chr1_ip50.csv"){
-    files <- list.files(path="largedata/obs2", pattern= paste0("chr", chri, ".csv"), full.names=TRUE)
+col_snpdf <- function(chri=1, verbose=TRUE, outfile="largedata/ip/chr1_ip50.csv"){
+    files <- list.files(path=filepath, pattern= paste0("chr", chri, ".csv"), full.names=TRUE)
     if(verbose) message(sprintf("###>>> collect chr [ %s ] for [ %s ] parents ", chri, length(files)))
     
     out <- read.csv(files[1])[,1:5]
@@ -11,7 +11,7 @@ snpdf <- function(chri=1, verbose=TRUE, outfile="largedata/ip/chr1_ip50.csv"){
     for(j in 2:length(files)){
         tem <- read.csv(files[j])
         #if(verbose) print(table(tem[,5]))
-        out <- cbind(out, tem[, 6])
+        out <- cbind(out, tem[, 5])
         names(out)[ncol(out)] <- gsub(".*/|_chr.*", "", files[j])
     }
     out <- out[, -1:-4]
@@ -23,7 +23,7 @@ snpdf <- function(chri=1, verbose=TRUE, outfile="largedata/ip/chr1_ip50.csv"){
  
 ### 
 for(i in 1:10){
-    test <- snpdf(chri=i, verbose=TRUE, outfile= paste0("largedata/ip/chr", i, "_ip68.csv"))
+    test <- col_snpdf(chri=i, verbose=TRUE, filepath="largedata/obs2", outfile= paste0("largedata/ip/chr", i, "_ip24.csv"))
 }
 
 ################## cat them into one file:
