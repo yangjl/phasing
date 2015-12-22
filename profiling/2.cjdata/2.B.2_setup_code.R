@@ -1,9 +1,13 @@
 ### Jinliang Yang
 ### use impute_parent in CJ data
 
+
+files <- list.files(path="largedata/obs", pattern="RData", full.names=TRUE)
+df <- data.frame(id=1:length(files), file=files)
+write.table(df, "largedata/obs_files.csv", sep=",", row.names=FALSE)
+
 #$SLURM_ARRAY_TASK_ID $SLURM_JOB_ID
 source("~/Documents/Github/zmSNPtools/Rcodes/set_arrayjob.R")
-
 # run array job of impute_parents
 set_arrayjob(shid="largedata/scripts/ip1.sh",
              shcode='R --no-save "--args ${SLURM_ARRAY_TASK_ID}" < profiling/2.cjdata/2.B.1_code_impute_parent.R',
