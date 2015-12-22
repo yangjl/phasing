@@ -4,10 +4,10 @@ library(gdsfmt)
 library(SNPRelate)
 library("data.table", lib="~/bin/Rlib/")
 
-imp <- fread("largedata/ip/imputed_parents_or.csv", sep=",")
-imp <- as.data.frame(imp)
+
 snpinfo <- read.csv("largedata/ip/snpinfo.csv")
 
+imp <- read.csv("largedata/ip/imputed_parents_id68.csv")
 sid <- gsub("\\..*", "",  names(imp))
 mx <- as.matrix(imp)
 snpgdsCreateGeno("largedata/lcache/imp_parents.gds", genmat=mx,
@@ -15,13 +15,12 @@ snpgdsCreateGeno("largedata/lcache/imp_parents.gds", genmat=mx,
                  snp.chromosome= snpinfo$chr,
                  snp.position= snpinfo$pos, snp.allele=NULL, snpfirstdim=TRUE)
 
-genofile <- snpgdsOpen("largedata/lcache/imp_parents.gds")
 
 #ibd <- snpgdsIBDMoM(genofile, sample.id=sid, maf=0.1, missing.rate=0.05, num.thread=2)
 #ibd.coeff <- snpgdsIBDSelection(ibd)
-
+genofile <- snpgdsOpen("largedata/lcache/imp_parents.gds")
 #snp.id <- sample(snpset.id, 1500)  # random 1500 SNPs
-ibs <- snpgdsIBS(genofile, maf=0.1, missing.rate=0.05, num.thread=4)
+ibs <- snpgdsIBS(genofile, maf=0.01, missing.rate=0.05, num.thread=4)
 ibs.hc <- snpgdsHCluster(ibs)
 rv <- snpgdsCutTree(ibs.hc)
 
@@ -30,6 +29,9 @@ plot(rv$dendrogram, leaflab="perpendicular", main="Cluster based on IBS")
 dev.off()
 # close the file
 snpgdsClose(genofile)
+
+
+
 
 ###########
 snpgdsGDS2BED(genofile, bed.fn="largedata/lcache/plink_snp")

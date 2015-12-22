@@ -10,10 +10,13 @@ print(JOBID)
 ###########
 library(imputeR)
 
-files <- list.files(path="largedata/obs", pattern="RData", full.names=TRUE)
+files <- list.files(path="largedata/obs2", pattern="RData", full.names=TRUE)
 o <- load(files[JOBID])
+perr <- read.csv("cache/teo_parents_errmx.csv")
+kerr <- read.csv("cache/teo_kids_errmx.csv")
+    
+tem <- impute_parent(GBS.array=obj, perr, kerr)
 
-tem <- impute_parent(GBS.array=obj, major.error=0.03, het.error=0.8, minor.error=0.2)
 res <- parentgeno(tem, oddratio=0.69, returnall=TRUE)
 
 outfile <- gsub("RData", "csv", files[JOBID])
