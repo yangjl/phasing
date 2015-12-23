@@ -26,6 +26,24 @@ err2 <- estimate_error(geno=mygeno, ped=myped, self_cutoff=30, depth_cutoff=10, 
 write.table(err2, "cache/round1_ip24_err2.csv", sep=",", row.names=FALSE, quote=FALSE)
 
 
+##### round1 self > 20
+ip21 <- read.csv("largedata/ip/round2_ip21.csv")
+names(ip21) <- gsub("\\.", ":", names(ip21))
+
+ped[, 1:3] <- apply(ped[, 1:3], 2, as.character)
+subped <- subset(ped, parent1 == parent2 & parent1 %in% names(ip21))
+
+
+#mygeno <- subset(geno, snpid %in% row.names(test))
+err1 <- estimate_error(geno, ped=subped, self_cutoff=20, depth_cutoff=7, est_kids = FALSE)
+write.table(err1, "cache/round2_ip21_err1.csv", sep=",", row.names=FALSE, quote=FALSE)
+
+mygeno <- subset(geno, snpid %in% row.names(ip21))
+mygeno[, names(ip21)] <- ip21
+err2 <- estimate_error(geno=mygeno, ped=subped, self_cutoff=20, depth_cutoff=7, est_kids = FALSE)
+write.table(err2, "cache/round2_ip21_err2.csv", sep=",", row.names=FALSE, quote=FALSE)
+
+
 
 
 
