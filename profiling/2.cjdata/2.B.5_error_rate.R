@@ -12,21 +12,21 @@ ped[, 1:3] <- apply(ped[, 1:3], 2, as.character)
 pinfo <- pedinfo(ped)
 
 
-#####
-test <- read.csv("largedata/obs/PC_I50_ID2_mrg:250276265_chr10.csv")
-pid <- "PC_I50_ID2_mrg:250276265"
-myped <- subset(ped, parent1 == parent2 & parent1 == pid)
-mygeno <- subset(geno, snpid %in% row.names(test))
-err1 <- estimate_error(geno=mygeno, ped=myped, self_cutoff=30, depth_cutoff=10, est_kids = FALSE)
+##### round1 self > 40
+ip24 <- read.csv("largedata/ip/round1_ip24.csv")
+names(ip24) <- gsub("\\.", ":", names(ip24))
+myped <- subset(ped, parent1 == parent2 & parent1 %in% names(ip24))
+#mygeno <- subset(geno, snpid %in% row.names(test))
+err1 <- estimate_error(geno, ped=myped, self_cutoff=30, depth_cutoff=10, est_kids = FALSE)
+write.table(err1, "cache/round1_ip24_err1.csv", sep=",", row.names=FALSE, quote=FALSE)
 
-mygeno[, pid] <- test$gmax
+mygeno <- subset(geno, snpid %in% row.names(ip24))
+mygeno[, names(ip24)] <- ip24
 err2 <- estimate_error(geno=mygeno, ped=myped, self_cutoff=30, depth_cutoff=10, est_kids = FALSE)
+write.table(err2, "cache/round1_ip24_err2.csv", sep=",", row.names=FALSE, quote=FALSE)
 
 
 
-############
-out <- imp_checking(imp, mx, ped, depth_cutoff=10)
-write.table(out, "cache/imp_err.csv", sep=",", row.names=FALSE, quote=FALSE)
 
 
 ####################################################
