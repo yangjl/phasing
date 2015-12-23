@@ -29,6 +29,13 @@ new_pedinfo <- function(ped, ip=names(ip24), tot_cutoff=40){
 }
 
 pinfo2 <- new_pedinfo(ped, ip=names(ip24), tot_cutoff=40)
+
+pinfo3 <- new_pedinfo(ped, ip=c(names(ip24), as.character(pinfo2$founder)), tot_cutoff=0)
+
+tem <- pedinfo(ped)
+pinfo4 <- merge(pinfo3, tem, by="founder")
+
+
 myped <- subset(ped, parent1 %in% pinfo2$founder | parent2 %in% pinfo2$founder)
 myped[, 1:3] <- apply(myped[, 1:3], 2, as.character)
 
