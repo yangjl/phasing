@@ -44,8 +44,11 @@ err2 <- estimate_error(geno=mygeno, ped=subped, self_cutoff=20, depth_cutoff=7, 
 write.table(err2, "cache/round2_ip21_err2.csv", sep=",", row.names=FALSE, quote=FALSE)
 
 
+err21 <- read.csv("cache/round2_ip21_err1.csv")
+err22 <- read.csv("cache/round2_ip21_err2.csv")
 
-
+err11 <- read.csv("cache/round1_ip24_err1.csv")
+err12 <- read.csv("cache/round1_ip24_err2.csv")
 
 ####################################################
 out <- read.csv("cache/imp_err.csv")

@@ -39,4 +39,12 @@ for(i in 1:10){
 }
 write.table(imp, "largedata/ip/round2_ip21.csv", sep=",", row.names=TRUE, quote=FALSE)
 
+### round3
+imp <- data.frame()
+for(i in 1:10){
+    tem <- col_snpdf(chri=i, verbose=TRUE, filepath="largedata/obs3", outfile=NULL)
+    imp <- rbind(imp, tem)
+}
+write.table(imp, "largedata/ip/round3_ip23.csv", sep=",", row.names=TRUE, quote=FALSE)
+
 

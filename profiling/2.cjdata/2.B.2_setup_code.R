@@ -50,5 +50,6 @@ set_arrayjob(shid="largedata/scripts/ip3.sh",
 ###>>> In this path: cd /home/jolyang/Documents/Github/phasing
 ###>>> [ note: --ntasks=INT, number of cup ]
 ###>>> [ note: --mem=16000, 16G memory ]
-###>>> RUN: sbatch -p bigmemh largedata/scripts/ip2.sh
+###>>> RUN: sbatch -p bigmemm largedata/scripts/ip3.sh
+
 
