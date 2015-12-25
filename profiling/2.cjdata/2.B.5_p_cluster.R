@@ -28,7 +28,7 @@ ibs <- snpgdsIBS(genofile, maf=0.01, missing.rate=0.05, num.thread=4)
 ibs.hc <- snpgdsHCluster(ibs)
 rv <- snpgdsCutTree(ibs.hc)
 
-pdf("graphs/cluster_ibs_rounds2.pdf", height=5, width=15)
+pdf("graphs/cluster_ibs_rounds3.pdf", height=5, width=15)
 plot(rv$dendrogram, leaflab="perpendicular", main="Cluster based on IBS")
 dev.off()
 # close the file

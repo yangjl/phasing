@@ -26,6 +26,9 @@ err2 <- estimate_error(geno=mygeno, ped=myped, self_cutoff=30, depth_cutoff=10, 
 write.table(err2, "cache/round1_ip24_err2.csv", sep=",", row.names=FALSE, quote=FALSE)
 
 
+err11 <- read.csv("cache/round1_ip24_err1.csv")
+err12 <- read.csv("cache/round1_ip24_err2.csv")
+
 ##### round1 self > 20
 ip21 <- read.csv("largedata/ip/round2_ip21.csv")
 names(ip21) <- gsub("\\.", ":", names(ip21))

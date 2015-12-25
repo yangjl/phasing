@@ -23,7 +23,7 @@ geno[, names(ip21)] <- ip21
 
 
 #################################################
-## 2nd round of imputation, with family > 40 selfed kids + outcrossed
+## 3rd round of imputation, with family > 40 selfed kids + outcrossed
 
 new_pedinfo <- function(ped, ip=names(ip24), tot_cutoff=40, getinfo=TRUE){
     ped[, 1:3] <- apply(ped[, 1:3], 2, as.character)
