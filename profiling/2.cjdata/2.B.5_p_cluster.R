@@ -12,7 +12,7 @@ ip21 <- read.csv("largedata/ip/round2_ip21.csv")
 ip23 <- read.csv("largedata/ip/round3_ip23.csv")
 
 imp <- cbind(ip24, ip21, ip23)
-write.table(imp, "cache/imp68.csv", sep=",", row.names=FALSE, quote=FALSE)
+write.table(imp, "cache/imp68.csv", sep=",", row.names=TRUE, quote=FALSE)
 
 sid <- gsub("\\..*", "",  names(imp))
 mx <- as.matrix(imp)
