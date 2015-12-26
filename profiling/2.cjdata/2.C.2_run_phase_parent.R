@@ -20,7 +20,7 @@ kerr <- read.csv("cache/teo_kids_errmx.csv")
 probs <- error_probs(mx=kerr, merr=1)
 
 # phasing   
-phase <- phase_parent(GBS.array=obj, win_length=10, join_length=0, verbose=TRUE)
+phase <- phase_parent(GBS.array=obj, win_length=10, join_length=0, verbose=TRUE, OR=log(3))
 
 # compute error rate
 outfile <- gsub("/obs/", "/pp/", df$file[JOBID])
