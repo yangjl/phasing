@@ -34,7 +34,7 @@ res$type <- gsub(".*//|_1k.csv", "", res$file)
 
 res$size <- as.numeric(as.character(gsub("size|_.*", "", res$type)))
 res$type <- gsub(".*_", "", res$type)
-write.table(res1, "cache/pp_sim_1k.csv", sep=",", row.names=FALSE, quote=FALSE)
+write.table(res, "cache/pp_sim_1k.csv", sep=",", row.names=FALSE, quote=FALSE)
 
 
 
