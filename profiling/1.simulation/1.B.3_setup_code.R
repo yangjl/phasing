@@ -4,7 +4,7 @@
 #$SLURM_ARRAY_TASK_ID $SLURM_JOB_ID
 source("~/Documents/Github/zmSNPtools/Rcodes/set_arrayjob.R")
 # run array job of impute_parents
-set_arrayjob(shid="largedata/scripts/step4_sim_pp.sh",
+set_arrayjob(shid="largedata/scripts/newpp_sim1.sh",
              shcode='R --no-save "--args ${SLURM_ARRAY_TASK_ID} 1" < profiling/1.simulation/1.B.1_phase_parent_sim.R',
              arrayjobs="1-100",
              wd=NULL, jobid="pp_r1", email="yangjl0930@gmail.com")
@@ -16,25 +16,11 @@ set_arrayjob(shid="largedata/scripts/step4_sim_pp.sh",
 
 #$SLURM_ARRAY_TASK_ID $SLURM_JOB_ID
 source("~/Documents/Github/zmSNPtools/Rcodes/set_arrayjob.R")
-
 # run array job of impute_parents
-set_arrayjob(shid="largedata/scripts/step5_sim_pp_oc.sh",
-             shcode='R --no-save "--args ${SLURM_ARRAY_TASK_ID}" < profiling/1.simulation/1.B.2_phase_parent_sim2.R',
-             arrayjobs="11-100",
-             wd=NULL, jobid="pp-oc", email="yangjl0930@gmail.com")
-
-##>>> In this path: cd /home/jolyang/Documents/Github/phasing
-###>>> [ note: --ntasks=INT, number of cup ]
-###>>> [ note: --mem=16000, 16G memory ]
-###>>> RUN: sbatch -p bigmeml largedata/scripts/step4_sim_pp_oc.sh
-
-#$SLURM_ARRAY_TASK_ID $SLURM_JOB_ID
-source("~/Documents/Github/zmSNPtools/Rcodes/set_arrayjob.R")
-# run array job of impute_parents: imputed with only phased outcrossed parents
-set_arrayjob(shid="largedata/scripts/step6_pp_ocp.sh",
-             shcode='R --no-save "--args ${SLURM_ARRAY_TASK_ID}" < profiling/1.simulation/1.B.2_phase_parent_sim2.R',
+set_arrayjob(shid="largedata/scripts/newpp_sim2.sh",
+             shcode='R --no-save "--args ${SLURM_ARRAY_TASK_ID} 0.5" < profiling/1.simulation/1.B.1_phase_parent_sim.R',
              arrayjobs="1-100",
-             wd=NULL, jobid="pp-ocp", email="yangjl0930@gmail.com")
+             wd=NULL, jobid="pp_r2", email="yangjl0930@gmail.com")
 
 ##>>> In this path: cd /home/jolyang/Documents/Github/phasing
 ###>>> [ note: --ntasks=INT, number of cup ]
@@ -44,12 +30,12 @@ set_arrayjob(shid="largedata/scripts/step6_pp_ocp.sh",
 #$SLURM_ARRAY_TASK_ID $SLURM_JOB_ID
 source("~/Documents/Github/zmSNPtools/Rcodes/set_arrayjob.R")
 # run array job of impute_parents: imputed with only phased outcrossed parents
-set_arrayjob(shid="largedata/scripts/step7_pp_oc_self.sh",
-             shcode='R --no-save "--args ${SLURM_ARRAY_TASK_ID}" < profiling/1.simulation/1.B.1_phase_parent_sim.R',
-             arrayjobs="11-100",
-             wd=NULL, jobid="pp-oc_self", email="yangjl0930@gmail.com")
+set_arrayjob(shid="largedata/scripts/newpp_sim3.sh",
+             shcode='R --no-save "--args ${SLURM_ARRAY_TASK_ID} 0" < profiling/1.simulation/1.B.1_phase_parent_sim.R',
+             arrayjobs="1-100",
+             wd=NULL, jobid="pp_r3", email="yangjl0930@gmail.com")
 
-###>>> In this path: cd /home/jolyang/Documents/Github/phasing
+##>>> In this path: cd /home/jolyang/Documents/Github/phasing
 ###>>> [ note: --ntasks=INT, number of cup ]
 ###>>> [ note: --mem=16000, 16G memory ]
-###>>> RUN: sbatch -p bigmemm largedata/scripts/step7_pp_oc_self.sh
+###>>> RUN: sbatch -p bigmeml largedata/scripts/step4_sim_pp_oc.sh
