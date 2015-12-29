@@ -23,7 +23,7 @@ probs <- error_probs(mx=kerr, merr=1)
 phase <- phase_parent(GBS.array=obj, win_length=10, join_length=0, verbose=TRUE, OR=log(3))
 
 # compute error rate
-outfile <- gsub("/obs/", "/pp/", df$file[JOBID])
-outfile <- gsub("RData", "csv", outfile)
+#outfile <- gsub("/obs/", "/pp/", df$file[JOBID])
+outfile <- gsub("RData", "csv", df$file[JOBID])
 write.table(phase, outfile, sep=",", row.names=FALSE, quote=FALSE)
 
