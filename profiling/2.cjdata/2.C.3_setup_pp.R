@@ -30,8 +30,8 @@ write.table(df, "largedata/pp_files.csv", sep=",", row.names=FALSE)
 source("~/Documents/Github/zmSNPtools/Rcodes/set_arrayjob.R")
 set_arrayjob(shid="largedata/scripts/run_pp2.sh",
              shcode='R --no-save "--args ${SLURM_ARRAY_TASK_ID}" < profiling/2.cjdata/2.C.2_run_phase_parent.R',
-             arrayjobs="1-210",
-             wd=NULL, jobid="pp2_210", email="yangjl0930@gmail.com")
+             arrayjobs="1-93",
+             wd=NULL, jobid="pp2_93", email="yangjl0930@gmail.com")
 
 ###>>> In this path: cd /home/jolyang/Documents/Github/phasing
 ###>>> [ note: --ntasks=INT, number of cup ]
