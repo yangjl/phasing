@@ -26,10 +26,10 @@ col_snpdf <- function(chri=1, filepath, verbose=TRUE, outfile="largedata/ip/chr1
 ### round1
 imp <- data.frame()
 for(i in 1:10){
-    tem <- col_snpdf(chri=i, verbose=TRUE, filepath="largedata/obs", outfile=NULL)
+    tem <- col_snpdf(chri=i, verbose=TRUE, filepath="largedata/bode/obs1", outfile=NULL)
     imp <- rbind(imp, tem)
 }
-write.table(imp, "largedata/ip/round1_ip24.csv", sep=",", row.names=TRUE, quote=FALSE)
+write.table(imp, "largedata/bode/ip/round1_ip13.csv", sep=",", row.names=TRUE, quote=FALSE)
 
 ### round2
 imp <- data.frame()

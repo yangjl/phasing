@@ -17,7 +17,7 @@ set_arrayjob(shid="largedata/scripts/ip1.sh",
 ###>>> In this path: cd /home/jolyang/Documents/Github/phasing
 ###>>> [ note: --ntasks=INT, number of cup ]
 ###>>> [ note: --mem=16000, 16G memory ]
-###>>> RUN: sbatch -p bigmemm largedata/scripts/step3_aj_ip.sh
+###>>> RUN: sbatch -p serial largedata/scripts/ip1.sh
 
 files <- list.files(path="largedata/obs2", pattern="RData", full.names=TRUE)
 df <- data.frame(id=1:length(files), file=files)

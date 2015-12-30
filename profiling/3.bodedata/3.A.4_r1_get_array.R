@@ -3,14 +3,15 @@
 
 library(imputeR)
 library(data.table, lib="~/bin/Rlib/")
-snpinfo <- get_snpinfo(geno, ped, self_cutoff=30)
-write.table(snpinfo, "largedata/land_snpinfo_self30.csv", sep=",", row.names=FALSE, quote=FALSE)
-
 
 ped <- read.table("cache/landrace_parentage_info.txt", header =TRUE)
+ped[, 1:3] <- apply(ped[, 1:3], 2, as.character)
 geno <- fread("largedata/lcache/land_recode.txt")
 geno <- as.data.frame(geno)
-snpinfo <- read.csv("largedata/land_snpinfo_self30.csv")
+
+snpinfo <- get_snpinfo(geno, ped, self_cutoff=30)
+write.table(snpinfo, "largedata/land_snpinfo_self30.csv", sep=",", row.names=FALSE, quote=FALSE)
+#snpinfo <- read.csv("largedata/land_snpinfo_self30.csv")
 #################################################
 ## First round of imputation, with family > 40 selfed kids
 #mygeno <- mendelian_check(geno, ped, self_cutoff=30, depth_cutoff=10)
