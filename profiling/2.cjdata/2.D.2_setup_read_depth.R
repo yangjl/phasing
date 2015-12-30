@@ -6,3 +6,8 @@ codes <- paste0("module load gcc jdk/1.8 tassel/5", "\n",
                " -export largedata/iplantdata/RareAllelesC2Teo2015_ZeaGBSv27raw.vcf -exportType VCF")
 
 setUpslurm(slurmsh="largedata/scripts/h5_vcf.sh", codesh=codes, jobid="h5_vcf", email="yangjl0930@gmail.com")
+
+
+
+code2 <- "getsnpinfo -i largedata/lcache/landrace.hmp.txt -s 12 -o largedata/lcache/landrace.info"
+setUpslurm(slurmsh="largedata/scripts/run_getinfo.sh", codesh=code2, jobid="getinfo", email="yangjl0930@gmail.com")

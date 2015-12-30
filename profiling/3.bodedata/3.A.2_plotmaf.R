@@ -1,10 +1,10 @@
 ### Jinliang Yang
-###
+### 12/29/2015
 
 
 library("data.table", lib="~/bin/Rlib")
 
-info <- fread("largedata/lcache/teo.info")
+info <- fread("largedata/lcache/landrace.info")
 info <- as.data.frame(info)
 
 info$count <- nchar(info$alleles)
