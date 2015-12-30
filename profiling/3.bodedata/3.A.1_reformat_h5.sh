@@ -8,4 +8,12 @@ run_pipeline.pl -Xmx128g -fork1 -h5 maize_landrace.h5 -excludeSiteNamesInFile ex
 
 getsnpinfo -i largedata/lcache/landrace.hmp.txt -s 12 -o largedata/lcache/landrace.info
 
+
+## after SNP filtering
+snpconvert -a landrace.hmp.txt -i landrace_flt_maf01m8.txt -s 12 -o land_recode.txt
+
 module load vcftools/0.1.13
+
+
+
+
