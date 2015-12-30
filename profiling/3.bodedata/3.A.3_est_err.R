@@ -4,18 +4,19 @@
 library(imputeR)
 library(data.table, lib="~/bin/Rlib/")
 
-ped <- read.table("data/parentage_info.txt", header =TRUE)
+ped <- read.table("cache/landrace_parentage_info.txt", header =TRUE)
 ped[, 1:3] <- apply(ped[, 1:3], 2, as.character)
 
+pinfo <- pedinfo(ped)
 
-geno <- fread("largedata/lcache/teo_recoded.txt")
+geno <- fread("largedata/lcache/land_recode.txt")
 geno <- as.data.frame(geno)
 
 
-out <- estimate_error(geno, ped, self_cutoff=30, depth_cutoff=10)
+out <- estimate_error(geno, ped, self_cutoff=30, depth_cutoff=10, est_kids = TRUE)
 
-write.table(out[[1]], "cache/err_mx_selfed.csv", sep=",", row.names=FALSE, quote=FALSE)
-write.table(out[[2]], "cache/err_mx_oc.csv", sep=",", row.names=FALSE, quote=FALSE)
+write.table(out[[1]], "cache/land_err_mx_selfed.csv", sep=",", row.names=FALSE, quote=FALSE)
+write.table(out[[2]], "cache/land_err_mx_oc.csv", sep=",", row.names=FALSE, quote=FALSE)
 
 
 #####
@@ -39,6 +40,6 @@ rownames(mx2) <- c("g0", "g1", "g2")
 colnames(mx2) <- c("ob0", "ob1", "ob2")
 mx2 <- round(mx2, 4)
 
-write.table(mx1, "cache/teo_parents_errmx.csv", sep=",", row.names=TRUE, quote=FALSE)
-write.table(mx2, "cache/teo_kids_errmx.csv", sep=",", row.names=TRUE, quote=FALSE)
+write.table(mx1, "cache/land_parents_errmx.csv", sep=",", row.names=TRUE, quote=FALSE)
+write.table(mx2, "cache/land_kids_errmx.csv", sep=",", row.names=TRUE, quote=FALSE)
 
