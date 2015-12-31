@@ -1,57 +1,48 @@
 ### Jinliang Yang
-### 12/8/2015
+### 12/31/2015
 
 
 library("data.table", lib="~/bin/Rlib")
 library("imputeR")
-geno <- fread("largedata/lcache/teo_recoded.txt")
+
+### read genotype. snpinfo and pedigree data
+geno <- fread("largedata/lcache/land_recode.txt")
 geno <- as.data.frame(geno)
 
-ped <- read.table("data/parentage_info.txt", header=TRUE)
+ped <- read.table("cache/landrace_parentage_info.txt", header =TRUE)
 ped[, 1:3] <- apply(ped[, 1:3], 2, as.character)
 pinfo <- pedinfo(ped)
 
+#### update geno matrix
+ip13 <- read.csv("largedata/bode/ip/round1_ip13.csv", sep=",", header=TRUE)
+names(ip13) <- gsub("\\.", ":", names(ip13))
+names(ip13) <- gsub("^X", "", names(ip13))
+#geno <- subset(geno, snpid %in% row.names(ip13))
+geno[, names(ip13)] <- ip13
+
+ip15 <- read.csv("largedata/bode/ip/round2_ip15.csv")
+names(ip15) <- gsub("\\.", ":", names(ip15))
+names(ip15) <- gsub("^X", "", names(ip15))
+#geno <- subset(geno, snpid %in% row.names(ip13))
+geno[, names(ip15)] <- ip15
+
+ip16 <- read.csv("largedata/bode/ip/round3_ip16.csv")
+names(ip16) <- gsub("\\.", ":", names(ip16))
+names(ip16) <- gsub("^X", "", names(ip16))
+#geno <- subset(geno, snpid %in% row.names(ip13))
+geno[, names(ip16)] <- ip16
+
 
 ##### round1 self > 40
-ip24 <- read.csv("largedata/ip/round1_ip24.csv")
-names(ip24) <- gsub("\\.", ":", names(ip24))
-myped <- subset(ped, parent1 == parent2 & parent1 %in% names(ip24))
-#mygeno <- subset(geno, snpid %in% row.names(test))
-err1 <- estimate_error(geno, ped=myped, self_cutoff=30, depth_cutoff=10, est_kids = FALSE)
-write.table(err1, "cache/round1_ip24_err1.csv", sep=",", row.names=FALSE, quote=FALSE)
-
-mygeno <- subset(geno, snpid %in% row.names(ip24))
-mygeno[, names(ip24)] <- ip24
-err2 <- estimate_error(geno=mygeno, ped=myped, self_cutoff=30, depth_cutoff=10, est_kids = FALSE)
-write.table(err2, "cache/round1_ip24_err2.csv", sep=",", row.names=FALSE, quote=FALSE)
+err <- estimate_error(geno, ped, self_cutoff=30, 
+                      depth_cutoff=10, est_kids = FALSE)
+write.table(err, "cache/bode_postip_err.csv", sep=",", row.names=FALSE, quote=FALSE)
 
 
 err11 <- read.csv("cache/round1_ip24_err1.csv")
 err12 <- read.csv("cache/round1_ip24_err2.csv")
 
-##### round1 self > 20
-ip21 <- read.csv("largedata/ip/round2_ip21.csv")
-names(ip21) <- gsub("\\.", ":", names(ip21))
 
-ped[, 1:3] <- apply(ped[, 1:3], 2, as.character)
-subped <- subset(ped, parent1 == parent2 & parent1 %in% names(ip21))
-
-
-#mygeno <- subset(geno, snpid %in% row.names(test))
-err1 <- estimate_error(geno, ped=subped, self_cutoff=20, depth_cutoff=7, est_kids = FALSE)
-write.table(err1, "cache/round2_ip21_err1.csv", sep=",", row.names=FALSE, quote=FALSE)
-
-mygeno <- subset(geno, snpid %in% row.names(ip21))
-mygeno[, names(ip21)] <- ip21
-err2 <- estimate_error(geno=mygeno, ped=subped, self_cutoff=20, depth_cutoff=7, est_kids = FALSE)
-write.table(err2, "cache/round2_ip21_err2.csv", sep=",", row.names=FALSE, quote=FALSE)
-
-
-err21 <- read.csv("cache/round2_ip21_err1.csv")
-err22 <- read.csv("cache/round2_ip21_err2.csv")
-
-err11 <- read.csv("cache/round1_ip24_err1.csv")
-err12 <- read.csv("cache/round1_ip24_err2.csv")
 
 ####################################################
 out <- read.csv("cache/imp_err.csv")

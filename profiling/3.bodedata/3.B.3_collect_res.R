@@ -42,9 +42,9 @@ write.table(imp, "largedata/bode/ip/round2_ip15.csv", sep=",", row.names=TRUE, q
 ### round3
 imp <- data.frame()
 for(i in 1:10){
-    tem <- col_snpdf(chri=i, verbose=TRUE, filepath="largedata/obs3", outfile=NULL)
+    tem <- col_snpdf(chri=i, verbose=TRUE, filepath="largedata/bode/obs3", outfile=NULL)
     imp <- rbind(imp, tem)
 }
-write.table(imp, "largedata/ip/round3_ip23.csv", sep=",", row.names=TRUE, quote=FALSE)
+write.table(imp, "largedata/bode/ip/round3_ip16.csv", sep=",", row.names=TRUE, quote=FALSE)
 
 
