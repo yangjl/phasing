@@ -10,12 +10,12 @@ print(JOBID)
 
 ##############
 library("imputeR")
-df <- read.csv("largedata/pp_files.csv")
+df <- read.csv("largedata/bode_pp_files.csv")
 df$file <- as.character(df$file)
 
 o <- load(df$file[JOBID])
 #perr <- read.csv("cache/teo_parents_errmx.csv")
-kerr <- read.csv("cache/teo_kids_errmx.csv")
+kerr <- read.csv("cache/land_kids_errmx.csv")
 
 probs <- error_probs(mx=kerr, merr=1)
 

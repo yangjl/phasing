@@ -32,6 +32,8 @@ names(ip16) <- gsub("^X", "", names(ip16))
 #geno <- subset(geno, snpid %in% row.names(ip13))
 geno[, names(ip16)] <- ip16
 
+ip44 <- cbind(ip13, ip15, ip16)
+write.table(ip44, "cache/bode_imp44.csv", sep=",", quote=FALSE)
 
 ##### round1 self > 40
 err <- estimate_error(geno, ped, self_cutoff=30, 
