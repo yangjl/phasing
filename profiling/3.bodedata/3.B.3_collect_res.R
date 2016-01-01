@@ -26,25 +26,25 @@ col_snpdf <- function(chri=1, filepath, verbose=TRUE, outfile="largedata/ip/chr1
 ### round1
 imp <- data.frame()
 for(i in 1:10){
-    tem <- col_snpdf(chri=i, verbose=TRUE, filepath="largedata/obs", outfile=NULL)
+    tem <- col_snpdf(chri=i, verbose=TRUE, filepath="largedata/bode/obs1", outfile=NULL)
     imp <- rbind(imp, tem)
 }
-write.table(imp, "largedata/ip/round1_ip24.csv", sep=",", row.names=TRUE, quote=FALSE)
+write.table(imp, "largedata/bode/ip/round1_ip13.csv", sep=",", row.names=TRUE, quote=FALSE)
 
 ### round2
 imp <- data.frame()
 for(i in 1:10){
-    tem <- col_snpdf(chri=i, verbose=TRUE, filepath="largedata/obs2", outfile=NULL)
+    tem <- col_snpdf(chri=i, verbose=TRUE, filepath="largedata/bode/obs2", outfile=NULL)
     imp <- rbind(imp, tem)
 }
-write.table(imp, "largedata/ip/round2_ip21.csv", sep=",", row.names=TRUE, quote=FALSE)
+write.table(imp, "largedata/bode/ip/round2_ip15.csv", sep=",", row.names=TRUE, quote=FALSE)
 
 ### round3
 imp <- data.frame()
 for(i in 1:10){
-    tem <- col_snpdf(chri=i, verbose=TRUE, filepath="largedata/obs3", outfile=NULL)
+    tem <- col_snpdf(chri=i, verbose=TRUE, filepath="largedata/bode/obs3", outfile=NULL)
     imp <- rbind(imp, tem)
 }
-write.table(imp, "largedata/ip/round3_ip23.csv", sep=",", row.names=TRUE, quote=FALSE)
+write.table(imp, "largedata/bode/ip/round3_ip16.csv", sep=",", row.names=TRUE, quote=FALSE)
 
 

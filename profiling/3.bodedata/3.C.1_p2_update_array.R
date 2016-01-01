@@ -4,23 +4,23 @@
 library(imputeR)
 library(data.table, lib="~/bin/Rlib/")
 
-### read genotype. snpinfo and pedigree data
-ped <- read.table("cache/landrace_parentage_info.txt", header =TRUE)
-geno <- fread("largedata/lcache/land_recode.txt")
+ped <- read.table("data/parentage_info.txt", header =TRUE)
+geno <- fread("largedata/lcache/teo_recoded.txt")
 geno <- as.data.frame(geno)
-snpinfo <- read.csv("largedata/land_snpinfo_self30.csv")
 
-#### update geno matrix
-ip13 <- read.csv("largedata/bode/ip/round1_ip13.csv", sep=",", header=TRUE)
-names(ip13) <- gsub("\\.", ":", names(ip13))
-names(ip13) <- gsub("^X", "", names(ip13))
-#geno <- subset(geno, snpid %in% row.names(ip13))
-geno[, names(ip13)] <- ip13
+### updated geno matrix
+imp68 <- read.csv("cache/imp68.csv")
+names(imp68) <- gsub("\\.", ":", names(imp68))
+geno <- subset(geno, snpid %in% row.names(imp68))
+geno[, names(imp68)] <- imp68
 
+source("lib/get_pp.R")
+pp24 <- get_pp(path="largedata/pp", pattern="PC_.*.csv", imp68)
+save(file="largedata/lcache/R1_pp24.RData", list="pp24")
 
+load("largedata/lcache/R1_pp24.RData")
 #################################################
 ## 2nd round of imputation, with family > 40 selfed kids + outcrossed
-
 new_pedinfo <- function(ped, ip=names(ip24), tot_cutoff=40, getinfo=TRUE){
     ped[, 1:3] <- apply(ped[, 1:3], 2, as.character)
     
@@ -30,7 +30,7 @@ new_pedinfo <- function(ped, ip=names(ip24), tot_cutoff=40, getinfo=TRUE){
     pinfo2 <- pedinfo(subped)
     pinfo2$founder <- as.character(pinfo2$founder)
     pinfo2 <- subset(pinfo2, !(founder %in% ip))
-
+    
     if(getinfo){
         return(subset(pinfo2, tot > tot_cutoff))
     }else{
@@ -42,14 +42,18 @@ new_pedinfo <- function(ped, ip=names(ip24), tot_cutoff=40, getinfo=TRUE){
     }
 }
 
-pinfo2 <- new_pedinfo(ped, ip=names(ip13), tot_cutoff=40, getinfo=TRUE)
-subped <- new_pedinfo(ped, ip=names(ip13), tot_cutoff=40, getinfo=FALSE)
+pinfo2 <- new_pedinfo(ped, ip=names(pp24), tot_cutoff=40, getinfo=TRUE)
+subped <- new_pedinfo(ped, ip=names(pp24), tot_cutoff=40, getinfo=FALSE)
 
 ped[, 1:3] <- apply(ped[, 1:3], 2, as.character)
 pargeno <- data.frame(parentid= as.character(unique(c(ped$parent1, ped$parent2))), true_p=0)
-pargeno[pargeno$parentid %in% names(ip13), 2] <- 1
+pargeno[pargeno$parentid %in% names(pp24), 2] <- 1
+
+
+snpinfo <- read.csv("cache/snpinfo_self30.csv")
 #pargeno <- subset(pargeno, pargeno[,2] >0)
-create_array(geno, ped=subped, pargeno, pinfo=pinfo2, snpinfo=snpinfo,
-             outdir="largedata/bode/obs2", bychr=TRUE)
+create_array(geno, ped=subped, pargeno, pp=pp24, pinfo=pinfo2, outdir="largedata/obs2", 
+             bychr=TRUE, snpinfo=snpinfo)
+
 
 
