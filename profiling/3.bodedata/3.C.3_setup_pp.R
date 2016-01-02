@@ -16,7 +16,7 @@ set_arrayjob(shid="largedata/scripts/run_bode_pp1.sh",
 ###>>> In this path: cd /home/jolyang/Documents/Github/phasing
 ###>>> [ note: --ntasks=INT, number of cup ]
 ###>>> [ note: --mem=16000, 16G memory ]
-###>>> RUN: sbatch -p bigmemm largedata/scripts/run_pp.sh
+###>>> RUN: sbatch -p bigmemm largedata/scripts/run_bode_pp1.sh
 
 # pp round 2
 files <- list.files(path="largedata/obs2", pattern="RData", full.names=TRUE)
