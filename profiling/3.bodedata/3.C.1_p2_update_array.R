@@ -4,21 +4,26 @@
 library(imputeR)
 library(data.table, lib="~/bin/Rlib/")
 
-ped <- read.table("data/parentage_info.txt", header =TRUE)
-geno <- fread("largedata/lcache/teo_recoded.txt")
+### read genotype. snpinfo and pedigree data
+geno <- fread("largedata/lcache/land_recode.txt")
 geno <- as.data.frame(geno)
 
 ### updated geno matrix
-imp68 <- read.csv("cache/imp68.csv")
-names(imp68) <- gsub("\\.", ":", names(imp68))
-geno <- subset(geno, snpid %in% row.names(imp68))
-geno[, names(imp68)] <- imp68
+imp44 <- read.csv("cache/bode_imp44.csv")
+names(imp44) <- gsub("\\.", ":", names(imp44))
+names(imp44) <- gsub("^X", "", names(imp44))
+#geno <- subset(geno, snpid %in% row.names(imp44))
+geno[, names(imp44)] <- imp44
 
+
+ped <- read.table("cache/landrace_parentage_info.txt", header =TRUE)
+
+### updated geno matrix
 source("lib/get_pp.R")
-pp24 <- get_pp(path="largedata/pp", pattern="PC_.*.csv", imp68)
-save(file="largedata/lcache/R1_pp24.RData", list="pp24")
+ppr1 <- get_pp(path="largedata/bode/obs1", pattern=".csv", imp44)
+save(file="largedata/lcache/bode_R1_ppr1.RData", list="ppr1")
 
-load("largedata/lcache/R1_pp24.RData")
+ob1 <- load("largedata/lcache/bode_R1_ppr1.RData")
 #################################################
 ## 2nd round of imputation, with family > 40 selfed kids + outcrossed
 new_pedinfo <- function(ped, ip=names(ip24), tot_cutoff=40, getinfo=TRUE){
@@ -42,17 +47,17 @@ new_pedinfo <- function(ped, ip=names(ip24), tot_cutoff=40, getinfo=TRUE){
     }
 }
 
-pinfo2 <- new_pedinfo(ped, ip=names(pp24), tot_cutoff=40, getinfo=TRUE)
-subped <- new_pedinfo(ped, ip=names(pp24), tot_cutoff=40, getinfo=FALSE)
+pinfo2 <- new_pedinfo(ped, ip=names(ppr1), tot_cutoff=40, getinfo=TRUE)
+subped <- new_pedinfo(ped, ip=names(ppr1), tot_cutoff=40, getinfo=FALSE)
 
 ped[, 1:3] <- apply(ped[, 1:3], 2, as.character)
 pargeno <- data.frame(parentid= as.character(unique(c(ped$parent1, ped$parent2))), true_p=0)
-pargeno[pargeno$parentid %in% names(pp24), 2] <- 1
+pargeno[pargeno$parentid %in% names(ppr1), 2] <- 1
 
 
-snpinfo <- read.csv("cache/snpinfo_self30.csv")
+snpinfo <- read.csv("largedata/land_snpinfo_self30.csv")
 #pargeno <- subset(pargeno, pargeno[,2] >0)
-create_array(geno, ped=subped, pargeno, pp=pp24, pinfo=pinfo2, outdir="largedata/obs2", 
+create_array(geno, ped=subped, pargeno, pp=ppr1, pinfo=pinfo2, outdir="largedata/bode/obs2", 
              bychr=TRUE, snpinfo=snpinfo)
 
 
