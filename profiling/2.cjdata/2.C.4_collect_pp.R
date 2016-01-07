@@ -26,17 +26,6 @@ save(file="largedata/lcache/teo_pp68.RData", list="pp68")
 
 
 
-###########
-library(data.table, lib="~/bin/Rlib/")
-library(imputeR)
-ped <- read.table("data/parentage_info.txt", header =TRUE)
-geno <- fread("largedata/lcache/teo_recoded.txt")
-geno <- as.data.frame(geno)
 
-load("largedata/lcache/teo_pp68.RData")
-kerr <- read.csv("cache/teo_kids_errmx.csv")
-probs <- error_probs(mx=kerr, merr=1)
-
-res <- impute_kid(geno, pp, ped, kid_idx=1:3, verbose=TRUE)
 
 
