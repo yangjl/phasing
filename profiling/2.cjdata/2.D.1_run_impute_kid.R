@@ -21,6 +21,6 @@ kerr <- read.csv("cache/teo_kids_errmx.csv")
 probs <- error_probs(mx=kerr, merr=1)
 
 df <- read.csv("largedata/ik_files.csv")
-res <- impute_kid(geno, pp, ped, kid_idx= df$start[JOBID]:df$end[JOBID], verbose=TRUE)
+res <- impute_kid(geno, pp=pp68, ped, kid_idx= df$start[JOBID]:df$end[JOBID], verbose=TRUE)
 write.table(res, paste0("largedata/ik/kid_geno_", JOBID, ".csv"), sep=",", row.names=FALSE, quote=FALSE)
 
