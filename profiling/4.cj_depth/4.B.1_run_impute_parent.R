@@ -10,7 +10,7 @@ print(JOBID)
 ###########
 library(imputeR)
 
-df <- read.csv("largedata/obs_files.csv")
+df <- read.csv("largedata/cjmasked/obs_files.csv")
 df$file <- as.character(df$file)
 o <- load(df$file[JOBID])
 perr <- read.csv("cache/teo_parents_errmx.csv")
