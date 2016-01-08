@@ -42,9 +42,17 @@ write.table(imp, "largedata/cjmasked/ip21_round2.csv", sep=",", row.names=TRUE, 
 ### round3
 imp <- data.frame()
 for(i in 1:10){
-    tem <- col_snpdf(chri=i, verbose=TRUE, filepath="largedata/obs3", outfile=NULL)
+    tem <- col_snpdf(chri=i, verbose=TRUE, filepath="largedata/cjmasked/obs3", outfile=NULL)
     imp <- rbind(imp, tem)
 }
-write.table(imp, "largedata/ip/round3_ip23.csv", sep=",", row.names=TRUE, quote=FALSE)
+write.table(imp, "largedata/cjmasked/ip23_round3.csv", sep=",", row.names=TRUE, quote=FALSE)
+
+####
+ip24 <- read.csv("largedata/cjmasked/ip24_round1.csv")
+ip21 <- read.csv("largedata/cjmasked/ip21_round2.csv")
+ip23 <- read.csv("largedata/cjmasked/ip23_round3.csv")
+ip68 <- cbind(ip24, ip21, ip23)
+write.table(ip68, "largedata/cjmasked/ip68_masked.csv", sep=",", row.names=TRUE, quote=FALSE)
+
 
 

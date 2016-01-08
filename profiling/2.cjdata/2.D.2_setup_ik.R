@@ -20,9 +20,9 @@ set_arrayjob(shid="largedata/scripts/run_ik1.sh",
 source("~/Documents/Github/zmSNPtools/Rcodes/set_arrayjob.R")
 set_arrayjob(shid="largedata/scripts/run_ik2.sh",
              shcode='R --no-save "--args ${SLURM_ARRAY_TASK_ID}" < profiling/2.cjdata/2.D.1_run_impute_kid.R',
-             arrayjobs="101-200",
+             arrayjobs="140-200",
              wd=NULL, jobid="ik2", email="yangjl0930@gmail.com")
-###>>> RUN: sbatch -p serial --mem 16000 --ntasks=8 largedata/scripts/run_ik2.sh
+###>>> RUN: sbatch -p bigmemm --mem 16000 --ntasks=2 largedata/scripts/run_ik2.sh
 
 #$SLURM_ARRAY_TASK_ID $SLURM_JOB_ID
 source("~/Documents/Github/zmSNPtools/Rcodes/set_arrayjob.R")
@@ -38,12 +38,14 @@ set_arrayjob(shid="largedata/scripts/run_ik4.sh",
              shcode='R --no-save "--args ${SLURM_ARRAY_TASK_ID}" < profiling/2.cjdata/2.D.1_run_impute_kid.R',
              arrayjobs="301-400",
              wd=NULL, jobid="ik4", email="yangjl0930@gmail.com")
+###>>> RUN: sbatch -p bigmemm --mem 16000 --ntasks=2 largedata/scripts/run_ik4.sh
 
 source("~/Documents/Github/zmSNPtools/Rcodes/set_arrayjob.R")
 set_arrayjob(shid="largedata/scripts/run_ik5.sh",
              shcode='R --no-save "--args ${SLURM_ARRAY_TASK_ID}" < profiling/2.cjdata/2.D.1_run_impute_kid.R',
              arrayjobs="401-479",
              wd=NULL, jobid="ik5", email="yangjl0930@gmail.com")
+###>>> RUN: sbatch -p bigmemm --mem 16000 --ntasks=2 largedata/scripts/run_ik5.sh
 
 ###>>> In this path: cd /home/jolyang/Documents/Github/phasing
 ###>>> [ note: --ntasks=INT, number of cup ]
