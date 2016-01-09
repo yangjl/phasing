@@ -10,7 +10,7 @@ print(JOBID)
 
 ##############
 library("imputeR")
-df <- read.csv("largedata/pp_files.csv")
+df <- read.csv("largedata/cjmasked/pp_files.csv")
 df$file <- as.character(df$file)
 
 o <- load(df$file[JOBID])
@@ -27,5 +27,5 @@ phase <- phase_parent(GBS.array=obj, win_length=10, join_length=0, verbose=TRUE,
 outfile <- gsub("RData", "csv", df$file[JOBID])
 write.table(phase, outfile, sep=",", row.names=FALSE, quote=FALSE)
 
-impute_kid(geno, pp, ped, kid_idx=1:3, verbose=TRUE)
+
     
