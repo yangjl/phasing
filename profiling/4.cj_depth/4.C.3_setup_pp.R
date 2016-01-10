@@ -7,28 +7,53 @@ df <- data.frame(id=1:length(files), file=files)
 write.table(df, "largedata/cjmasked/pp_files.csv", sep=",", row.names=FALSE)
 
 #$SLURM_ARRAY_TASK_ID $SLURM_JOB_ID
+#1189
 source("~/Documents/Github/zmSNPtools/Rcodes/set_arrayjob.R")
 set_arrayjob(shid="largedata/scripts/run_pp1.sh",
              shcode='R --no-save "--args ${SLURM_ARRAY_TASK_ID}" < profiling/4.cj_depth/4.C.2_run_phase_parent.R',
-             arrayjobs="1-240",
-             wd=NULL, jobid="pp240", email="yangjl0930@gmail.com")
+             arrayjobs="1-500",
+             wd=NULL, jobid="pp1", email="yangjl0930@gmail.com")
+###>>> RUN: sbatch -p bigmeml largedata/scripts/run_pp1.sh
 
-###>>> RUN: sbatch -p bigmemm largedata/scripts/run_pp.sh
+set_arrayjob(shid="largedata/scripts/run_pp2.sh",
+             shcode='R --no-save "--args ${SLURM_ARRAY_TASK_ID}" < profiling/4.cj_depth/4.C.2_run_phase_parent.R',
+             arrayjobs="501-1000",
+             wd=NULL, jobid="pp2", email="yangjl0930@gmail.com")
+###>>> RUN: sbatch -p serial largedata/scripts/run_pp2.sh
+
+set_arrayjob(shid="largedata/scripts/run_pp3.sh",
+             shcode='R --no-save "--args ${SLURM_ARRAY_TASK_ID}" < profiling/4.cj_depth/4.C.2_run_phase_parent.R',
+             arrayjobs="1001-1189",
+             wd=NULL, jobid="pp3", email="yangjl0930@gmail.com")
+
+###>>> RUN: sbatch -p serial largedata/scripts/run_pp3.sh
 
 # pp round 2
-files <- list.files(path="largedata/obs2", pattern="RData", full.names=TRUE)
+files <- list.files(path="largedata/cjmasked/obs2", pattern="RData", full.names=TRUE)
 df <- data.frame(id=1:length(files), file=files)
-f2 <- list.files(path="largedata/obs2", pattern="csv", full.names=TRUE)
-f2 <- gsub("csv", "RData", f2)
-df <- subset(df, !(file %in% f2))
-write.table(df, "largedata/pp_files.csv", sep=",", row.names=FALSE)
+#[1] 1340    2
+write.table(df, "largedata/cjmasked/pp_files.csv", sep=",", row.names=FALSE)
 
 #$SLURM_ARRAY_TASK_ID $SLURM_JOB_ID
 source("~/Documents/Github/zmSNPtools/Rcodes/set_arrayjob.R")
-set_arrayjob(shid="largedata/scripts/run_pp2.sh",
-             shcode='R --no-save "--args ${SLURM_ARRAY_TASK_ID}" < profiling/2.cjdata/2.C.2_run_phase_parent.R',
-             arrayjobs="1-93",
-             wd=NULL, jobid="pp2_93", email="yangjl0930@gmail.com")
+set_arrayjob(shid="largedata/scripts/run_pp21.sh",
+             shcode='R --no-save "--args ${SLURM_ARRAY_TASK_ID}" < profiling/4.cj_depth/4.C.2_run_phase_parent.R',
+             arrayjobs="1-500",
+             wd=NULL, jobid="pp21", email="yangjl0930@gmail.com")
+###>>> RUN: sbatch -p serial largedata/scripts/run_pp21.sh
+
+set_arrayjob(shid="largedata/scripts/run_pp22.sh",
+             shcode='R --no-save "--args ${SLURM_ARRAY_TASK_ID}" < profiling/4.cj_depth/4.C.2_run_phase_parent.R',
+             arrayjobs="501-1000",
+             wd=NULL, jobid="pp22", email="yangjl0930@gmail.com")
+###>>> RUN: sbatch -p serial largedata/scripts/run_pp22.sh
+
+set_arrayjob(shid="largedata/scripts/run_pp23.sh",
+             shcode='R --no-save "--args ${SLURM_ARRAY_TASK_ID}" < profiling/4.cj_depth/4.C.2_run_phase_parent.R',
+             arrayjobs="1001-1340",
+             wd=NULL, jobid="pp23", email="yangjl0930@gmail.com")
+
+###>>> RUN: sbatch -p bigmemm largedata/scripts/run_pp23.sh
 
 ###>>> In this path: cd /home/jolyang/Documents/Github/phasing
 ###>>> [ note: --ntasks=INT, number of cup ]

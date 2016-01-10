@@ -1,15 +1,25 @@
-get_pp <- function(path="largedata/pp", pattern="PC_.*.csv", imp68){
+get_pp <- function(path="largedata/pp", pattern="PC_.*.csv", chunk_inc=100, imp68){
     files <- list.files(path, pattern, full.names = TRUE)
     
     pid <- unique(gsub(".*\\/|_chr.*", "", files))
-    message(sprintf("###>>> get [ %s ] phased parents", length(pid)))
+    message(sprintf("###>>> get [ %s ] phased parents from [ %s ] files", length(pid), length(files)))
     
     ppls <- list()
     for(j in 1:length(pid)){
         pp <- data.frame()
         for(i in 1:10){
-            tem <- read.csv(paste0(path, "/", pid[j], "_chr",i, ".csv"))
-            pp <- rbind(tem, pp)
+            idx <- grep(paste0(pid[j], "_chr",i, "_"), files)
+            for(p in idx){
+                tem <- read.csv(files[p])
+                chunkid <- as.numeric(as.character(gsub(".*chunk|\\.csv", "", files[p])))
+                tem$chunk <- chunk_inc*(chunkid -1)+tem$chunk
+                pp <- rbind(pp, tem)
+            }
+        }
+        pp <- pp[order(pp$chunk, pp$idx),]
+        
+        if(sum(imp68[, pid[j]] == 1) != nrow(pp)){
+           stop("!!! unequal number of hetersites !!!") 
         }
         
         pp$snpid <- as.character(pp$snpid)
@@ -28,13 +38,9 @@ get_pp <- function(path="largedata/pp", pattern="PC_.*.csv", imp68){
         pp0 <- pp0[order(pp0$chr, pp0$pos),]
         
         pp1 <- data.frame()
-        for(i in 1:10){
-            subchr <- subset(pp0, chr==i)
-            tem <- data.frame(a=subchr$idx, b=1:nrow(subchr))
-            tem <- tem[!is.na(tem$a),]
-            if(sum(tem$a != tem$b) > 0){
-                stop("###>>> re-idx error !")
-            }
+        for(ci in 1:10){
+            subchr <- subset(pp0, chr==ci)
+            
             subchr$idx <- 1:nrow(subchr)
             subchr$chunk[1] <- 1
             for(k in 2:nrow(subchr)){
