@@ -1,22 +1,21 @@
 ### Jinliang Yang
 ### use impute_parent in CJ data
 
-#library(imputeR)
-library(data.table, lib="~/bin/Rlib/")
-
-ped <- read.table("data/parentage_info.txt", header =TRUE)
-geno <- fread("largedata/lcache/teo_recoded.txt")
-geno <- as.data.frame(geno)
-
 ### updated geno matrix
-imp68 <- read.csv("cache/imp68.csv")
+imp68 <- read.csv("largedata/cjmasked/ip68_masked.csv")
 names(imp68) <- gsub("\\.", ":", names(imp68))
-geno <- subset(geno, snpid %in% row.names(imp68))
-geno[, names(imp68)] <- imp68
 
 source("lib/get_pp.R")
-ppr3 <- get_pp(path="largedata/obs3", pattern="PC_.*.csv", imp68)
-save(file="largedata/lcache/R3_pp23.RData", list="ppr3")
+ppr1 <- get_pp(path="largedata/cjmasked/obs1", pattern="PC_.*.csv", chunk_inc=100, imp68)
+save(file="largedata/cjmasked/R1_pp24.RData", list="ppr1")
+
+
+source("lib/get_pp.R")
+ppr2 <- get_pp(path="largedata/cjmasked/obs2", pattern="PC_.*.csv", chunk_inc=100, imp68)
+#[1] 1130
+files <- list.files(path="largedata/cjmasked/obs2", pattern="PC_.*.csv", full.names = TRUE)
+
+save(file="largedata/cjmasked/R2_pp21.RData", list="ppr1")
 
 ob1 <- load("largedata/lcache/R1_pp24.RData")
 ob2 <- load("largedata/lcache/R2_pp21.RData")
