@@ -42,10 +42,10 @@ set_arrayjob(shid="largedata/scripts/run_pp21.sh",
              wd=NULL, jobid="pp21", email="yangjl0930@gmail.com")
 ###>>> RUN: sbatch -p serial largedata/scripts/run_pp21.sh
 
-set_arrayjob(shid="largedata/scripts/run_pp22.sh",
+set_arrayjob(shid="largedata/scripts/run_pp27.sh",
              shcode='R --no-save "--args ${SLURM_ARRAY_TASK_ID}" < profiling/4.cj_depth/4.C.2_run_phase_parent.R',
-             arrayjobs="501-1000",
-             wd=NULL, jobid="pp22", email="yangjl0930@gmail.com")
+             arrayjobs="1130",
+             wd=NULL, jobid="pp27", email="yangjl0930@gmail.com")
 ###>>> RUN: sbatch -p serial largedata/scripts/run_pp22.sh
 
 set_arrayjob(shid="largedata/scripts/run_pp23.sh",

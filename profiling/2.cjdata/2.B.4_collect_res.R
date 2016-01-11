@@ -47,4 +47,6 @@ for(i in 1:10){
 }
 write.table(imp, "largedata/ip/round3_ip23.csv", sep=",", row.names=TRUE, quote=FALSE)
 
-
+#imp68 <- cbind(im)
+### updated geno matrix
+imp68 <- read.csv("cache/imp68.csv")

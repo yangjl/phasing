@@ -11,8 +11,11 @@ save(file="largedata/cjmasked/R1_pp24.RData", list="ppr1")
 
 
 source("lib/get_pp.R")
-ppr3 <- get_pp(path="largedata/obs3", pattern="PC_.*.csv", chunk_inc=100, imp68)
-save(file="largedata/lcache/R3_pp23.RData", list="ppr3")
+ppr2 <- get_pp(path="largedata/cjmasked/obs2", pattern="PC_.*.csv", chunk_inc=100, imp68)
+#[1] 1130
+files <- list.files(path="largedata/cjmasked/obs2", pattern="PC_.*.csv", full.names = TRUE)
+
+save(file="largedata/cjmasked/R2_pp21.RData", list="ppr1")
 
 ob1 <- load("largedata/lcache/R1_pp24.RData")
 ob2 <- load("largedata/lcache/R2_pp21.RData")
