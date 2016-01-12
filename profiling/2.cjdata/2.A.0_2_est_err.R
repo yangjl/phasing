@@ -42,3 +42,6 @@ mx2 <- round(mx2, 4)
 write.table(mx1, "cache/teo_parents_errmx.csv", sep=",", row.names=TRUE, quote=FALSE)
 write.table(mx2, "cache/teo_kids_errmx.csv", sep=",", row.names=TRUE, quote=FALSE)
 
+
+pmx <- read.csv("cache/teo_parents_errmx.csv")
+kmx <- read.csv("cache/teo_kids_errmx.csv")
