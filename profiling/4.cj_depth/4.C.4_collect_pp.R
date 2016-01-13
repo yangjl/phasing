@@ -15,6 +15,12 @@ ppr2 <- get_pp(path="largedata/cjmasked/obs2", pattern="PC_.*.csv", chunk_inc=10
 #[1] 1130
 save(file="largedata/cjmasked/R2_pp21.RData", list="ppr2")
 
+source("lib/get_pp.R")
+ppr3 <- get_pp(path="largedata/cjmasked/obs3", pattern="PC_.*.csv", chunk_inc=100, imp68)
+#[1] 1130
+files <- list.files(path="largedata/cjmasked/obs3", pattern="PC_.*.csv")
+save(file="largedata/cjmasked/R3_pp23.RData", list="ppr3")
+
 
 
 
