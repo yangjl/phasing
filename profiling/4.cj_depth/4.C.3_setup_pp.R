@@ -62,6 +62,13 @@ files <- list.files(path="largedata/cjmasked/obs3", pattern="RData", full.names=
 df <- data.frame(id=1:length(files), file=files)
 write.table(df, "largedata/cjmasked/pp_files.csv", sep=",", row.names=FALSE)
 
+file1 <- list.files(path="largedata/cjmasked/obs3", pattern="PC_.*.csv", full.names=TRUE)
+file1 <- gsub("csv", "RData", file1)
+file2 <- list.files(path="largedata/cjmasked/obs3", pattern="PC_.*.RData", full.names=TRUE)
+file <- file2[!(file2 %in% file1)]
+df <- data.frame(id=1:length(file), file=file)
+write.table(df, "largedata/cjmasked/pp_files.csv", sep=",", row.names=FALSE)
+
 #850
 #$SLURM_ARRAY_TASK_ID $SLURM_JOB_ID
 source("~/Documents/Github/zmSNPtools/Rcodes/set_arrayjob.R")
@@ -82,3 +89,14 @@ set_arrayjob(shid="largedata/scripts/run_pp33.sh",
              arrayjobs="601-850",
              wd=NULL, jobid="pp33", email="yangjl0930@gmail.com")
 ###>>> RUN: sbatch -p bigmemm largedata/scripts/run_pp33.sh
+
+set_arrayjob(shid="largedata/scripts/run_pp36.sh",
+             shcode='R --no-save "--args ${SLURM_ARRAY_TASK_ID}" < profiling/4.cj_depth/4.C.2_run_phase_parent.R',
+             arrayjobs="1-20",
+             wd=NULL, jobid="pp36", email="yangjl0930@gmail.com")
+###>>> RUN: sbatch -p bigmemm largedata/scripts/run_pp34.sh
+set_arrayjob(shid="largedata/scripts/run_pp37.sh",
+             shcode='R --no-save "--args ${SLURM_ARRAY_TASK_ID}" < profiling/4.cj_depth/4.C.2_run_phase_parent.R',
+             arrayjobs="21-53",
+             wd=NULL, jobid="pp37", email="yangjl0930@gmail.com")
+###>>> RUN: sbatch -p bigmemm largedata/scripts/run_pp34.sh
