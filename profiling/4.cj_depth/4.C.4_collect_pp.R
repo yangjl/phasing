@@ -23,12 +23,10 @@ ppr3 <- get_pp(path="largedata/cjmasked/obs3", pattern="PC_.*.csv", chunk_inc=10
 save(file="largedata/cjmasked/R3_pp23.RData", list="ppr3")
 
 
-
-
-ob1 <- load("largedata/lcache/R1_pp24.RData")
-ob2 <- load("largedata/lcache/R2_pp21.RData")
-pp68 <- c(pp24, ppr2, ppr3)
-save(file="largedata/lcache/teo_pp68.RData", list="pp68")
+ob1 <- load("largedata/cjmasked/R1_pp24.RData")
+ob2 <- load("largedata/cjmasked/R2_pp21.RData")
+pp68 <- c(ppr1, ppr2, ppr3)
+save(file="largedata/cjmasked/teo_masked_pp68.RData", list="pp68")
 
 
 

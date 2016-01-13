@@ -20,7 +20,7 @@ geno <- as.data.frame(geno)
 kerr <- read.csv("cache/teo_kids_errmx.csv")
 probs <- error_probs(mx=kerr, merr=1)
 
-o <- load("largedata/lcache/teo_pp68.RData")
+o <- load("largedata/cjmasked/teo_masked_pp68.RData")
 
 ped <- read.table("data/parentage_info.txt", header =TRUE)
 ped[, 1:3] <- apply(ped[, 1:3], 2, as.character )
