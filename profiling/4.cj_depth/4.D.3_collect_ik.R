@@ -24,7 +24,6 @@ get_ik <- function(path="largedata/ik", pattern="kid_geno"){
 ikgeno <- get_ik(path="largedata/cjmasked/ik", pattern="kid_geno")
 write.table(ikgeno, "largedata/cjmasked/ikgeno_all.csv", sep=",", row.names=FALSE, quote=FALSE)
 
-names(ikgeno) <- gsub("\\.", ":", names(ikgeno))
 
 
 #####################################################################
@@ -74,6 +73,9 @@ check_ik_error <- function(submsk, subgeno, dp, ikgeno, DP=10){
 ################################
 library(data.table, lib="~/bin/Rlib/")
 #### read in all the required data
+ikgeno <- fread("largedata/cjmasked/ikgeno_all.csv")
+names(ikgeno) <- gsub("\\.", ":", names(ikgeno))
+
 depth <- fread("largedata/iplantdata/depth.txt", header=TRUE)
 depth <- as.data.frame(depth)
 
@@ -84,15 +86,17 @@ msk <- fread("largedata/lcache/teo_masked.txt")
 msk <- as.data.frame(msk)
 
 ikgeno2 <- merge(geno[,1:2], ikgeno, by="snpid", sort = FALSE)
-ikgeno <- ikgeno2[, -1]
+ikgeno <- ikgeno2[, -2]
 
-submsk=msk[, c("snpid", names(ikgeno))]
-subgeno=geno[, c("snpid", names(ikgeno))]
+
+###########
+submsk <- msk[, names(ikgeno)]
+subgeno <- geno[, names(ikgeno)]
 
 ids <- names(depth)[names(depth) %in% names(ikgeno)]
-dp=depth[, c("ID", ids)]
+dp <- depth[, c("ID", ids)]
 
 res <- check_ik_error(submsk, subgeno, dp, ikgeno, DP=10)
 res[is.na(res)] <- 0
-write.table(res, "cache/err_masked.csv", sep=",", row.names=FALSE, quote=FALSE)
+write.table(res, "cache/kid_err_masked.csv", sep=",", row.names=FALSE, quote=FALSE)
 

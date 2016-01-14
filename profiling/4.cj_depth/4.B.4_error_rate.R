@@ -85,12 +85,13 @@ res[, 7:ncol(res)][res[, 7:ncol(res)] ==0 ] <- 1e-6
 
 pdf("graphs/teo_masked_err.pdf", width=5, height=5)
 par(mfrow=c(1,1))
-plot(x=res$totkids, y= log10(res$toter), type="p", col="black", pch=16, main="Parental Imputing",
+plot(x=res$totkids, y= log10(res$er2), type="p", col="green", cex=0.6, pch=16, main="Parental Imputing",
      xlab="family size", ylab="Imputing Error (log10)", ylim=c(-6.5, 2))
 
-points(res$totkids, y= log10(res$er0), pch=16, col="red")
+points(res$totkids, y= log10(res$er0), pch=16, cex=0.6,  col="red")
+#points(res$totkids, y= log10(res$er1), pch=16, col="blue")
 points(res$totkids, y= log10(res$er1), pch=16, col="blue")
-points(res$totkids, y= log10(res$er2), pch=16, col="green")
+points(x=res$totkids, y= log10(out$toter), pch=16, cex=0.6, col="black")
 
 abline(h=-1, col="black", lwd=2, lty=2)
 abline(h=-2, col="red", lwd=2, lty=2)

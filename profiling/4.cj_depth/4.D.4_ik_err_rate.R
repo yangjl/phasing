@@ -3,7 +3,7 @@
 
 #library(imputeR)
 ####################################################
-res0 <- read.csv("cache/err_masked.csv")
+res0 <- read.csv("cache/kid_err_masked.csv")
 
 ped <- read.table("data/parentage_info.txt", header=TRUE)
 ped[, 1:3] <- apply(ped[, 1:3], 2, as.character)
@@ -22,16 +22,17 @@ res <- res[order(res$avg),]
 
 
 
-res[, 7:ncol(res)][res[, 7:ncol(res)] ==0 ] <- 1e-6
+res[, 7:ncol(res)][res[, 7:ncol(res)] ==0 ] <- 1e-4
 
-pdf("graphs/teo_masked_err.pdf", width=5, height=5)
+pdf("graphs/teo_masked_kid_err.pdf", width=5, height=5)
 par(mfrow=c(1,1))
-plot(x=res$totkids, y= log10(res$toter), type="p", col="black", pch=16, main="Parental Imputing",
-     xlab="family size", ylab="Imputing Error (log10)", ylim=c(-6.5, 2))
+plot(x=res$avg, y= log10(res$er2), type="p", col="green", pch=16, cex=0.6, main="Kids (N=4,762)",
+     xlab="Avg parental family size", ylab="Imputing Error (log10)", ylim=c(-4.5, 2))
 
-points(res$totkids, y= log10(res$er0), pch=16, col="red")
-points(res$totkids, y= log10(res$er1), pch=16, col="blue")
-points(res$totkids, y= log10(res$er2), pch=16, col="green")
+points(res$avg, y= log10(res$er0), pch=16, cex=0.6, col="red")
+points(res$avg, y= log10(res$er1), pch=16, cex=0.6, col="blue")
+points(res$avg, y= log10(res$toter), pch=16, cex=0.6, col="black")
+#points(res$totkids, y= log10(res$er1), pch=16, col="blue")
 
 abline(h=-1, col="black", lwd=2, lty=2)
 abline(h=-2, col="red", lwd=2, lty=2)
@@ -40,24 +41,8 @@ legend("topright", col=c("black", "red", "blue", "green"), pch=16,
 dev.off()
 
 ##############################################
-res <- read.csv("cache/err_masked.csv")
+res <- read.csv("cache/kid_err_masked.csv")
 
-ped <- read.table("data/parentage_info.txt", header=TRUE)
-ped[, 1:3] <- apply(ped[, 1:3], 2, as.character)
-pinfo <- pedinfo(ped)
-res <- merge(pinfo, res, by.x="founder", "pid")
-names(res)[4] <- "totkids"
-
-
-mx1 <- matrix(c(1-mean(res$er0), mean(res$er01), mean(res$er02),
-                mean(res$er10), 1-mean(res$er1), mean(res$er12),
-                mean(res$er20), mean(res$er21), 1-mean(res$er2)),
-              byrow=T,nrow=3,ncol=3)
-rownames(mx1) <- c("g0", "g1", "g2")
-colnames(mx1) <- c("ob0", "ob1", "ob2")
-mx1 <- round(mx1,4)
-
-res <- subset(res, totkids > 20)
 mx1 <- matrix(c(1-mean(res$er0), mean(res$er01), mean(res$er02),
                 mean(res$er10), 1-mean(res$er1), mean(res$er12),
                 mean(res$er20), mean(res$er21), 1-mean(res$er2)),
