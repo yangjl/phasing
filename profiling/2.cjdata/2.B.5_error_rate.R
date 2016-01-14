@@ -3,92 +3,53 @@
 
 
 library("data.table", lib="~/bin/Rlib")
-mx <- fread("largedata/lcache/teo_recoded.txt")
-mx <- as.data.frame(mx)
-
-imp <- fread("largedata/ip/imputed_parents.csv", sep=",")
-imp <- as.data.frame(imp)
+library("imputeR")
+geno <- fread("largedata/lcache/teo_recoded.txt")
+geno <- as.data.frame(geno)
 
 ped <- read.table("data/parentage_info.txt", header=TRUE)
 ped[, 1:3] <- apply(ped[, 1:3], 2, as.character)
 pinfo <- pedinfo(ped)
-pinfo <- subset(pinfo, nselfer > 30)
-pinfo$founder <- as.character(pinfo$founder)
 
-############
-out <- imp_checking(imp, mx, ped, depth_cutoff=10)
-write.table(out, "cache/imp_err.csv", sep=",", row.names=FALSE, quote=FALSE)
+##### round1 self > 40, depth>10
+imp68 <- read.csv("cache/imp68.csv")
+names(imp68) <- gsub("\\.", ":", names(imp68))
 
-imp_checking <- function(imp, mx, ped, depth_cutoff=10){
-    res <- pinfo
-    res$miss <- -9
-    res$gbs0 <- -9
-    res$gbs1 <- -9
-    res$gbs2 <- -9
-    res$call0 <- -9
-    res$call1 <- -9
-    res$call2 <- -9
-    res$err0 <- -9
-    res$err1 <- -9
-    res$err2 <- -9
-    res$err <- -9
-    for(i in 1:nrow(pinfo)){
-        focalp <- pinfo$founder[i]
-        kids <- subset(ped, parent1 == focalp & parent2 == focalp)$proid
-        kidgeno <- mx[, c("snpid", focalp, kids)]
-        message(sprintf("###>>> founder [ %s ] has [ %s ] selfed kids, [ %s ] selected!", 
-                        focalp, pinfo$nselfer[i], length(kids)))
-        
-        subgeno <- merge(snpinfo, kidgeno, by="snpid")
-        #sum(subgeno$major.x != subgeno$major.y)
-        pgeno <- imp[, c("snpid", focalp)]
-        names(pgeno)[2] <- "ip"
-        subgeno <- merge(pgeno, subgeno, by="snpid")
-        
-        subgeno$count0 <- apply(subgeno[, 11:ncol(subgeno)], 1, function(x) sum(x==0))
-        subgeno$count1 <- apply(subgeno[, 11:ncol(subgeno)], 1, function(x) sum(x==1))
-        subgeno$count2 <- apply(subgeno[, 11:ncol(subgeno)], 1, function(x) sum(x==2))
-        subgeno$count3 <- apply(subgeno[, 11:ncol(subgeno)], 1, function(x) sum(x==3))
-        
-        res$miss[i] <- sum(subgeno[,10] == 3)
-        res$gbs0[i] <- sum(subgeno[,10] == 0)
-        res$gbs1[i] <- sum(subgeno[,10] == 1)
-        res$gbs2[i] <- sum(subgeno[,10] == 2)
-        res$call0[i] <- sum(subgeno$ip == 0)
-        res$call1[i] <- sum(subgeno$ip == 1)
-        res$call2[i] <- sum(subgeno$ip == 2)
-        
-        t1 <- subset(subgeno,  count0 > depth_cutoff & count1 == 0 & count2 == 0)
-        res$err0[i] <- sum(t1$ip != 0)/length(t1$ip)
+if(sum(geno$snpid != row.names(imp68)) >0) stop("!!! ERROR")
+geno[, names(imp68)] <- imp68
 
-        t2 <- subset(subgeno,  count0 == 0 & count1 == 0 & count2 > depth_cutoff)
-        res$err2[i] <- sum(t2$ip != 2)/length(t2$ip)
-        
-        t3 <- subset(subgeno,  count0 > depth_cutoff & count2 > depth_cutoff)
-        res$err1[i] <- sum(t3$ip != 1)/length(t3$ip)
-        
-        res$err[i] <- (sum(t1$ip != 0) + sum(t2$ip != 2) + sum(t3$ip != 1))/(length(t1$ip) + length(t2$ip) + length(t3$ip))
-    }
-    return(res)
-}
 
-###############
-out <- read.csv("cache/imp_err.csv")
+####################################################
+iperr <- estimate_error(geno, ped, self_cutoff=30, depth_cutoff=10, est_kids = FALSE)
+iperr <- merge(pinfo, iperr, by.x="founder", by.y="fam")
+write.table(iperr, "cache/post_iper35.csv", sep=",", row.names=FALSE, quote=FALSE)
 
+
+####################################################
+out <- read.csv("cache/post_iper35.csv")
+out[, 5:13][out[, 5:13] ==0 ] <- 1e-6
 
 pdf("graphs/teo_ip_err.pdf", width=5, height=5)
 par(mfrow=c(1,1))
-plot(x=out$nselfer, y= log10(out$err), type="p", col="black", pch=16, main="Parental Imputing",
-     xlab="family size", ylab="Imputing Error (log10)", xlim=c(20,100), ylim=c(-6,2))
+plot(x=1, y= 1, type="n", col="black", pch=16, main="Parents (N=35) Imputation",
+     xlab="Number of selfed kids", ylab="Imputing Error (log10)", xlim=c(20,100), ylim=c(-6,2))
 
-points(out$nselfer, y= log10(out$err0), pch=16, col="red")
-points(out$nselfer, y= log10(out$err1), pch=16, col="blue")
-points(out$nselfer, y= log10(out$err2), pch=16, col="green")
+points(out$nselfer, y= log10(out$er0), pch=16, col="red")
+points(out$nselfer, y= log10(out$er1), pch=16, col="blue")
+points(out$nselfer, y= log10(out$er2), pch=16, col="green")
 
-abline(h=-1, col="red", lwd=2, lty=2)
-legend("topright", col=c("black", "red", "blue", "green"), pch=16,
-       legend=c("overall", "major (0)", "het (1)", "minor (2)"))
+abline(h=-2, col="red", lwd=2, lty=2)
+legend("topright", col=c( "red", "blue", "green"), pch=16,
+       legend=c("major (0)", "het (1)", "minor (2)"))
 dev.off()
 
+####################################################
+per <- out
+mx1 <- matrix(c(1-mean(per$er0), mean(per$er01), mean(per$er02),
+                mean(per$er10), 1-mean(per$er1), mean(per$er12),
+                mean(per$er20), mean(per$er21), 1-mean(per$er2)),
+              byrow=T,nrow=3,ncol=3)
+rownames(mx1) <- c("g0", "g1", "g2")
+colnames(mx1) <- c("ob0", "ob1", "ob2")
+mx1 <- round(mx1,4)
 
-cor(imp$PC_I58_ID1_1, imp$PC_I58_ID2_mrg)

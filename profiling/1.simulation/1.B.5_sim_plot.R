@@ -3,23 +3,19 @@
 ### plot simulation results
 
 ### plot ###############################################
-res1 <- read.csv("cache/pp_self_10000loci.csv")
-res1$size <- as.numeric(as.character(gsub("size", "", res1$type)))
-res1 <- res1[order(res1$size), ]
+res <- read.csv("cache/pp_sim_1k.csv")
+
+res1 <- subset(res, type=="rate1")
+res1 <- res1[order(res1$size),]
 lo1 <- loess(res1$rate~res1$size)
 
-res5 <- read.csv("cache/pp_10kloci_rate5.csv")
-res5$size <- gsub(".*//|_oc_10k.*", "", res5$file)
-res5$size <- as.numeric(as.character(gsub("size", "", res5$size)))
-res5 <- res5[order(res5$size),]
-lo5 <- loess(res5$rate~res5$size)
-
-
-res0 <- read.csv("cache/simip_10000loci_ocphased_rate0.csv")
-res0$size <- gsub(".*//|_ocphased.*", "", res0$file)
-res0$size <- as.numeric(as.character(gsub("size", "", res0$size)))
+res0 <- subset(res, type=="rate0")
 res0 <- res0[order(res0$size),]
 lo0 <- loess(res0$rate~res0$size)
+
+res5 <- subset(res, type=="rate0.5")
+res5 <- res5[order(res5$size),]
+lo5 <- loess(res5$rate~res5$size)
 
 
 pdf("graphs/sim_pp.pdf", width=5, height=5)

@@ -6,7 +6,7 @@ library(imputeR)
 sim_ip <- function(numloci=1000, selfrate=1, outfile=NULL){
     
     
-    perr <- gen_error_mat(major.error=0.01, het.error=0.6, minor.error=0.01)
+    perr <- t(gen_error_mat(major.error=0.01, het.error=0.6, minor.error=0.01))
     kerr <- perr
     
     out <- data.frame()
@@ -14,7 +14,7 @@ sim_ip <- function(numloci=1000, selfrate=1, outfile=NULL){
         GBS.array <- sim.array(size.array=SIZE, numloci, hom.error = 0.01, het.error = 0.6, selfing=selfrate,
                                rec = 0.25, imiss = 0.5, misscode = 3)
         #GBS.array <- true_other_parents(GBS.array)
-        #GBS.array@pedigree$true_p <- truep
+        GBS.array@pedigree$true_p <- truep
         
         inferred_geno_likes <- impute_parent(GBS.array, perr, kerr)
         res <- parentgeno(inferred_geno_likes, oddratio=0.6931472, returnall=TRUE)
@@ -54,7 +54,8 @@ write.table(tem2, "cache/simip_out2.csv", sep=",", row.names=FALSE, quote=FALSE)
 set.seed(12345)
 tem3 <- data.frame()
 for(k in 1:5){
-    out3 <- sim_ip(numloci=1000, selfrate=0, outfile="cache/simip_out3.csv")
+    
+    out3 <- sim_ip(numloci=100, selfrate=0, outfile="cache/simip_out3.csv")
     out3$rand <- k
     tem3 <- rbind(tem3, out3)
 }
