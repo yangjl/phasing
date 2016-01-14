@@ -14,26 +14,12 @@ ped[, 1:3] <- apply(ped[, 1:3], 2, as.character)
 pinfo <- pedinfo(ped)
 
 #### update geno matrix
-ip13 <- read.csv("largedata/bode/ip/round1_ip13.csv", sep=",", header=TRUE)
-names(ip13) <- gsub("\\.", ":", names(ip13))
-names(ip13) <- gsub("^X", "", names(ip13))
-#geno <- subset(geno, snpid %in% row.names(ip13))
-geno[, names(ip13)] <- ip13
-
-ip15 <- read.csv("largedata/bode/ip/round2_ip15.csv")
-names(ip15) <- gsub("\\.", ":", names(ip15))
-names(ip15) <- gsub("^X", "", names(ip15))
-#geno <- subset(geno, snpid %in% row.names(ip13))
-geno[, names(ip15)] <- ip15
-
-ip16 <- read.csv("largedata/bode/ip/round3_ip16.csv")
-names(ip16) <- gsub("\\.", ":", names(ip16))
-names(ip16) <- gsub("^X", "", names(ip16))
-#geno <- subset(geno, snpid %in% row.names(ip13))
-geno[, names(ip16)] <- ip16
-
-ip44 <- cbind(ip13, ip15, ip16)
-write.table(ip44, "cache/bode_imp44.csv", sep=",", quote=FALSE)
+ip53 <- read.csv("largedata/bode/ip53_imputed.csv", sep=",", header=TRUE)
+names(ip53) <- gsub("\\.", ":", names(ip53))
+names(ip53) <- gsub("^X", "", names(ip53))
+if(sum(geno$snpid != row.names(ip53)) > 0) stop("!!! ERRROR !!!")
+dim(geno[, names(ip53)])
+geno[, names(ip53)] <- ip53
 
 ##### round1 self > 40
 err <- estimate_error(geno, ped, self_cutoff=30, 
@@ -65,4 +51,3 @@ legend("topright", col=c("black", "red", "blue", "green"), pch=16,
 dev.off()
 
 
-cor(imp$PC_I58_ID1_1, imp$PC_I58_ID2_mrg)

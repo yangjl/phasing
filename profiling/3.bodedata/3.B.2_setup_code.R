@@ -52,4 +52,16 @@ set_arrayjob(shid="largedata/scripts/ip3.sh",
 ###>>> [ note: --mem=16000, 16G memory ]
 ###>>> RUN: sbatch -p bigmemm largedata/scripts/ip3.sh
 
+files <- list.files(path="largedata/bode/obs4", pattern="RData", full.names=TRUE)
+df <- data.frame(id=1:length(files), file=files)
+write.table(df, "largedata/bode_obs_files.csv", sep=",", row.names=FALSE)
+
+#$SLURM_ARRAY_TASK_ID $SLURM_JOB_ID
+source("~/Documents/Github/zmSNPtools/Rcodes/set_arrayjob.R")
+# run array job of impute_parents
+set_arrayjob(shid="largedata/scripts/ip4.sh",
+             shcode='R --no-save "--args ${SLURM_ARRAY_TASK_ID}" < profiling/3.bodedata/3.B.1_code_impute_parent.R',
+             arrayjobs="1-90",
+             wd=NULL, jobid="ip4", email="yangjl0930@gmail.com")
+###>>> RUN: sbatch -p serial largedata/scripts/ip4.sh
 

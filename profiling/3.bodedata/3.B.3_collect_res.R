@@ -47,4 +47,19 @@ for(i in 1:10){
 }
 write.table(imp, "largedata/bode/ip/round3_ip16.csv", sep=",", row.names=TRUE, quote=FALSE)
 
+### round3
+imp <- data.frame()
+for(i in 1:10){
+    tem <- col_snpdf(chri=i, verbose=TRUE, filepath="largedata/bode/obs4", outfile=NULL)
+    imp <- rbind(imp, tem)
+}
+write.table(imp, "largedata/bode/ip/round4_ip9.csv", sep=",", row.names=TRUE, quote=FALSE)
 
+######################################################
+ip1 <- read.csv("largedata/bode/ip/round1_ip13.csv")
+ip2 <- read.csv("largedata/bode/ip/round2_ip15.csv")
+ip3 <- read.csv("largedata/bode/ip/round3_ip16.csv")
+ip4 <- read.csv("largedata/bode/ip/round4_ip9.csv")
+
+ip53 <- cbind(ip1, ip2, ip3, ip4)
+write.table(ip53, "largedata/bode/ip53_imputed.csv", sep=",", row.names=TRUE, quote=FALSE)

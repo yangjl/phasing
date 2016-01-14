@@ -47,7 +47,6 @@ new_pedinfo <- function(ped, ip=names(ip24), tot_cutoff=40, getinfo=TRUE){
     }
 }
 
-
 pinfo3 <- new_pedinfo(ped, ip=c(names(ip13), names(ip15)), tot_cutoff=0, getinfo=TRUE)
 subped <- new_pedinfo(ped, ip=c(names(ip13), names(ip15)), tot_cutoff=0, getinfo=FALSE)
 
@@ -56,5 +55,5 @@ pargeno <- data.frame(parentid= as.character(unique(c(ped$parent1, ped$parent2))
 pargeno[pargeno$parentid %in% c(names(ip13), names(ip15)), 2] <- 1
 
 #pargeno <- subset(pargeno, pargeno[,2] >0)
-create_array(geno, ped=subped, pargeno, pinfo=pinfo3, snpinfo=snpinfo, 
-             outdir="largedata/bode/obs3", bychr=TRUE)
+create_array(geno, ped=subped, pargeno, pp=NULL, pinfo=pinfo3,
+             outdir="largedata/bode/obs3", bychr=TRUE, bychunk=NULL)
