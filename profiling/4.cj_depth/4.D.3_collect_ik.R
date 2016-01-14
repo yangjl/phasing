@@ -5,7 +5,7 @@
 
 get_ik <- function(path="largedata/ik", pattern="kid_geno"){
     files <- list.files(path, pattern, full.names = TRUE)
-    
+    message(sprintf("### found [ %s ] files!", length(files)))
     kgeno <- read.csv(files[1])
     for(i in 2:length(files)){
         ktem <- read.csv(files[i])
@@ -20,76 +20,79 @@ get_ik <- function(path="largedata/ik", pattern="kid_geno"){
     return(kgeno)
 }
 
+##############
+ikgeno <- get_ik(path="largedata/cjmasked/ik", pattern="kid_geno")
+write.table(ikgeno, "largedata/cjmasked/ikgeno_all.csv", sep=",", row.names=FALSE, quote=FALSE)
 
-ikgeno <- get_ik(path="largedata/ik", pattern="kid_geno")
+names(ikgeno) <- gsub("\\.", ":", names(ikgeno))
 
 
-#library(imputeR)
+#####################################################################
+check_ik_error <- function(submsk, subgeno, dp, ikgeno, DP=10){
+
+    if(sum(submsk$snpid != ikgeno$snpid) > 0) stop("!!! ID not identical !!!")
+    if(sum(subgeno$snpid != ikgeno$snpid) > 0) stop("!!! ID not identical !!!")
+    if(sum(dp$ID != ikgeno$snpid) > 0) stop("!!! ID not identical !!!")
+    
+    out <- data.frame()
+    for(i in 2:ncol(dp)){
+        pid <- names(dp)[i]
+        idx1 <- which(dp[, pid] >= DP)
+        idx2 <- which(submsk[, pid] == 3 )
+        ### find the idx for masked sites
+        idx <- idx1[idx1 %in% idx2]
+        
+        if(length(idx) > 0){
+            geno1 <- ikgeno[idx, pid]
+            geno2 <- subgeno[idx, pid]
+            
+            d <- data.frame(g1=ikgeno[idx, pid], g2=subgeno[idx, pid])
+            d <- subset(d, g1 != 3)
+            
+            er01 <- nrow(subset(d, g2 ==0 & g1 == 1))
+            er02 <- nrow(subset(d, g2 ==0 & g1 == 2))
+            er10 <- nrow(subset(d, g2 ==1 & g1 == 0))
+            er12 <- nrow(subset(d, g2 ==1 & g1 == 2))
+            er20 <- nrow(subset(d, g2 ==2 & g1 == 0))
+            er21 <- nrow(subset(d, g2 ==2 & g1 == 1))
+            
+            res <- data.frame(pid=pid, tot=nrow(d), miss=sum(ikgeno[idx, pid]==3), 
+                              toter= (er01+er02+er10+er12+er20+er21)/nrow(d),
+                              er01=er01/sum(d$g2==0), er02=er02/sum(d$g2==0), 
+                              er10=er10/sum(d$g2==1), er12=er12/sum(d$g2==1), 
+                              er20=er20/sum(d$g2==2), er21=er21/sum(d$g2==2)
+            )
+            out <- rbind(out, res)
+        }
+    }
+    out$er0 <- out$er01 + out$er02
+    out$er1 <- out$er10 + out$er12
+    out$er2 <- out$er20 + out$er21
+    return(out)
+}
+
+################################
 library(data.table, lib="~/bin/Rlib/")
+#### read in all the required data
+depth <- fread("largedata/iplantdata/depth.txt", header=TRUE)
+depth <- as.data.frame(depth)
 
-imp68 <- read.csv("cache/imp68.csv")
+geno <- fread("largedata/lcache/teo_recoded.txt")
+geno <- as.data.frame(geno)
 
-ipgeno <- merge(imp68, ikgeno, by.x="row.names", by.y="snpid", sort=FALSE)
-names(ipgeno)[1] <- "snpid"
-names(ipgeno) <- gsub("\\.", ":", names(ipgeno))
+msk <- fread("largedata/lcache/teo_masked.txt")
+msk <- as.data.frame(msk)
 
-write.table(ipgeno, "largedata/teo_imputeR_01112016.txt", sep="\t", row.names=FALSE, quote=FALSE)
+ikgeno2 <- merge(geno[,1:2], ikgeno, by="snpid", sort = FALSE)
+ikgeno <- ikgeno2[, -1]
 
+submsk=msk[, c("snpid", names(ikgeno))]
+subgeno=geno[, c("snpid", names(ikgeno))]
 
-ped <- read.table("data/parentage_info.txt", header =TRUE)
-ped[, 1:3] <- apply(ped[, 1:3], 2, as.character)
+ids <- names(depth)[names(depth) %in% names(ikgeno)]
+dp=depth[, c("ID", ids)]
 
-library(imputeR)
-posterr <- estimate_error(geno=ipgeno, ped, self_cutoff=30, depth_cutoff=10, est_kids = TRUE)
-perr <- posterr[[1]]
-kerr <- posterr[[2]]
-kerr$er0 <- kerr$kerr01 + kerr$kerr02
-kerr$er1 <- kerr$kerr10 + kerr$kerr12
-kerr$er2 <- kerr$kerr20 + kerr$kerr21
-kerr$toter <- (kerr$er0*kerr$nmaj + kerr$er1*kerr$nhet + kerr$er2*kerr$nmnr)/(kerr$nmaj + kerr$nhet + kerr$nmnr)
-
-write.table(perr, "cache/post_perr.csv", sep=",", row.names=FALSE, quote=FALSE)
-write.table(kerr, "cache/post_kerr.csv", sep=",", row.names=FALSE, quote=FALSE)
-
-
-
-########################
-kerr <- read.csv("cache/post_kerr.csv")
-ped <- read.table("data/parentage_info.txt", header=TRUE)
-ped[, 1:3] <- apply(ped[, 1:3], 2, as.character)
-pinfo <- pedinfo(ped)
-
-out <- merge(kerr, ped, by.x="kid", by.y="proid")
-out <- merge(out, pinfo, by.x="parent1", by.y="founder")
-out <- merge(out, pinfo, by.x="parent2", by.y="founder")
-out$nselfer <- (out$nselfer.x + out$nselfer.y)/2
-
-pdf("graphs/teo_ik_err.pdf", width=5, height=5)
-par(mfrow=c(1,1))
-plot(out$nselfer, y= log10(out$er2), pch=16, col="green", cex=0.6, type="p",main="Kids (N=1,291) Imputation",
-     xlab="Mean Number of selfed kids in Parental families", ylab="Imputing Error (log10)", xlim=c(30,80), ylim=c(-6,2))
-
-points(out$nselfer, y= log10(out$er0), pch=16,cex=0.6, col="red")
-points(out$nselfer, y= log10(out$er1), pch=16, cex=0.6,col="blue")
-points(x=out$nselfer, y= log10(out$toter), pch=16,cex=0.6, col="black")
-
-abline(h=-2, col="red", lwd=2, lty=2)
-legend("topright", col=c("black", "red", "blue", "green"), pch=16,
-       legend=c("overall", "major (0)", "het (1)", "minor (2)"))
-dev.off()
-
-
-##################
-kerr <- read.csv("cache/post_kerr.csv")
-
-
-mx2 <- matrix(c(1-mean(kerr$er0), mean(kerr$kerr01), mean(kerr$kerr02),
-                mean(kerr$kerr10), 1-mean(kerr$er1), mean(kerr$kerr12),
-                mean(kerr$kerr20), mean(kerr$kerr21), 1-mean(kerr$er2)),
-              byrow=T,nrow=3,ncol=3)
-rownames(mx2) <- c("g0", "g1", "g2")
-colnames(mx2) <- c("ob0", "ob1", "ob2")
-mx2 <- round(mx2,6)
-
-
+res <- check_ik_error(submsk, subgeno, dp, ikgeno, DP=10)
+res[is.na(res)] <- 0
+write.table(res, "cache/err_masked.csv", sep=",", row.names=FALSE, quote=FALSE)
 
