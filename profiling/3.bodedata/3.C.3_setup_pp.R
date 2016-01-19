@@ -37,3 +37,9 @@ set_arrayjob(shid="largedata/scripts/runbode_pp22.sh",
              arrayjobs="801-1109",
              wd=NULL, jobid="pp22", email="yangjl0930@gmail.com")
 ###>>> RUN: sbatch -p bigmemm largedata/scripts/runbode_pp22.sh
+
+set_arrayjob(shid="largedata/scripts/runbode_pp23.sh",
+             shcode='R --no-save "--args ${SLURM_ARRAY_TASK_ID}" < profiling/3.bodedata/3.C.2_run_phase_parent.R',
+             arrayjobs="501-800",
+             wd=NULL, jobid="pp23", email="yangjl0930@gmail.com")
+###>>> RUN: sbatch -p bigmemm largedata/scripts/runbode_pp23.sh
