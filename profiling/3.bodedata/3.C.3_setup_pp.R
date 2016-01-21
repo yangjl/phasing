@@ -24,6 +24,17 @@ df <- data.frame(id=1:length(files), file=files)
 #1109
 write.table(df, "largedata/bode_pp_files.csv", sep=",", row.names=FALSE)
 
+files <- list.files(path="largedata/bode/obs2", pattern="RData", full.names=TRUE)
+df <- data.frame(id=1:length(files), file=files)
+#1109
+df$file <- as.character(df$file)
+csvs <- list.files(path="largedata/bode/obs2", pattern=".csv", full.names=TRUE)
+myf <- gsub("csv", "RData", csvs)
+myf <- df$file[!df$file %in% myf]
+df <- data.frame(id=1:length(myf), file=myf)
+write.table(df, "largedata/bode_pp_files.csv", sep=",", row.names=FALSE)
+
+
 #$SLURM_ARRAY_TASK_ID $SLURM_JOB_ID
 source("~/Documents/Github/zmSNPtools/Rcodes/set_arrayjob.R")
 set_arrayjob(shid="largedata/scripts/runbode_pp21.sh",
