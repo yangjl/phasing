@@ -4,46 +4,28 @@
 
 
 library(data.table, lib="~/bin/Rlib/")
-fgeno <- fread("largedata/teo_imputeR_01112016.txt")
-fgeno <- as.data.frame(fgeno)
 
-### before geno
-bgeno <- fread("largedata/lcache/teo_recoded.txt")
-bgeno <- as.data.frame(bgeno)
+fs <- list.files(path="largedata/cjmasked/FILLIN/", pattern="txt$", full.names=TRUE)
+for(i in 1:length(fs)){
+    fgeno <- fread(fs[i])
+    fgeno <- as.data.frame(fgeno)
+    
+    #############################
+    if(i == 1){
+        lmiss <- fgeno[, 1:2]
+        lmiss$mr <- apply(fgeno[, -1], 1, function(x){
+            sum(x==3) / length(x)
+        })
+    }else{
+        lmiss$mr <- apply(fgeno[, -1], 1, function(x){
+            sum(x==3) / length(x)
+        })
+    }
+    names(lmiss)[ncol(lmiss)] <- paste0("mr", i)
+    print(i)
+}
 
-############################
-mr <- apply(fgeno[, -1], 2, function(x){
-    sum(x==3)/length(x)
-})
-pmr <- data.frame(pid=names(mr), mr=mr)
-write.table(pmr, "cache/teo_imputeR_01112016_pmr.csv", sep=",", row.names=FALSE, quote=FALSE)
-
-mr2 <- apply(bgeno[, -1:-3], 2, function(x){
-    sum(x==3)/length(x)
-})
-pmr2 <- data.frame(pid=names(mr2), mr=mr2)
-write.table(pmr2, "cache/teo_raw_pmr.csv", sep=",", row.names=FALSE, quote=FALSE)
-
-#############################
-lmiss <- fgeno[, 1:2]
-lmiss$maf <- apply(fgeno[, -1], 1, function(x){
-    (2*sum(x==2) + sum(x==1)) / (2*length(x))
-})
-lmiss$mr <- apply(fgeno[, -1], 1, function(x){
-    sum(x==3) / length(x)
-})
-
-lmiss2 <- bgeno[, 1:3]
-lmiss2$maf <- apply(bgeno[, -1:-3], 1, function(x){
-    (2*sum(x==2) + sum(x==1)) / (2*length(x))
-})
-lmiss2$mr <- apply(bgeno[, -1:-3], 1, function(x){
-    sum(x==3) / length(x)
-})
-
-names(lmiss2)[4:5] <- c("maf0", "mr0")
-lmiss <- cbind(lmiss2, lmiss[, -2], by="snpid", sort=FALSE)
-write.table(lmiss[,-6], "cache/teo_imputeR_01112016_info.csv", sep=",", row.names=FALSE, quote=FALSE)
+write.table(lmiss[,-2], "cache/teo_fillin_info.csv", sep=",", row.names=FALSE, quote=FALSE)
 
 
 
