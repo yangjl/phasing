@@ -4,19 +4,19 @@
 library(imputeR)
 library(data.table, lib="~/bin/Rlib/")
 
-#### read in masked data
-geno <- fread("largedata/lcache/teo_masked.txt")
+### read genotype. snpinfo and pedigree data
+geno <- fread("largedata/lcache/land_recode.txt")
 geno <- as.data.frame(geno)
 
 ### updated geno matrix
-imp68 <- read.csv("largedata/cjmasked/ip68_masked.csv")
-names(imp68) <- gsub("\\.", ":", names(imp68))
-if(sum(geno$snpid != row.names(imp68)) >0) stop("!!! ERROR !!!")
-geno[, names(imp68)] <- imp68
+imp53 <- read.csv("largedata/bode/ip53_imputed.csv")
+names(imp53) <- gsub("\\.", ":", names(imp53))
+names(imp53) <- gsub("^X", "", names(imp53))
 
+if(sum(geno$snpid != row.names(imp53)) > 0) stop("!")
+dim(geno[, names(imp53)])
+geno[, names(imp53)] <- imp53
 
-ob1 <- load("largedata/cjmasked/R1_pp24.RData")
-ob2 <- load("largedata/cjmasked/R2_pp21.RData")
 
 #################################################
 ## 3rd round of imputation, with family > 40 selfed kids + outcrossed
@@ -41,21 +41,25 @@ new_pedinfo <- function(ped, ip=names(ip24), tot_cutoff=40, getinfo=TRUE){
     }
 }
 
-pp45 <- c(ppr1, ppr2)
-ped <- read.table("data/parentage_info.txt", header =TRUE)
+############
+ob1 <- load("largedata/bode/bode_R1_ppr1.RData")
+ob2 <- load("largedata/bode/bode_R2_ppr2.RData")
+pp28 <- c(ppr1, ppr2)
+
+ped <- read.table("cache/landrace_parentage_info.txt", header =TRUE)
 ped[, 1:3] <- apply(ped[, 1:3], 2, as.character)
 
-pinfo2 <- new_pedinfo(ped, ip=names(pp45), tot_cutoff=0, getinfo=TRUE)
-subped <- new_pedinfo(ped, ip=names(pp45), tot_cutoff=0, getinfo=FALSE)
+pinfo3 <- new_pedinfo(ped, ip=names(pp28), tot_cutoff=0, getinfo=TRUE)
+subped3 <- new_pedinfo(ped, ip=names(pp28), tot_cutoff=0, getinfo=FALSE)
 
 
 pargeno <- data.frame(parentid= as.character(unique(c(ped$parent1, ped$parent2))), true_p=0)
-pargeno[pargeno$parentid %in% names(pp45), 2] <- 1
+pargeno[pargeno$parentid %in% names(pp28), 2] <- 1
 
 
 #pargeno <- subset(pargeno, pargeno[,2] >0)
-create_array(geno, ped=subped, pargeno, pp=pp45, pinfo=pinfo2,
-             outdir="largedata/cjmasked/obs3", bychr=TRUE, bychunk=1000)
+create_array(geno, ped=subped3, pargeno, pp=pp28, pinfo=pinfo3,
+             outdir="largedata/bode/obs3", bychr=TRUE, bychunk=1000)
 
 
 
