@@ -26,16 +26,25 @@ write_subgeno <- function(geno, ped, ksize=10, outfile="out"){
 
 #### read in masked data
 library(data.table, lib="~/bin/Rlib/")
-geno <- fread("largedata/lcache/teo_masked.txt")
+library(imputeR)
+
+### read genotype. snpinfo and pedigree data
+geno <- fread("largedata/lcache/land_recode.txt")
 geno <- as.data.frame(geno)
-imp68 <- read.csv("largedata/cjmasked/ip68_masked.csv")
-names(imp68) <- gsub("\\.", ":", names(imp68))
-if(sum(geno$snpid != row.names(imp68)) >0) stop("!!! ERROR !!!")
-geno[, names(imp68)] <- imp68
+
+### updated geno matrix
+imp53 <- read.csv("largedata/bode/ip53_imputed.csv")
+names(imp53) <- gsub("\\.", ":", names(imp53))
+names(imp53) <- gsub("^X", "", names(imp53))
+
+if(sum(geno$snpid != row.names(imp53)) > 0) stop("!")
+dim(geno[, names(imp53)])
+geno[, names(imp53)] <- imp53
 
 
-ped <- read.table("data/parentage_info.txt", header =TRUE)
+ped <- read.table("cache/landrace_parentage_info.txt", header =TRUE)
+ped[, 1:3] <- apply(ped[, 1:3], 2, as.character)
 
 ###############
-write_subgeno(geno, ped, ksize=10, outfile="largedata/cjmasked/subgeno/kids")
+write_subgeno(geno, ped, ksize=10, outfile="largedata/bode/subgeno/kids")
 

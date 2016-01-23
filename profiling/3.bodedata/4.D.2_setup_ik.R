@@ -5,9 +5,9 @@
 
 
 
-files <- list.files(path="largedata/cjmasked/subgeno", pattern="csv$", full.names=TRUE)
+files <- list.files(path="largedata/bode/subgeno", pattern="csv$", full.names=TRUE)
 df <- data.frame(id=1:length(files), file=files)
-write.table(df, "largedata/cjmasked/ik_files.csv", sep=",", row.names=FALSE)
+write.table(df, "largedata/bode/ik_files.csv", sep=",", row.names=FALSE)
 ##481
 
 #$SLURM_ARRAY_TASK_ID $SLURM_JOB_ID

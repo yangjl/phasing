@@ -23,14 +23,16 @@ save(file="largedata/bode/bode_R3_ppr3.RData", list="ppr3")
 
 source("lib/get_pp.R")
 ppr4 <- get_pp(path="largedata/bode/obs4", pattern=".csv", chunk_inc=100, imp53)
-#888
-save(file="largedata/bode/bode_R3_ppr3.RData", list="ppr3")
+#506
+save(file="largedata/bode/bode_R4_ppr4.RData", list="ppr4")
 
 
-ob1 <- load("largedata/cjmasked/R1_pp24.RData")
-ob2 <- load("largedata/cjmasked/R2_pp21.RData")
-pp68 <- c(ppr1, ppr2, ppr3)
-save(file="largedata/cjmasked/teo_masked_pp68.RData", list="pp68")
+ob1 <- load("largedata/bode/bode_R1_ppr1.RData")
+ob2 <- load("largedata/bode/bode_R2_ppr2.RData")
+ob3 <- load("largedata/bode/bode_R3_ppr3.RData")
+ob4 <- load("largedata/bode/bode_R4_ppr4.RData")
+pp53 <- c(ppr1, ppr2, ppr3, ppr4)
+save(file="largedata/bode/landrace_pp53.RData", list="pp53")
 
 
 
