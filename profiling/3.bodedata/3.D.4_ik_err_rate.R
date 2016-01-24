@@ -1,8 +1,38 @@
 ### Jinliang Yang
 ### use impute_parent in CJ data
 
-#library(imputeR)
+library(imputeR)
+library(data.table, lib="~/bin/Rlib/")
+
 ####################################################
+ipgeno <- fread("largedata/landrace_imputeR_01232016.txt")
+ipgeno <- as.data.frame(ipgeno)
+
+ped <- read.table("cache/landrace_parentage_info.txt", header =TRUE)
+ped[, 1:3] <- apply(ped[, 1:3], 2, as.character)
+
+
+
+posterr <-  estimate_error(geno=ipgeno, ped, self_cutoff=30, depth_cutoff=10, check_kid_err = TRUE)
+perr <- posterr[[1]]
+kerr <- posterr[[2]]
+kerr$er0 <- kerr$kerr01 + kerr$kerr02
+kerr$er1 <- kerr$kerr10 + kerr$kerr12
+kerr$er2 <- kerr$kerr20 + kerr$kerr21
+kerr$toter <- (kerr$er0*kerr$nmaj + kerr$er1*kerr$nhet + kerr$er2*kerr$nmnr)/(kerr$nmaj + kerr$nhet + kerr$nmnr)
+
+write.table(perr, "cache/landrace_post_perr.csv", sep=",", row.names=FALSE, quote=FALSE)
+write.table(kerr, "cache/landrace_post_kerr.csv", sep=",", row.names=FALSE, quote=FALSE)
+
+
+
+
+
+
+
+
+
+
 res0 <- read.csv("cache/kid_err_masked.csv")
 
 ped <- read.table("data/parentage_info.txt", header=TRUE)
@@ -41,7 +71,7 @@ legend("topright", col=c("black", "red", "blue", "green"), pch=16,
 dev.off()
 
 ##############################################
-res <- read.csv("cache/kid_err_masked.csv")
+res <- read.csv("cache/landrace_post_kerr.csv")
 
 mx1 <- matrix(c(1-mean(res$er0), mean(res$er01), mean(res$er02),
                 mean(res$er10), 1-mean(res$er1), mean(res$er12),

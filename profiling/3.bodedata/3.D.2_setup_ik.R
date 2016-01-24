@@ -23,4 +23,10 @@ set_arrayjob(shid="largedata/scripts/run_ik2.sh",
              wd=NULL, jobid="ik2", email="yangjl0930@gmail.com")
 ###>>> RUN: sbatch -p bigmemm largedata/scripts/run_ik2.sh
 
-
+#$SLURM_ARRAY_TASK_ID $SLURM_JOB_ID
+source("~/Documents/Github/zmSNPtools/Rcodes/set_arrayjob.R")
+set_arrayjob(shid="largedata/scripts/run_ik83.sh",
+             shcode='R --no-save "--args ${SLURM_ARRAY_TASK_ID}" < profiling/3.bodedata/3.D.1_run_impute_kid.R',
+             arrayjobs="83",
+             wd=NULL, jobid="ik83", email="yangjl0930@gmail.com")
+###>>> RUN: sbatch -p bigmemm largedata/scripts/run_ik2.sh
