@@ -28,7 +28,7 @@ write.table(kerr, "cache/landrace_post_kerr.csv", sep=",", row.names=FALSE, quot
 
 kerr <- read.csv("cache/landrace_post_kerr.csv")
 
-
+terr <- read.csv("cache/post_kerr.csv")
 
 
 
