@@ -4,7 +4,7 @@
 
 library("data.table", lib="~/bin/Rlib")
 
-info <- fread("largedata/teo_updated/TeoCurated_20160215_AGPv2.hmp.info")
+info <- fread("largedata/teo_updated/teo_raw_biallelic.hmp.info")
 info <- as.data.frame(info)
 
 info$count <- nchar(info$alleles)
@@ -12,6 +12,27 @@ table(info$count)
 #     1      2      3      5      7      9 
 #251012   1209 597735 105369    361      4
 
+par(mfrow=c(1,2))
+hist(info$MAF)
+hist(info$missing)
+range(info$missing)
+
+
+code3 <- paste0("snpconvert -a largedata/teo_updated/teo_raw_biallelic.hmp.txt", 
+                " -i largedata/teo_updated/teo_raw_biallelic.hmp.info -s 12",
+                " -o largedata/teo_updated/teo_raw_biallelic_recoded_20160303_AGPv2.txt")
+
+source("~/Documents/Github/zmSNPtools/Rcodes/setUpslurm.R")
+setUpslurm(slurmsh="largedata/scripts/run_snpconvert.sh", codesh=code3, 
+           jobid="snpconvert", email="yangjl0930@gmail.com")
+
+
+
+
+
+
+
+################################
 sum(info$MAF == 0) #252221
 sum(info$count == 1) #[1]251012
 sum(is.na(info$alleles)) #1209
