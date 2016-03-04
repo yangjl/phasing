@@ -14,8 +14,9 @@ table(info$count)
 
 par(mfrow=c(1,2))
 hist(info$MAF)
+range(info$MAF) #0.005 0.500
 hist(info$missing)
-range(info$missing)
+range(info$missing) #[1] 0.00000 0.19996
 
 
 code3 <- paste0("snpconvert -a largedata/teo_updated/teo_raw_biallelic.hmp.txt", 

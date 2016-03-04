@@ -26,11 +26,11 @@ sum(info$count > 3) #129966
 
 flt <- subset(info, MAF > 0 & MAF < 1)
 #[1] 583994     16
-dim(subset(flt, MAF < 0.01)) #238809     16
-dim(subset(flt, MAF < 0.01))
-dim(subset(flt, missing > 0.8))
 
-flt <- subset(info, MAF > 0.01 & MAF < 1 & missing < 0.8 & chrom != 0)
+flt <- subset(info, MAF > 0 & MAF < 1 & missing < 0.1)
+
+flt <- subset(info, MAF > 0.005 & MAF < 1 & missing < 0.2 & chrom != 0)
+flt <- subset(info, MAF > 0.005 & MAF < 1 & missing < 0.1 & chrom != 0)
 dim(flt) #310885     16
 write.table(flt[, c(1:4,12:16)], "largedata/lcache/landrace_flt_maf01m8.txt", quote=FALSE, sep="\t", row.names=FALSE)
 
