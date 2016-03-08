@@ -5,7 +5,9 @@ library(imputeR)
 library(data.table, lib="~/bin/Rlib/")
 
 ### read genotype. snpinfo and pedigree data
-ped <- read.table("data/parentage_info.txt", header =TRUE)
+ped <- read.csv("data/Parentage_for_imputeR.csv")
+names(ped) <- c("proid", "parent1", "parent2")
+
 snpinfo <- read.csv("cache/snpinfo_self30.csv")
 geno <- fread("largedata/lcache/teo_recoded.txt")
 geno <- as.data.frame(geno)

@@ -19,7 +19,7 @@ write.table(snpinfo, "cache/snpinfo_self30.csv", sep=",", row.names=FALSE, quote
 
 snpinfo <- read.csv("cache/snpinfo_self30.csv")
 #################################################
-## First round of imputation, with family > 40 selfed kids
+## First round of imputation, with family > 30 selfed kids
 #mygeno <- mendelian_check(geno, ped, self_cutoff=30, depth_cutoff=10)
 pinfo <- pedinfo(ped)
 pinfo <- subset(pinfo, nselfer > 40)
