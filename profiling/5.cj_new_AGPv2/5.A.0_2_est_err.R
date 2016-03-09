@@ -4,12 +4,11 @@
 library(imputeR)
 library(data.table, lib="~/bin/Rlib/")
 
-ped <- read.table("data/parentage_info.txt", header =TRUE)
-ped[, 1:3] <- apply(ped[, 1:3], 2, as.character)
-
-
-geno <- fread("largedata/lcache/teo_recoded.txt")
+ped <- read.csv("data/Parentage_for_imputeR.csv")
+names(ped) <- c("proid", "parent1", "parent2")
+geno <- fread("largedata/teo_updated/teo_raw_biallelic_recoded_20160303_AGPv2.txt")
 geno <- as.data.frame(geno)
+
 
 
 out <- estimate_error(geno, ped, self_cutoff=30, depth_cutoff=10)

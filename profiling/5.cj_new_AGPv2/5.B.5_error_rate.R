@@ -18,7 +18,8 @@ geno[, names(imp67)] <- imp67
 
 
 ####################################################
-iperr <- estimate_error(geno, ped, self_cutoff=30, depth_cutoff=10, est_kids = FALSE)
+pinfo <- pedinfo(ped)
+iperr <- estimate_error(geno, ped, self_cutoff=30, depth_cutoff=10, check_kid_err=FALSE)
 iperr <- merge(pinfo, iperr, by.x="founder", by.y="fam")
 write.table(iperr, "cache/post_iper35.csv", sep=",", row.names=FALSE, quote=FALSE)
 
