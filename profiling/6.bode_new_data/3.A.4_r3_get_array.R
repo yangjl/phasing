@@ -5,21 +5,26 @@ library(imputeR)
 library(data.table, lib="~/bin/Rlib/")
 
 ### read genotype. snpinfo and pedigree data
-ped <- read.csv("data/Parentage_for_imputeR.csv")
-names(ped) <- c("proid", "parent1", "parent2")
-snpinfo <- read.csv("cache/snpinfo_self30.csv")
-geno <- fread("largedata/teo_updated/teo_raw_biallelic_recoded_20160303_AGPv2.txt")
+ped <- read.table("cache/landrace_parentage_info.txt", header =TRUE)
+geno <- fread("largedata/lcache/land_recode.txt")
 geno <- as.data.frame(geno)
+snpinfo <- read.csv("largedata/land_snpinfo_self30.csv")
 
 #### update geno matrix
-ip21 <- read.csv("largedata/ip/round1_ip21.csv")
-#names(ip21) <- gsub("\\.", ":", names(ip21))
-geno <- subset(geno, snpid %in% row.names(ip21))
-geno[, names(ip21)] <- ip21
+ip13 <- read.csv("largedata/bode/ip/round1_ip13.csv", sep=",", header=TRUE)
+names(ip13) <- gsub("\\.", ":", names(ip13))
+names(ip13) <- gsub("^X", "", names(ip13))
+#geno <- subset(geno, snpid %in% row.names(ip13))
+geno[, names(ip13)] <- ip13
 
+ip15 <- read.csv("largedata/bode/ip/round2_ip15.csv")
+names(ip15) <- gsub("\\.", ":", names(ip15))
+names(ip15) <- gsub("^X", "", names(ip15))
+#geno <- subset(geno, snpid %in% row.names(ip13))
+geno[, names(ip15)] <- ip15
 
 #################################################
-## 2nd round of imputation, with family > 40 selfed kids + outcrossed
+## 3rd round of imputation, with family > 40 selfed kids + outcrossed
 
 new_pedinfo <- function(ped, ip=names(ip24), tot_cutoff=40, getinfo=TRUE){
     ped[, 1:3] <- apply(ped[, 1:3], 2, as.character)
@@ -30,7 +35,7 @@ new_pedinfo <- function(ped, ip=names(ip24), tot_cutoff=40, getinfo=TRUE){
     pinfo2 <- pedinfo(subped)
     pinfo2$founder <- as.character(pinfo2$founder)
     pinfo2 <- subset(pinfo2, !(founder %in% ip))
-
+    
     if(getinfo){
         return(subset(pinfo2, tot > tot_cutoff))
     }else{
@@ -42,15 +47,13 @@ new_pedinfo <- function(ped, ip=names(ip24), tot_cutoff=40, getinfo=TRUE){
     }
 }
 
-pinfo2 <- new_pedinfo(ped, ip=names(ip21), tot_cutoff=40, getinfo=TRUE)
-subped <- new_pedinfo(ped, ip=names(ip21), tot_cutoff=40, getinfo=FALSE)
+pinfo3 <- new_pedinfo(ped, ip=c(names(ip13), names(ip15)), tot_cutoff=0, getinfo=TRUE)
+subped <- new_pedinfo(ped, ip=c(names(ip13), names(ip15)), tot_cutoff=0, getinfo=FALSE)
 
 ped[, 1:3] <- apply(ped[, 1:3], 2, as.character)
 pargeno <- data.frame(parentid= as.character(unique(c(ped$parent1, ped$parent2))), true_p=0)
-pargeno[pargeno$parentid %in% names(ip21), 2] <- 1
-sum(pargeno$true_p)
+pargeno[pargeno$parentid %in% c(names(ip13), names(ip15)), 2] <- 1
+
 #pargeno <- subset(pargeno, pargeno[,2] >0)
-
-create_array(geno, ped=subped, pargeno, pp=NULL, pinfo=pinfo2,
-             outdir="largedata/obs2", bychr=TRUE)
-
+create_array(geno, ped=subped, pargeno, pp=NULL, pinfo=pinfo3,
+             outdir="largedata/bode/obs3", bychr=TRUE, bychunk=NULL)
