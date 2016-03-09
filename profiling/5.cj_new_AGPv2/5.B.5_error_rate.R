@@ -4,19 +4,17 @@
 
 library("data.table", lib="~/bin/Rlib")
 library("imputeR")
-geno <- fread("largedata/lcache/teo_recoded.txt")
+
+ped <- read.csv("data/Parentage_for_imputeR.csv")
+names(ped) <- c("proid", "parent1", "parent2")
+geno <- fread("largedata/teo_updated/teo_raw_biallelic_recoded_20160303_AGPv2.txt")
 geno <- as.data.frame(geno)
 
-ped <- read.table("data/parentage_info.txt", header=TRUE)
-ped[, 1:3] <- apply(ped[, 1:3], 2, as.character)
-pinfo <- pedinfo(ped)
-
 ##### round1 self > 40, depth>10
-imp68 <- read.csv("cache/imp68.csv")
-names(imp68) <- gsub("\\.", ":", names(imp68))
+imp67 <- read.csv("largedata/ip/imp67.csv")
 
-if(sum(geno$snpid != row.names(imp68)) >0) stop("!!! ERROR")
-geno[, names(imp68)] <- imp68
+if(sum(geno$snpid != row.names(imp67)) >0) stop("!!! ERROR")
+geno[, names(imp67)] <- imp67
 
 
 ####################################################
