@@ -14,6 +14,7 @@ geno <- as.data.frame(geno)
 imp67 <- read.csv("largedata/ip/imp67.csv")
 
 if(sum(geno$snpid != row.names(imp67)) >0) stop("!!! ERROR")
+ncol(geno[, names(imp67)])
 geno[, names(imp67)] <- imp67
 
 

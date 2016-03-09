@@ -53,5 +53,5 @@ imp1 <- read.csv("largedata/ip/round1_ip21.csv")
 imp2 <- read.csv("largedata/ip/round2_ip23.csv")
 imp3 <- read.csv("largedata/ip/round3_ip23.csv")
 imp67 <- cbind(imp1, imp2, imp3)
-write.table(imp, "largedata/ip/imp67.csv", sep=",", row.names=TRUE, quote=FALSE)
+write.table(imp67, "largedata/ip/imp67.csv", sep=",", row.names=TRUE, quote=FALSE)
 
