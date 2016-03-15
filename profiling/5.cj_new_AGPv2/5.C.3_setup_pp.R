@@ -21,9 +21,9 @@ set_arrayjob(shid="largedata/scripts/run_pp.sh",
 # pp round 2
 files <- list.files(path="largedata/obs2", pattern="RData", full.names=TRUE)
 df <- data.frame(id=1:length(files), file=files)
-f2 <- list.files(path="largedata/obs2", pattern="csv", full.names=TRUE)
-f2 <- gsub("csv", "RData", f2)
-df <- subset(df, !(file %in% f2))
+#f2 <- list.files(path="largedata/obs2", pattern="csv", full.names=TRUE)
+#f2 <- gsub("csv", "RData", f2)
+#df <- subset(df, !(file %in% f2))
 write.table(df, "largedata/pp_files.csv", sep=",", row.names=FALSE)
 
 #$SLURM_ARRAY_TASK_ID $SLURM_JOB_ID

@@ -45,11 +45,9 @@ new_pedinfo <- function(ped, ip=names(ip24), tot_cutoff=40, getinfo=TRUE){
         return(rbind(kid1, kid2, kid3))
     }
 }
-
+##############
 pinfo2 <- new_pedinfo(ped, ip=names(ip13), tot_cutoff=40, getinfo=TRUE)
 subped <- new_pedinfo(ped, ip=names(ip13), tot_cutoff=40, getinfo=FALSE)
-
-
 pargeno <- data.frame(parentid= as.character(unique(c(ped$parent1, ped$parent2))), true_p=0)
 pargeno[pargeno$parentid %in% names(ip13), 2] <- 1
 
