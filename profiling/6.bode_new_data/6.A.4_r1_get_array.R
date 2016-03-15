@@ -10,7 +10,8 @@ geno <- fread("largedata/lcache/land_recode.txt")
 geno <- as.data.frame(geno)
 
 snpinfo <- get_snpinfo(geno, ped, self_cutoff=30)
-write.table(snpinfo, "largedata/land_snpinfo_self30.csv", sep=",", row.names=FALSE, quote=FALSE)
+write.table(snpinfo, "largedata/land_snpinfo_self30.csv", 
+            sep=",", row.names=FALSE, quote=FALSE)
 #snpinfo <- read.csv("largedata/land_snpinfo_self30.csv")
 #################################################
 ## First round of imputation, with family > 40 selfed kids
