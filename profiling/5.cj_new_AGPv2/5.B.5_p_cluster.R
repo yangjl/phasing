@@ -5,22 +5,15 @@ library(gdsfmt)
 library(SNPRelate)
 library("data.table", lib="~/bin/Rlib/")
 
+imp67 <- read.csv("largedata/ip/imp67.csv")
 
-snpinfo <- read.csv("cache/snpinfo_self30.csv")
-
-ip24 <- read.csv("largedata/ip/round1_ip24.csv")
-ip21 <- read.csv("largedata/ip/round2_ip21.csv")
-ip23 <- read.csv("largedata/ip/round3_ip23.csv")
-
-imp <- cbind(ip24, ip21, ip23)
-write.table(imp, "cache/imp68.csv", sep=",", row.names=TRUE, quote=FALSE)
-
-sid <- gsub("\\..*", "",  names(imp))
-mx <- as.matrix(imp)
+sid <- names(imp67)
+snpid <- row.names(imp67)
+mx <- as.matrix(imp67)
 snpgdsCreateGeno("largedata/lcache/imp_parents.gds", genmat=mx,
-                 sample.id= sid, snp.id=snpinfo$snpid, 
-                 snp.chromosome= snpinfo$chr,
-                 snp.position= snpinfo$pos, snp.allele=NULL, snpfirstdim=TRUE)
+                 sample.id= sid, snp.id= snpid, 
+                 snp.chromosome= gsub("S|_.*", "", snpid),
+                 snp.position= gsub(".*_", "", snpid), snp.allele=NULL, snpfirstdim=TRUE)
 
 
 genofile <- snpgdsOpen("largedata/lcache/imp_parents.gds")
