@@ -4,15 +4,18 @@
 library(imputeR)
 library(data.table, lib="~/bin/Rlib/")
 
-ped <- read.table("data/parentage_info.txt", header =TRUE)
-geno <- fread("largedata/lcache/teo_recoded.txt")
+ped <- read.csv("data/Parentage_for_imputeR.csv")
+names(ped) <- c("proid", "parent1", "parent2")
+geno <- fread("largedata/teo_updated/teo_raw_biallelic_recoded_20160303_AGPv2.txt")
 geno <- as.data.frame(geno)
 
 ### updated geno matrix
-imp68 <- read.csv("cache/imp68.csv")
-names(imp68) <- gsub("\\.", ":", names(imp68))
-geno <- subset(geno, snpid %in% row.names(imp68))
-geno[, names(imp68)] <- imp68
+imp67 <- read.csv("largedata/ip/imp67.csv")
+if(sum(geno$snpid != row.names(imp67)) >0) stop("!!! ERROR")
+ncol(geno[, names(imp67)])
+geno[, names(imp67)] <- imp67
+
+
 
 source("lib/get_pp.R")
 pp24 <- get_pp(path="largedata/pp", pattern="PC_.*.csv", imp68)
