@@ -30,11 +30,19 @@ flt <- subset(info, MAF > 0 & MAF < 1)
 flt <- subset(info, MAF > 0 & MAF < 1 & missing < 0.1)
 
 flt <- subset(info, MAF > 0.005 & MAF < 1 & missing < 0.2 & chrom != 0)
-flt <- subset(info, MAF > 0.005 & MAF < 1 & missing < 0.1 & chrom != 0)
-dim(flt) #310885     16
-write.table(flt[, c(1:4,12:16)], "largedata/lcache/landrace_flt_maf01m8.txt", quote=FALSE, sep="\t", row.names=FALSE)
+dim(flt) #79383    16
+write.table(flt[, c(1:4,12:16)], "largedata/lcache/landrace_flt_maf005m2.txt", 
+            quote=FALSE, sep="\t", row.names=FALSE)
 
 
+######### recode these SNPs
 
+source("~/Documents/Github/zmSNPtools/Rcodes/setUpslurm.R")
+cmd <- paste0("snpconvert -a largedata/lcache/landrace.hmp.txt", 
+                " -i largedata/lcache/landrace_flt_maf005m2.txt -s 12",
+                " -o largedata/lcache/land_recode.txt")
 
-
+setUpslurm(slurmsh="largedata/scripts/run_snpconvert.sh", codesh=cmd, 
+           jobid="snpconvert", email="yangjl0930@gmail.com")
+###>>> In this path: cd /home/jolyang/Documents/Github/phasing
+###>>> RUN: sbatch -p bigmemh --ntasks=1 largedata/scripts/run_snpconvert.sh
