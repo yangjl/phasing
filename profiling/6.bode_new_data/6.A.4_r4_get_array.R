@@ -50,7 +50,6 @@ pinfo4 <- new_pedinfo(ped, ip=names(ip44), tot_cutoff=0, getinfo=TRUE)
 subped <- new_pedinfo(ped, ip=names(ip44), tot_cutoff=0, getinfo=FALSE)
 if(sum(pinfo4$tot) != nrow(subped) ) stop("!!!error!!!")
 
-
 pargeno <- data.frame(parentid= as.character(unique(c(ped$parent1, ped$parent2))), true_p=0)
 pargeno[pargeno$parentid %in% names(ip44), 2] <- 1
 

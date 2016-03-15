@@ -22,19 +22,13 @@ dim(geno[, names(ip53)])
 geno[, names(ip53)] <- ip53
 
 ##### round1 self > 40
-err <- estimate_error(geno, ped, self_cutoff=30, 
-                      depth_cutoff=10, est_kids = FALSE)
+err <- estimate_error(geno, ped, self_cutoff=30, depth_cutoff=10, check_kid_err = TRUE)
 write.table(err, "cache/bode_postip_err.csv", sep=",", row.names=FALSE, quote=FALSE)
-
-
-err11 <- read.csv("cache/round1_ip24_err1.csv")
-err12 <- read.csv("cache/round1_ip24_err2.csv")
 
 
 
 ####################################################
-out <- read.csv("cache/imp_err.csv")
-
+out <- read.csv("cache/bode_postip_err.csv")
 
 pdf("graphs/teo_ip_err.pdf", width=5, height=5)
 par(mfrow=c(1,1))

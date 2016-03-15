@@ -83,13 +83,18 @@ get_pp <- function(path="largedata/pp", pattern="PC_.*.csv", imp){
         pp0 <- merge(pp, imp, by.x="snpid", by.y="row.names", all=TRUE )
         pp0 <- pp0[, c(1:5, which(names(pp0) == pid[j]))]
         
-        pp0[pp0[,6]==3, ]$hap1 <- 3
-        pp0[pp0[,6]==3, ]$hap2 <- 3
-        pp0[pp0[,6]==0, ]$hap1 <- 0
-        pp0[pp0[,6]==0, ]$hap2 <- 0
-        pp0[pp0[,6]==2, ]$hap1 <- 1
-        pp0[pp0[,6]==2, ]$hap2 <- 1
-        
+        if(sum(pp0[,6]==3) >0) {
+            pp0[pp0[,6]==3, ]$hap1 <- 3
+            pp0[pp0[,6]==3, ]$hap2 <- 3
+        }
+        if(sum(pp0[,6]==0) >0){
+            pp0[pp0[,6]==0, ]$hap1 <- 0
+            pp0[pp0[,6]==0, ]$hap2 <- 0
+        }
+        if(sum(pp0[,6]==2) >0){
+            pp0[pp0[,6]==2, ]$hap1 <- 1
+            pp0[pp0[,6]==2, ]$hap2 <- 1
+        }
         pp0$chr <- as.numeric(as.character(gsub("S|_.*", "", pp0$snpid)))
         pp0$pos <- as.numeric(as.character(gsub("S.*_", "", pp0$snpid)))
         pp0 <- pp0[order(pp0$chr, pp0$pos),]

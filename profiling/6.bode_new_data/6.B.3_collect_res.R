@@ -47,7 +47,7 @@ for(i in 1:10){
 }
 write.table(imp, "largedata/bode/ip/round3_ip16.csv", sep=",", row.names=TRUE, quote=FALSE)
 
-### round3
+### round4
 imp <- data.frame()
 for(i in 1:10){
     tem <- col_snpdf(chri=i, verbose=TRUE, filepath="largedata/bode/obs4", outfile=NULL)
