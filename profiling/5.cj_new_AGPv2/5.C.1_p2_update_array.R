@@ -16,12 +16,6 @@ ncol(geno[, names(imp67)])
 geno[, names(imp67)] <- imp67
 
 
-
-source("lib/get_pp.R")
-pp24 <- get_pp(path="largedata/pp", pattern="PC_.*.csv", imp68)
-save(file="largedata/lcache/R1_pp24.RData", list="pp24")
-
-load("largedata/lcache/R1_pp24.RData")
 #################################################
 ## 2nd round of imputation, with family > 40 selfed kids + outcrossed
 new_pedinfo <- function(ped, ip=names(ip24), tot_cutoff=40, getinfo=TRUE){
@@ -45,18 +39,19 @@ new_pedinfo <- function(ped, ip=names(ip24), tot_cutoff=40, getinfo=TRUE){
     }
 }
 
-pinfo2 <- new_pedinfo(ped, ip=names(pp24), tot_cutoff=40, getinfo=TRUE)
-subped <- new_pedinfo(ped, ip=names(pp24), tot_cutoff=40, getinfo=FALSE)
+#############
+ob1 <- load("largedata/pp/teo_R1_ppr1.RData")
+pinfo2 <- new_pedinfo(ped, ip=names(ppr1), tot_cutoff=40, getinfo=TRUE)
+subped2 <- new_pedinfo(ped, ip=names(ppr1), tot_cutoff=40, getinfo=FALSE)
+if(sum(pinfo2$tot) != nrow(subped2)) stop("!")
 
-ped[, 1:3] <- apply(ped[, 1:3], 2, as.character)
-pargeno <- data.frame(parentid= as.character(unique(c(ped$parent1, ped$parent2))), true_p=0)
-pargeno[pargeno$parentid %in% names(pp24), 2] <- 1
+pargeno2 <- data.frame(parentid= as.character(unique(c(ped$parent1, ped$parent2))), true_p=0)
+pargeno2[pargeno2$parentid %in% names(ppr1), 2] <- 1
 
-
-snpinfo <- read.csv("cache/snpinfo_self30.csv")
 #pargeno <- subset(pargeno, pargeno[,2] >0)
-create_array(geno, ped=subped, pargeno, pp=pp24, pinfo=pinfo2, outdir="largedata/obs2", 
-             bychr=TRUE, snpinfo=snpinfo)
+create_array(geno, ped=subped2, pargeno=pargeno2, pp=ppr1, pinfo=pinfo2,
+             outdir="largedata/obs2", bychr=TRUE, bychunk=NULL)
+
 
 
 

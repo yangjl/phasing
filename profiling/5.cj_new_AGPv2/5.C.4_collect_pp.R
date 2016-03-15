@@ -9,10 +9,12 @@ geno <- fread("largedata/lcache/teo_recoded.txt")
 geno <- as.data.frame(geno)
 
 ### updated geno matrix
-imp68 <- read.csv("cache/imp68.csv")
-names(imp68) <- gsub("\\.", ":", names(imp68))
-geno <- subset(geno, snpid %in% row.names(imp68))
-geno[, names(imp68)] <- imp68
+imp67 <- read.csv("largedata/ip/imp67.csv")
+
+source("lib/get_pp.R")
+ppr1 <- get_pp(path="largedata/obs1", pattern=".csv", imp=imp67)
+save(file="largedata/pp/teo_R1_ppr1.RData", list="ppr1")
+
 
 source("lib/get_pp.R")
 ppr3 <- get_pp(path="largedata/obs3", pattern="PC_.*.csv", imp68)
