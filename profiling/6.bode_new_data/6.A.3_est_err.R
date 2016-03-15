@@ -13,7 +13,7 @@ geno <- fread("largedata/lcache/land_recode.txt")
 geno <- as.data.frame(geno)
 
 
-out <- estimate_error(geno, ped, self_cutoff=30, depth_cutoff=10, est_kids = TRUE)
+out <- estimate_error(geno, ped, self_cutoff=30, depth_cutoff=10, check_kid_err = TRUE)
 
 write.table(out[[1]], "cache/land_err_mx_selfed.csv", sep=",", row.names=FALSE, quote=FALSE)
 write.table(out[[2]], "cache/land_err_mx_oc.csv", sep=",", row.names=FALSE, quote=FALSE)
