@@ -44,6 +44,7 @@ legend("topright", col=c( "red", "blue", "green"), pch=16,
 dev.off()
 
 ####################################################
+out <- read.csv("cache/post_iper35.csv")
 per <- out
 mx1 <- matrix(c(1-mean(per$er0), mean(per$er01), mean(per$er02),
                 mean(per$er10), 1-mean(per$er1), mean(per$er12),
