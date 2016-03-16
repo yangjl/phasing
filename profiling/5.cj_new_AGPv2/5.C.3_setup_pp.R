@@ -48,8 +48,8 @@ source("~/Documents/Github/zmSNPtools/Rcodes/set_arrayjob.R")
 set_arrayjob(shid="largedata/scripts/run_pp3.sh",
              shcode='R --no-save "--args ${SLURM_ARRAY_TASK_ID}" < profiling/5.cj_new_AGPv2/5.C.2_run_phase_parent.R',
              arrayjobs="1-230",
-             wd=NULL, jobid="pp3_230", email="yangjl0930@gmail.com")
+             wd=NULL, jobid="pp3", email="yangjl0930@gmail.com")
 ###>>> In this path: cd /home/jolyang/Documents/Github/phasing
 ###>>> [ note: --ntasks=INT, number of cup ]
 ###>>> [ note: --mem=16000, 16G memory ]
-###>>> RUN: sbatch -p bigmemh largedata/scripts/run_pp3.sh
+###>>> RUN: sbatch -p med largedata/scripts/run_pp3.sh

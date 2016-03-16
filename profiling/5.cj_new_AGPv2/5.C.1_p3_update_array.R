@@ -4,8 +4,6 @@
 library(imputeR)
 library(data.table, lib="~/bin/Rlib/")
 
-ped <- read.csv("data/Parentage_for_imputeR.csv")
-names(ped) <- c("proid", "parent1", "parent2")
 geno <- fread("largedata/teo_updated/teo_raw_biallelic_recoded_20160303_AGPv2.txt")
 geno <- as.data.frame(geno)
 
@@ -15,15 +13,6 @@ if(sum(geno$snpid != row.names(imp67)) >0) stop("!!! ERROR")
 ncol(geno[, names(imp67)])
 geno[, names(imp67)] <- imp67
 
-
-
-source("lib/get_pp.R")
-ppr2 <- get_pp(path="largedata/obs2", pattern="PC_.*.csv", imp68)
-save(file="largedata/lcache/R2_pp21.RData", list="ppr2")
-
-ob1 <- load("largedata/lcache/R1_pp24.RData")
-ob2 <- load("largedata/lcache/R2_pp21.RData")
-pp45 <- c(pp24, ppr2)
 #################################################
 ## 3rd round of imputation, with family > 40 selfed kids + outcrossed
 new_pedinfo <- function(ped, ip=names(ip24), tot_cutoff=40, getinfo=TRUE){
@@ -46,19 +35,25 @@ new_pedinfo <- function(ped, ip=names(ip24), tot_cutoff=40, getinfo=TRUE){
         return(rbind(kid1, kid2, kid3))
     }
 }
+#####################
+ob1 <- load("largedata/pp/teo_R1_ppr1.RData")
+ob2 <- load("largedata/pp/teo_R2_ppr2.RData")
+pp44 <- c(ppr1, ppr2)
 
-pinfo2 <- new_pedinfo(ped, ip=names(pp45), tot_cutoff=0, getinfo=TRUE)
-subped <- new_pedinfo(ped, ip=names(pp45), tot_cutoff=0, getinfo=FALSE)
-
+ped <- read.csv("data/Parentage_for_imputeR.csv")
+names(ped) <- c("proid", "parent1", "parent2")
 ped[, 1:3] <- apply(ped[, 1:3], 2, as.character)
+
+pinfo3 <- new_pedinfo(ped, ip=names(pp44), tot_cutoff=0, getinfo=TRUE)
+subped3 <- new_pedinfo(ped, ip=names(pp44), tot_cutoff=0, getinfo=FALSE)
 pargeno <- data.frame(parentid= as.character(unique(c(ped$parent1, ped$parent2))), true_p=0)
-pargeno[pargeno$parentid %in% names(pp45), 2] <- 1
+pargeno[pargeno$parentid %in% names(pp44), 2] <- 1
 
-
-snpinfo <- read.csv("cache/snpinfo_self30.csv")
 #pargeno <- subset(pargeno, pargeno[,2] >0)
-create_array(geno, ped=subped, pargeno, pp=pp45, pinfo=pinfo2, outdir="largedata/obs3", 
-             bychr=TRUE, snpinfo=snpinfo)
+create_array(geno, ped=subped3, pargeno, pp=pp44, pinfo=pinfo3,
+             outdir="largedata/obs3", bychr=TRUE, bychunk=NULL)
+
+
 
 
 
