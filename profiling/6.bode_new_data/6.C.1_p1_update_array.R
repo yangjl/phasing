@@ -9,22 +9,19 @@ geno <- fread("largedata/lcache/land_recode.txt")
 geno <- as.data.frame(geno)
 
 ### updated geno matrix
-imp44 <- read.csv("cache/bode_imp44.csv")
-names(imp44) <- gsub("\\.", ":", names(imp44))
-names(imp44) <- gsub("^X", "", names(imp44))
+imp53 <- read.csv("largedata/bode/ip53_imputed.csv")
+names(imp53) <- gsub("\\.", ":", names(imp53))
+names(imp53) <- gsub("^X", "", names(imp53))
 
-if(sum(geno$snpid != row.names(imp44)) > 0) stop("!!! ERROR !!!")
-dim(geno[, names(imp44)])
-#[1] 310885     44
-geno[, names(imp44)] <- imp44
+if(sum(geno$snpid != row.names(imp53)) > 0) stop("!")
+dim(geno[, names(imp53)])
+geno[, names(imp53)] <- imp53
 
 
 ped <- read.table("cache/landrace_parentage_info.txt", header =TRUE)
-
 #################################################
 ## First round of imputation, with family > 40 selfed kids
 #mygeno <- mendelian_check(geno, ped, self_cutoff=30, depth_cutoff=10)
-snpinfo <- read.csv("largedata/land_snpinfo_self30.csv")
 pinfo <- pedinfo(ped)
 pinfo <- subset(pinfo, nselfer > 40)
 ped[, 1:3] <- apply(ped[, 1:3], 2, as.character)
