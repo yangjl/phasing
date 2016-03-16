@@ -29,22 +29,18 @@ library(data.table, lib="~/bin/Rlib/")
 library(imputeR)
 
 ### read genotype. snpinfo and pedigree data
-geno <- fread("largedata/lcache/land_recode.txt")
+ped <- read.csv("data/Parentage_for_imputeR.csv")
+names(ped) <- c("proid", "parent1", "parent2")
+geno <- fread("largedata/teo_updated/teo_raw_biallelic_recoded_20160303_AGPv2.txt")
 geno <- as.data.frame(geno)
 
 ### updated geno matrix
-imp53 <- read.csv("largedata/bode/ip53_imputed.csv")
-names(imp53) <- gsub("\\.", ":", names(imp53))
-names(imp53) <- gsub("^X", "", names(imp53))
+imp67 <- read.csv("largedata/ip/imp67.csv")
+if(sum(geno$snpid != row.names(imp67)) >0) stop("!!! ERROR")
+ncol(geno[, names(imp67)])
+geno[, names(imp67)] <- imp67
 
-if(sum(geno$snpid != row.names(imp53)) > 0) stop("!")
-dim(geno[, names(imp53)])
-geno[, names(imp53)] <- imp53
-
-
-ped <- read.table("cache/landrace_parentage_info.txt", header =TRUE)
-ped[, 1:3] <- apply(ped[, 1:3], 2, as.character)
 
 ###############
-write_subgeno(geno, ped, ksize=10, outfile="largedata/bode/subgeno/kids")
+write_subgeno(geno, ped, ksize=10, outfile="largedata/ik/")
 
