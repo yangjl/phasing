@@ -5,13 +5,13 @@ library(imputeR)
 library(data.table, lib="~/bin/Rlib/")
 
 ####################################################
-ipgeno <- fread("largedata/landrace_imputeR_01232016.txt")
+ipgeno <- fread("largedata/teo_imputeR_03162016.txt")
 ipgeno <- as.data.frame(ipgeno)
 
-ped <- read.table("cache/landrace_parentage_info.txt", header =TRUE)
+ped <- read.csv("data/Parentage_for_imputeR.csv")
+names(ped) <- c("proid", "parent1", "parent2")
 ped[, 1:3] <- apply(ped[, 1:3], 2, as.character)
-
-
+ped <- ped[-4741,]
 
 posterr <-  estimate_error(geno=ipgeno, ped, self_cutoff=30, depth_cutoff=10, check_kid_err = TRUE)
 perr <- posterr[[1]]
@@ -21,26 +21,21 @@ kerr$er1 <- kerr$kerr10 + kerr$kerr12
 kerr$er2 <- kerr$kerr20 + kerr$kerr21
 kerr$toter <- (kerr$er0*kerr$nmaj + kerr$er1*kerr$nhet + kerr$er2*kerr$nmnr)/(kerr$nmaj + kerr$nhet + kerr$nmnr)
 
-write.table(perr, "cache/landrace_post_perr.csv", sep=",", row.names=FALSE, quote=FALSE)
-write.table(kerr, "cache/landrace_post_kerr.csv", sep=",", row.names=FALSE, quote=FALSE)
+write.table(perr, "cache/teo_post_perr.csv", sep=",", row.names=FALSE, quote=FALSE)
+write.table(kerr, "cache/teo_post_kerr.csv", sep=",", row.names=FALSE, quote=FALSE)
 
 
+####################################################
 
-kerr <- read.csv("cache/landrace_post_kerr.csv")
+res0 <- read.csv("cache/teo_post_kerr.csv")
 
-terr <- read.csv("cache/post_kerr.csv")
-
-
-
-
-res0 <- read.csv("cache/kid_err_masked.csv")
-
-ped <- read.table("data/parentage_info.txt", header=TRUE)
+ped <- read.csv("data/Parentage_for_imputeR.csv")
+names(ped) <- c("proid", "parent1", "parent2")
 ped[, 1:3] <- apply(ped[, 1:3], 2, as.character)
 pinfo <- pedinfo(ped)
 names(pinfo)[4] <- "totkids"
 
-res <- merge(ped, res0, by.x="proid", "pid")
+res <- merge(ped, res0, by.x="proid", "kid")
 
 res <- merge(pinfo, res, by.x="founder", by.y="parent1")
 names(res)[1] <- "parent1"
@@ -71,12 +66,12 @@ legend("topright", col=c("black", "red", "blue", "green"), pch=16,
 dev.off()
 
 ##############################################
-res <- read.csv("cache/landrace_post_kerr.csv")
+ker <- read.csv("cache/teo_post_kerr.csv")
 
-mx1 <- matrix(c(1-mean(res$er0), mean(res$er01), mean(res$er02),
-                mean(res$er10), 1-mean(res$er1), mean(res$er12),
-                mean(res$er20), mean(res$er21), 1-mean(res$er2)),
+mx2 <- matrix(c(1-mean(ker$kerr01, na.rm=T)-mean(ker$kerr02, na.rm=T), mean(ker$kerr01, na.rm=T), mean(ker$kerr02, na.rm=T),
+                mean(ker$kerr10, na.rm=T), 1-mean(ker$kerr10, na.rm=T)-mean(ker$kerr12, na.rm=T), mean(ker$kerr12, na.rm=T),
+                mean(ker$kerr20, na.rm=T), mean(ker$kerr21, na.rm=T), 1-mean(ker$kerr20, na.rm=T)-mean(ker$kerr21, na.rm=T)),
               byrow=T,nrow=3,ncol=3)
-rownames(mx1) <- c("g0", "g1", "g2")
-colnames(mx1) <- c("ob0", "ob1", "ob2")
-mx1 <- round(mx1,4)
+rownames(mx2) <- c("g0", "g1", "g2")
+colnames(mx2) <- c("ob0", "ob1", "ob2")
+mx2 <- round(mx2, 4)
