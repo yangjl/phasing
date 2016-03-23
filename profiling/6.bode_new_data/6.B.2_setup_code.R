@@ -1,7 +1,6 @@
 ### Jinliang Yang
 ### use impute_parent in CJ data
 
-
 files <- list.files(path="largedata/bode/obs1", pattern="RData", full.names=TRUE)
 df <- data.frame(id=1:length(files), file=files)
 write.table(df, "largedata/bode_obs_files.csv", sep=",", row.names=FALSE)
@@ -30,9 +29,7 @@ set_arrayjob(shid="largedata/scripts/ip2.sh",
              shcode='R --no-save "--args ${SLURM_ARRAY_TASK_ID}" < profiling/6.bode_new_data/6.B.1_code_impute_parent.R',
              arrayjobs="1-150",
              wd=NULL, jobid="ip_r2", email="yangjl0930@gmail.com")
-###>>> In this path: cd /home/jolyang/Documents/Github/phasing
-###>>> [ note: --ntasks=INT, number of cup ]
-###>>> [ note: --mem=16000, 16G memory ]
+
 ###>>> RUN: sbatch -p med largedata/scripts/ip2.sh
 
 files <- list.files(path="largedata/bode/obs3", pattern="RData", full.names=TRUE)

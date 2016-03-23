@@ -21,32 +21,15 @@ set_arrayjob(shid="largedata/scripts/run_bode_pp1.sh",
 # pp round 2
 files <- list.files(path="largedata/bode/obs2", pattern="RData", full.names=TRUE)
 df <- data.frame(id=1:length(files), file=files)
-df$file <- as.character(df$file)
-f2 <- list.files(path="largedata/bode/obs2", pattern=".csv", full.names=TRUE)
-f2 <- gsub("csv", "RData", f2)
-f3 <- df$file[!(df$file %in% f2)]
-#1109
-df <- data.frame(id=1:length(f3), file=f3)
 write.table(df, "largedata/bode_pp_files.csv", sep=",", row.names=FALSE)
-
-files <- list.files(path="largedata/bode/obs2", pattern="RData", full.names=TRUE)
-df <- data.frame(id=1:length(files), file=files)
-#1109
-df$file <- as.character(df$file)
-csvs <- list.files(path="largedata/bode/obs2", pattern=".csv", full.names=TRUE)
-myf <- gsub("csv", "RData", csvs)
-myf <- df$file[!df$file %in% myf]
-df <- data.frame(id=1:length(myf), file=myf)
-write.table(df, "largedata/bode_pp_files.csv", sep=",", row.names=FALSE)
-
 
 #$SLURM_ARRAY_TASK_ID $SLURM_JOB_ID
 source("~/Documents/Github/zmSNPtools/Rcodes/set_arrayjob.R")
 set_arrayjob(shid="largedata/scripts/runbode_pp21.sh",
              shcode='R --no-save "--args ${SLURM_ARRAY_TASK_ID}" < profiling/6.bode_new_data/6.C.2_run_phase_parent.R',
-             arrayjobs="1-800",
+             arrayjobs="1-150",
              wd=NULL, jobid="pp21", email="yangjl0930@gmail.com")
-###>>> RUN: sbatch -p serial largedata/scripts/runbode_pp21.sh
+###>>> RUN: sbatch -p med largedata/scripts/runbode_pp21.sh
 
 set_arrayjob(shid="largedata/scripts/runbode_pp22.sh",
              shcode='R --no-save "--args ${SLURM_ARRAY_TASK_ID}" < profiling/6.bode_new_data/6.C.2_run_phase_parent.R',

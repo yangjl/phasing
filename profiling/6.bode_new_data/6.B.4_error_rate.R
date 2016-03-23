@@ -25,7 +25,7 @@ geno[, names(ip53)] <- ip53
 err <- estimate_error(geno, ped, self_cutoff=30, depth_cutoff=10, check_kid_err = FALSE)
 write.table(err, "cache/bode_postip_err.csv", sep=",", row.names=FALSE, quote=FALSE)
 
-per <- err
+per <- read.csv("cache/bode_postip_err.csv")
 mx1 <- matrix(c(1-mean(per$er0), mean(per$er01), mean(per$er02),
                 mean(per$er10), 1-mean(per$er1), mean(per$er12),
                 mean(per$er20), mean(per$er21), 1-mean(per$er2)),

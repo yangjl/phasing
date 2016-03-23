@@ -17,8 +17,6 @@ if(sum(geno$snpid != row.names(imp53)) > 0) stop("!")
 dim(geno[, names(imp53)])
 geno[, names(imp53)] <- imp53
 
-
-
 #################################################
 ## 2nd round of imputation, with family > 40 selfed kids + outcrossed
 new_pedinfo <- function(ped, ip=names(ip24), tot_cutoff=40, getinfo=TRUE){
@@ -56,7 +54,7 @@ pargeno2[pargeno2$parentid %in% names(ppr1), 2] <- 1
 
 #pargeno <- subset(pargeno, pargeno[,2] >0)
 create_array(geno, ped=subped2, pargeno=pargeno2, pp=ppr1, pinfo=pinfo2,
-             outdir="largedata/bode/obs2", bychr=TRUE, bychunk=1000)
+             outdir="largedata/bode/obs2", bychr=TRUE, bychunk=NULL)
 
 
 
