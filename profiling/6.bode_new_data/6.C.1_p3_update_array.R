@@ -1,5 +1,5 @@
 ### Jinliang Yang
-### use impute_parent in CJ data
+### use impute_parent for bode's data
 
 library(imputeR)
 library(data.table, lib="~/bin/Rlib/")
@@ -16,7 +16,6 @@ names(imp53) <- gsub("^X", "", names(imp53))
 if(sum(geno$snpid != row.names(imp53)) > 0) stop("!")
 dim(geno[, names(imp53)])
 geno[, names(imp53)] <- imp53
-
 
 #################################################
 ## 3rd round of imputation, with family > 40 selfed kids + outcrossed
@@ -52,14 +51,12 @@ ped[, 1:3] <- apply(ped[, 1:3], 2, as.character)
 pinfo3 <- new_pedinfo(ped, ip=names(pp28), tot_cutoff=0, getinfo=TRUE)
 subped3 <- new_pedinfo(ped, ip=names(pp28), tot_cutoff=0, getinfo=FALSE)
 
-
 pargeno <- data.frame(parentid= as.character(unique(c(ped$parent1, ped$parent2))), true_p=0)
 pargeno[pargeno$parentid %in% names(pp28), 2] <- 1
 
-
 #pargeno <- subset(pargeno, pargeno[,2] >0)
 create_array(geno, ped=subped3, pargeno, pp=pp28, pinfo=pinfo3,
-             outdir="largedata/bode/obs3", bychr=TRUE, bychunk=1000)
+             outdir="largedata/bode/obs3", bychr=TRUE, bychunk=NULL)
 
 
 

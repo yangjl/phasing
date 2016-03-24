@@ -10,10 +10,8 @@ source("lib/get_pp.R")
 ppr1 <- get_pp(path="largedata/bode/obs1", pattern=".csv", imp=imp53)
 save(file="largedata/bode/bode_R1_ppr1.RData", list="ppr1")
 
-
 source("lib/get_pp.R")
-ppr2 <- get_pp(path="largedata/bode/obs2", pattern=".csv", chunk_inc=100, imp53)
-#[1] 1109
+ppr2 <- get_pp(path="largedata/bode/obs2", pattern=".csv", imp=imp53)
 save(file="largedata/bode/bode_R2_ppr2.RData", list="ppr2")
 
 source("lib/get_pp.R")
