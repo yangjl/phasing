@@ -1,0 +1,25 @@
+PedigreeFile                         ,_alpha.csvParentage_for_imputeR_alpha.csv
+GenotypeFile                         ,largedata/teo_alpha/geno_10.txt
+SexChrom                             ,No
+NumberSnp                            ,5716
+InternalEdit                         ,Yes
+EditingParameters                    ,95.0,2.0,98.0,AllSnpOut
+NumberPhasingRuns                    ,10
+CoreAndTailLengths                   ,200,300,400,500,600,250,325,410,290,700
+CoreLengths                          ,100,200,300,400,500,150,225,310,190,600
+PedigreeFreePhasing                  ,No
+GenotypeError                        ,1.00
+NumberOfProcessorsAvailable          ,3
+InternalIterations                   ,3
+PreprocessDataOnly                   ,No
+PhasingOnly                          ,No
+ConservativeHaplotypeLibraryUse      ,No
+WellPhasedThreshold                  ,99.0
+UserDefinedAlphaPhaseAnimalsFile     ,None
+PrePhasedFile                        ,None
+BypassGeneProb                       ,No
+RestartOption                        ,1
+HMMOption                            ,Yes
+HmmParameters                        ,200,5,20,4,-123456789
+TrueGenotypeFile                     ,None
+
