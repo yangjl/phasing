@@ -1,8 +1,6 @@
 ### Jinliang Yang
 ### April 5th, 2016
 
-teop <- read.table("largedata/teo_parents_hap_AGPv2.txt", header=TRUE)
-
 teo67 <- read.csv("largedata/ip/imp67.csv")
 
 teo67[teo67 == 0] <- "A A"
