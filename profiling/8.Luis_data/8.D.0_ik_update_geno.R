@@ -34,13 +34,22 @@ names(ped) <- c("proid", "parent1", "parent2")
 geno <- fread("largedata/teo_updated/teo_raw_biallelic_recoded_20160303_AGPv2.txt")
 geno <- as.data.frame(geno)
 
+p5 <- c("PC_M05_ID1", "PC_I58_ID2", "PC_N09_ID1", "PC_I58_ID2", "PC_L08_ID1")
+goodloci <- read.table("data/good_loci.txt")
+subgeno <- subset(geno, snpid %in% goodloci$V1)
+
 ### updated geno matrix
-imp67 <- read.csv("largedata/ip/imp67.csv")
-if(sum(geno$snpid != row.names(imp67)) >0) stop("!!! ERROR")
-ncol(geno[, names(imp67)])
-geno[, names(imp67)] <- imp67
+imp4 <- read.csv("largedata/ip/imp4.csv")
+if(sum(subgeno$snpid != row.names(imp4)) >0) stop("!!! ERROR")
+ncol(subgeno[, names(imp4)])
+subgeno[, names(imp4)] <- imp4
+
+
+ped[, 1:3] <- apply(ped[, 1:3], 2, as.character)
+myped <- subset(ped, parent1 == parent2 & parent1 %in% p5)
+
 
 
 ###############
-write_subgeno(geno, ped, ksize=10, outfile="largedata/ik/")
+write_subgeno(geno=subgeno, ped=myped, ksize=10, outfile="largedata/ik/kid")
 

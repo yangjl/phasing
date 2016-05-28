@@ -9,10 +9,6 @@ imp4 <- read.csv("largedata/ip/imp4.csv")
 
 source("lib/get_pp.R")
 ppr1 <- get_pp(path="largedata/obs1", pattern=".csv", imp=imp4)
-save(file="largedata/pp/teo_pp4.RData", list="ppr1")
-
-
-
 
 #### to a tab delimited format 
 newformat <- function(pp67){
@@ -31,8 +27,8 @@ newformat <- function(pp67){
     return(tab)
 }
 ####
-hap <- newformat(pp67)
-write.table(hap, "largedata/teo_parents_hap_AGPv2.txt", sep="\t", row.names=FALSE, quote=FALSE)    
+hap <- newformat(pp67=ppr1)
+write.table(hap, "largedata/teo_hap_AGPv2_4parents.txt", sep="\t", row.names=FALSE, quote=FALSE)    
     
     
 
