@@ -21,18 +21,8 @@ get_ik <- function(path="largedata/ik", pattern="kid_geno"){
 }
 
 ##############
-ikgeno <- get_ik(path="largedata/ik", pattern="kid_geno")
+ikgeno <- get_ik(path="largedata/ik", pattern="kid_subgeno")
 
-#library(imputeR)
-library(data.table, lib="~/bin/Rlib/")
-imp67 <- read.csv("largedata/ip/imp67.csv")
-
-#if(sum(ikgeno$snpid != row.names(imp67)) > 0) stop("!")
-
-ipgeno <- merge(imp67, ikgeno, by.x="row.names", by.y="snpid", sort=FALSE)
-names(ipgeno)[1] <- "snpid"
-
-
-write.table(ipgeno, "largedata/teo_imputeR_03162016.txt", sep="\t",
+write.table(ikgeno, "largedata/teo_kid121_05282016.txt", sep="\t",
             row.names=FALSE, quote=FALSE)
 
