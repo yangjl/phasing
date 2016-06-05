@@ -46,7 +46,7 @@ res <- read.csv("cache/kid_err_masked.csv")
 mx1 <- matrix(c(1-mean(res$er0), mean(res$er01), mean(res$er02),
                 mean(res$er10), 1-mean(res$er1), mean(res$er12),
                 mean(res$er20), mean(res$er21), 1-mean(res$er2)),
-              byrow=T,nrow=3,ncol=3)
+              byrow=F,nrow=3,ncol=3)
 rownames(mx1) <- c("g0", "g1", "g2")
 colnames(mx1) <- c("ob0", "ob1", "ob2")
 mx1 <- round(mx1,4)
